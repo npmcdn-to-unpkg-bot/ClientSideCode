@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Color Study</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script>
+  $(function() {
+   $("#submit").click(createKey);
+   $("#checkbox1").click(checkbox2);
+   $("#checkbox2").click(checkbox1);
+  });
+  </script>
+         <script>
+ function createKey(){
+     
+       if(document.getElementById('checkbox1').checked){
+          jsonObj=[];
+          UserTable = {};
+          UserTable ["Username"] = localStorage.getItem('uname');
+          jsonObj.push(UserTable)        
+            
+            
+            $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://localhost:3000/buildTaskMap',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+    console.log(data); 
+    result=JSON.parse(data)
+    window.localStorage.setItem('uname', result[0].Username);
+    window.location='Training.html'; 
+                            }
+    
+
+});
+        }else if(document.getElementById('checkbox2').checked){
+          jsonObj=[];
+          UserTable = {};
+          UserTable ["Username"] =  localStorage.getItem('uname');
+          jsonObj.push(UserTable)       
+            $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://localhost:3000/unregisterUser',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+    window.location='Thankyou.html'; 
+                            }
+});
+            
+        }else{
+            alert("Please select the check box");
+            return;
+        }
+           
+   
+       }
+       
+       
+         
+
+
+function checkbox1(){
+    $("#checkbox1").attr("checked",false);
+} 
+function checkbox2(){
+    $("#checkbox2").attr("checked",false);
+} 
+
+  </script>
+
+    </head>
+    <body>
+        <h3 align="center" ><b>Informed Consent Form</b></h3>   
+
+        <h4 align="center">Title: Role of color and affect in information visualization </h4>  
+        <p>Principal Investigator: Abhisekh Patra, SIAT, Simon Fraser University Contact: apatra@sfu.ca , +1 604-376-8384</p>
+<p>The Simon Fraser University Ethics Board has approved this research study.
+This consent form, a copy of which is made available to you, is part of the process of informed consent. It should give you the basic idea of what the research is about and what your participation will involve. If you would like more details about something mentioned here, or information not included here, you should feel free to ask the investigator(s). Please take the time to read this carefully and to understand the information.
+Purpose of the study:
+The purpose of this study will be to understand how visual designers explore, use and manipulate color to enhance affect in information visualization.
+Participant Recruitment and Selection: 
+You must be over 19 years of age and have no major physical or cognitive disabilities. You should have at least 1 year of experience in design. 
+Study Method:
+You will be provided with one of the 3 kinds of chart -bar, circle and map chart. Each chart will further have three categories representing categorical, sequential and diverging values and you will be have to color each chart to represent positive-negative, trust-questionable, serious-playful, and calm-disturbing. There will be a total of 24 tasks. Once the task is completed you will need to submit the design via email for further analysis. After the design tasks are over we will conduct a semi structured interview to understand your design preferences. We will be recording audio of the interview process for further analysis.  
+Data Collection
+For Analysis, the design generated will be saved by us for further analysis. Data collection such as notes and audio of the interview will be kept anonymous.  If you choose to participate in the study using an online communication tool such as Skype, we cannot fully guarantee your anonymity because data is transmitted over the Internet. You have the option to participate (or not) over such mediums. The data will be kept in secure SFU server and will be deleted after analysis and interpretation from the data is done.
+Acceptance of this Form: By completing this form you: 1) <b>understand to your satisfaction the information provided to you about your participation in this research project,</b> and 2) <b>agree to participate as a research subject.</b> 
+In no way does this waive your legal rights nor release the investigators, sponsors, or involved institutions from their legal and professional responsibilities. You are free to withdraw from this research project at any time. You should feel free to ask for clarification or new information throughout your participation. To accept this form, please print your name below, sign, and date the form. 
+
+Questions/Concerns: 
+If you have any concerns about the way you’ve been treated as a participant or concerns with the research project, please contact Dr. Hal Weinberg, Director, Office of Research at: hal_weinberg@sfu.ca or 778-782-6593.</p>
+
+
+  <input id="checkbox1" type="checkbox" > I Agree<br>
+  <input id="checkbox2" type="checkbox" > I Don't Agree<br>
+  <br><br>
+  <input id="submit" type="submit" value="Submit Now!">
+ 
+    </body>
+</html>

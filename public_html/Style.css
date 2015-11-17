@@ -1,0 +1,282 @@
+
+.axis {
+  font: 10px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 1px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+  cursor: crosshair;
+}
+
+
+.body {
+ padding: 20px;   
+}
+#colors1{
+         text-transform: uppercase;
+    }   
+    
+h2 {
+    font-weight: 300;
+}
+
+#steps-div, #steps-seq1, #steps-seq2 {
+    width: 3em;
+    height: 1.2em;
+    text-align: right;
+}
+
+.colors {
+    width: 98%;
+}
+#colors1,#colors2{
+         text-transform: lowercase;
+    }   
+#colors-right { text-align: right; }
+svg {
+    margin: 10px 0;
+}
+
+svg path {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: none;
+    shape-rendering: crispEdges;
+}
+
+
+#out {
+    margin-top: 0em;
+}
+
+div.gradient {
+    padding-top: 5%;
+   
+    background: Gainsboro;
+    text-align: center;
+}
+
+pre {
+    border: 0;
+    background: #f3f3f3;
+    color: #777;
+    padding: 10px;
+    backgrou: Gainsboro;
+}
+
+div.gradient div {
+    display: inline-block;
+    height: 20px;
+    color: rgba(0,0,0,0);
+}
+#chart1,#chart2{
+   float: left; 
+   
+  
+}
+#chart1{
+    width: 50%;
+    
+}
+#chart2{
+    width: 48%;
+    
+}
+#first,#second{
+   float: left; 
+
+}
+#leftcolumn, #rightcolumn {
+   
+    float: left;
+    
+    color: white;
+   
+   
+}
+#leftcolumn {
+     width: 40%;
+     height: 7em;
+     background: Gainsboro;
+     margin-left: 3%;
+}
+
+#rightcolumn {
+     width: 40%;
+     height: 7em;
+     background: Gainsboro;
+     margin-left: 8%;
+}
+#container {
+    padding-left: 1%;
+        
+}
+#container2 {
+    width: 100%;
+    height: 80%;
+   position: absolute;
+        
+}
+#save,#next,#list,#inst,#rate{
+    float: left;
+    position: absolute;
+    margin-top: 0.2%;
+}
+
+#rate{
+        width: 10%;
+        height: 80%;
+        margin-left:30%
+
+
+
+
+}
+#inst{
+    margin-left: 0em;
+  
+   width:190px;
+    
+}
+#save {
+        
+   margin-left:30%;
+   /* margin-top: 205px; */
+   width:190px;
+   
+        
+}
+#next {
+        
+   margin-left: 45%; 
+    
+    width:190px;
+        
+}
+
+#list {
+        
+   margin-left: 16em;
+  
+    
+   width:100px;
+        
+}
+
+.list{
+    height: 1em;
+}
+#table {
+        
+  display:none; 
+  height: 500px;
+  width: 560px;
+        
+}
+#table1 {
+   
+  display: none; 
+   
+        
+}
+#container3{
+    height: 10px;
+}
+#task1,#task2{
+    float: left;
+    position: absolute;
+    padding-bottom: 4px;
+}
+
+#task1{
+    margin-left: 25%;
+   
+}
+
+#task2{
+    margin-left: 75%;
+    
+}
+#container4 {
+  width: 100%;
+  height: 3%;
+}
+
+#rightbox{
+    float: left;
+    width: 6.33%;
+    padding-left: 26%;
+    margin-left: 2%;
+    
+}
+#leftbox{
+    float: left;
+    width: 6.33%;
+    /* height: 4%; */
+    padding-left:3%;
+}
+#leftmidbox{
+    float: left;
+    width: 6.33%; 
+    
+    margin-left: 12%;
+    
+   
+}
+#rightmidbox{
+    float: left;
+    width: 6.33%;
+    padding-left: 20%;
+    margin-left: 2%;
+   
+}
+
+
+#left, #out1 {
+    float: left;
+    
+    
+}
+#out1 {
+    
+}
+
+#left2, #out2 {
+    float: left;
+ 
+    
+}
+#out2 {
+   
+}
+
+.highlight{
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+}
+
+#svg1,#svg2 {
+   background-color: WhiteSmoke;
+}

@@ -1,0 +1,510 @@
+
+    <div> <label style="color: black;">Enter named colors</label></div>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.1.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/chroma-js/0.6.3/chroma.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css"> 
+<script src="http://eligrey.com/demos/FileSaver.js/Blob.js"></script>
+<script src="http://eligrey.com/demos/FileSaver.js/FileSaver.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var list;
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 770 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+var min=622;
+var d = 577.9019608;
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10, "%");
+
+var svg1 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
+var svg2 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
+function type(d) {
+  d.frequency = +d.frequency;
+  return d;
+}
+
+
+
+
+$(function() {
+
+    var width = 710;
+    var sequential=true;
+    var firstChart = true;
+
+    function update1() {
+        var id1="colors1";
+        var id2="steps-seq1";
+        var id3='out1';
+        firstChart= true;
+        return  update_seq(id1,id2,id3);
+    }
+     function update2() {
+        var id1="colors2";
+        var id2="steps-seq2";
+        var id3='out2';
+        firstChart=false;
+         return  update_seq(id1,id2,id3);
+    }
+
+
+    function update_seq(id1,id2,id3) {
+        var bez = $('#bez').prop('checked'),
+            coL = $('#coL').prop('checked'),
+            colors = clean($('#'+id1).val()),
+            steps = +$('#'+id2).val();
+        
+        // initialize chroma.scale
+        if (bez) colors = chroma.interpolate.bezier(colors);
+        var cs = chroma.scale(colors).mode('lab').correctLightness(coL);
+        
+        // clear display
+        $('#'+id3).html('');
+        
+        // visualize scale
+        showScale(cs, steps, id3);
+        serializeUrl(id1,id2);
+    }
+        
+
+
+    function clean(s) {
+        return s.trim().replace(/(, *| +)/g, ',').replace(/['"]/g, '').split(',');
+    }
+
+    function showScale(cs, steps, id3) {
+        var c = $('<div />')
+            .css('width', width)
+            .addClass('gradient')
+            .appendTo('#'+id3);
+
+       var cols = [];
+        _.range(steps).forEach(function(i) {
+            var t = i/(steps-1);
+            $('<div />').appendTo(c)
+                .css({
+                    width: (100/steps)+'%',
+                    background: cs(t).hex()
+                });
+            cols.push(cs(t).hex());
+        });
+        
+        //showLightnessCurve(cs, steps);
+        
+        $('<div id="exports" />').appendTo('#'+id3);
+
+         this.list = '"' + cols.join('","') + '"',
+            colors = cols.join(' '),
+            hexlist = cols.map(function (c) { return c.replace('#','0x'); }).join(',');
+       
+        var link = location.href;
+        
+        var range = _.range(steps).map(function(s) {
+            return 'min+'+(s+1)+'*d';
+        });
+     //export_palette(list);
+      if(firstChart)
+      {drawChart1(cols);    //export_palette(d3_syntax_full);
+      }else{
+        drawChart2(cols);  
+      }
+    }
+
+ 
+
+    function serializeUrl(id1,id2) {
+        if (sequential) {
+            location.hash = '#' + 
+                'colors='+cln($('#'+id1).val()) + '|' +
+                'steps='+$('#'+id2).val() + '|' +
+                'bez='+($('#bez').prop('checked') ? 1 : 0) + '|' +
+                'coL='+($('#coL').prop('checked') ? 1 : 0);    
+        } else {
+            location.hash = '#diverging|' + 
+                'c0='+cln($('#colors-left').val()) + '|' +
+                'c1='+cln($('#colors-right').val()) + '|' +
+                'steps='+$('#steps-div').val() + '|' +
+                'bez0='+($('#bez-left').prop('checked') ? 1 : 0) + '|' +
+                'bez1='+($('#bez-right').prop('checked') ? 1 : 0) + '|' +
+                'coL0='+($('#coL-left').prop('checked') ? 1 : 0) + '|' +
+                'coL1='+($('#coL-right').prop('checked') ? 1 : 0); 
+        }
+        function cln(s) {
+            return s.replace(/(, *| +)/g, ',').replace(/'/g, '');
+        }
+    }
+        
+    function unserializeUrl() {
+        var vars = location.hash.substr(1).split('|');
+        sequential = true;
+        _.each(vars, function(v) {
+            var v = v.split('='),
+                key = v[0], val = v[1];
+            if (key == 'steps') $('#steps,#steps-div').val(val);
+            else if (key == 'colors') $('#'+id).val(val);
+            else if (key == 'c0') $('#colors-left').val(val);
+            else if (key == 'c1') $('#colors-right').val(val);
+            else if (key == 'bez') $('#bez').prop('checked', val == '1');
+            else if (key == 'bez0') $('#bez-left').prop('checked', val == '1');
+            else if (key == 'bez1') $('#bez-right').prop('checked', val == '1');
+            else if (key == 'coL') $('#coL').prop('checked', val == '1');     
+            else if (key == 'coL0') $('#coL-left').prop('checked', val == '1');     
+            else if (key == 'coL1') $('#coL-right').prop('checked', val == '1');     
+            else if (key == 'diverging') sequential = false;
+        });
+    }
+
+    function toggleMode() {
+        sequential = !sequential;
+        updateMode();
+        update();
+        serializeUrl();
+    }
+
+    function updateMode() {
+        if (sequential) {
+            $('#sequential').removeClass('hidden');
+            $('#diverging').addClass('hidden');
+        } else {
+            $('#sequential').addClass('hidden');
+            $('#diverging').removeClass('hidden');
+        }
+    }
+
+    // load presets from hash
+   // if (location.hash) unserializeUrl()
+
+    //updateMode();
+
+    $('#colors1').change(update1);
+    $('#steps-seq1').change(update1);
+    $('#colors2').change(update2);
+    $('#steps-seq2').change(update2);
+  
+    update1();
+    update2();
+
+    $('#mode-toggle').click(toggleMode);
+
+    $("#save").click(writeDownloadLink);
+
+
+function writeDownloadLink(){
+    console.log("hi");
+    try {
+        var isFileSaverSupported = !!new Blob();
+    } catch (e) {
+        alert("blob not supported");
+    }
+
+    var html = d3.select("svg")
+        .attr("title", "test2")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+
+    var blob = new Blob([html], {type: "image/svg+xml"});
+    saveAs(blob, "myProfile.svg");
+};
+});
+var dataset=[];
+
+
+d3.csv("BarCategory1.csv", type, function(error, data) {
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+dataset=data;
+
+DefaultColors=["#ffff00","#ffa500","#800080","#0000ff","#008000"] ;
+drawChart1(DefaultColors);
+drawChart2(DefaultColors);
+});
+
+
+
+function drawChart1(myColor){
+    var color= d3.scale.ordinal()
+        .domain([1,2,3,4,5])
+        .range(myColor);
+//console.log(color.range());
+    var bar= svg1.selectAll("rect")
+      .data(dataset);
+  
+    var rateById = {};
+    bar.enter().append("rect");
+   
+   
+    bar.attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .style("fill", function(d) { return color(d.letter); })
+      .attr("height", function(d) { return height - y(d.frequency); });
+      
+
+
+}
+function drawChart2(myColor){
+    var color= d3.scale.ordinal()
+        .domain([1,2,3,4,5])
+        .range(myColor);
+//console.log(color.range());
+  
+  var bar1= svg2.selectAll("rect")
+      .data(dataset);
+  
+    
+    bar1.enter().append("rect");
+   
+   
+    bar1.attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .style("fill", function(d) { return color(d.letter); })
+      .attr("height", function(d) { return height - y(d.frequency); });
+  
+
+}
+
+
+
+</script><svg width="770" height="500" title="test2" version="1.1" xmlns="http://www.w3.org/2000/svg"><g transform="translate(40,20)"><rect x="8" width="45" y="0" height="450" style="fill: rgb(255, 255, 0);"></rect><rect x="58" width="45" y="43.05154639175255" height="406.94845360824746" style="fill: rgb(255, 165, 0);"></rect><rect x="108" width="45" y="181.48453608247425" height="268.5154639175257" style="fill: rgb(128, 0, 128);"></rect><rect x="158" width="45" y="239.0103092783505" height="210.9896907216495" style="fill: rgb(0, 0, 255);"></rect><rect x="208" width="45" y="241.4226804123711" height="208.5773195876289" style="fill: rgb(0, 128, 0);"></rect><rect x="258" width="45" y="251.62886597938143" height="198.37113402061857" style="fill: rgb(255, 255, 0);"></rect><rect x="308" width="45" y="332.16494845360825" height="117.83505154639175" style="fill: rgb(255, 165, 0);"></rect><rect x="358" width="45" y="400.45360824742266" height="49.546391752577335" style="fill: rgb(128, 0, 128);"></rect><rect x="408" width="45" y="358.14432989690727" height="91.85567010309273" style="fill: rgb(0, 0, 255);"></rect><rect x="458" width="45" y="422.53608247422676" height="27.46391752577324" style="fill: rgb(0, 128, 0);"></rect><rect x="508" width="45" y="430.5154639175258" height="19.48453608247422" style="fill: rgb(255, 255, 0);"></rect><rect x="558" width="45" y="431.4432989690722" height="18.556701030927798" style="fill: rgb(255, 165, 0);"></rect><rect x="608" width="45" y="437.75257731958766" height="12.247422680412342" style="fill: rgb(128, 0, 128);"></rect><rect x="658" width="45" y="437.75257731958766" height="12.247422680412342" style="fill: rgb(0, 0, 255);"></rect></g></svg><svg width="770" height="500"><g transform="translate(40,20)"><rect x="8" width="45" y="0" height="450" style="fill: rgb(255, 255, 0);"></rect><rect x="58" width="45" y="43.05154639175255" height="406.94845360824746" style="fill: rgb(255, 165, 0);"></rect><rect x="108" width="45" y="181.48453608247425" height="268.5154639175257" style="fill: rgb(128, 0, 128);"></rect><rect x="158" width="45" y="239.0103092783505" height="210.9896907216495" style="fill: rgb(0, 0, 255);"></rect><rect x="208" width="45" y="241.4226804123711" height="208.5773195876289" style="fill: rgb(0, 128, 0);"></rect><rect x="258" width="45" y="251.62886597938143" height="198.37113402061857" style="fill: rgb(255, 255, 0);"></rect><rect x="308" width="45" y="332.16494845360825" height="117.83505154639175" style="fill: rgb(255, 165, 0);"></rect><rect x="358" width="45" y="400.45360824742266" height="49.546391752577335" style="fill: rgb(128, 0, 128);"></rect><rect x="408" width="45" y="358.14432989690727" height="91.85567010309273" style="fill: rgb(0, 0, 255);"></rect><rect x="458" width="45" y="422.53608247422676" height="27.46391752577324" style="fill: rgb(0, 128, 0);"></rect><rect x="508" width="45" y="430.5154639175258" height="19.48453608247422" style="fill: rgb(255, 255, 0);"></rect><rect x="558" width="45" y="431.4432989690722" height="18.556701030927798" style="fill: rgb(255, 165, 0);"></rect><rect x="608" width="45" y="437.75257731958766" height="12.247422680412342" style="fill: rgb(128, 0, 128);"></rect><rect x="658" width="45" y="437.75257731958766" height="12.247422680412342" style="fill: rgb(0, 0, 255);"></rect></g></svg>
+
+<div id="container">
+   
+        
+        <div id="leftcolumn">
+               
+                    <div>
+                            <label style="color: black;">Enter named colors: Refer table below for a list of Colors or hex codes:</label>
+                             <div>
+                                 <input id="colors1" class="colors" checked="checked" type="text" value="yellow,orange,purple,blue,green">
+                           
+                                     <label style="color: black;">Step count</label>
+                                    <input id="steps-seq1" checked="checked" type="number" value="5">
+                            </div>
+                            <div id="out1"><div class="gradient" style="width: 710px;"><div style="width: 20%; background: rgb(255, 255, 0);"></div><div style="width: 20%; background: rgb(255, 165, 0);"></div><div style="width: 20%; background: rgb(128, 0, 128);"></div><div style="width: 20%; background: rgb(0, 0, 255);"></div><div style="width: 20%; background: rgb(0, 128, 0);"></div></div><div id="exports"></div></div> 
+
+                           
+                    </div>
+        </div>
+        <div id="rightcolumn">
+                
+                    <div>
+                            <div>
+                            <label style="color: black;">Enter named colors: Refer table below for a list of Colors or hex codes:</label>
+                             <div>
+                                 <input id="colors2" class="colors" checked="checked" type="text" value="yellow,orange,purple,blue,green">
+                           
+                                     <label style="color: black;">Step count</label>
+                                    <input id="steps-seq2" checked="checked" type="number" value="5">
+                            </div>
+                            <div id="out2"><div class="gradient" style="width: 710px;"><div style="width: 20%; background: rgb(255, 255, 0);"></div><div style="width: 20%; background: rgb(255, 165, 0);"></div><div style="width: 20%; background: rgb(128, 0, 128);"></div><div style="width: 20%; background: rgb(0, 0, 255);"></div><div style="width: 20%; background: rgb(0, 128, 0);"></div></div><div id="exports"></div></div> 
+
+                           
+                    </div>
+                    </div>
+                  
+                
+                
+        </div>
+            
+       
+                
+</div>
+<div>
+    
+    <button id="save">Save Images</button> 
+    
+</div>
+<div style="font-family: Arial, Helvetica, MS Sans Serif" id="table">
+The following table displays all the colors in the so-called <i>X11 color set</i>. You can use either the 
+<b>Color Name</b> or the <b>RGB Value</b> in the &lt;FONT&gt; tag's COLOR attribute, or in the a style sheet's 
+<tt>color</tt> property. To view the colors in this table, you need Internet Explorer 3.0 or higher, or 
+Netscape Navigator 3.0 or higher.
+<p>
+</p><table border="4" cellpadding="5">
+<tbody><tr>
+<td valign="TOP">
+
+<table>
+<tbody><tr><td bgcolor="black"><font color="yellow"><b>Color&nbsp;</b></font></td><td bgcolor="black"><font color="yellow"><b>Color Name</b></font></td><td bgcolor="black"><font color="yellow"><b>RGB Value&nbsp;</b></font></td>
+</tr><tr><td bgcolor="lightpink"><br></td><td>LightPink</td><td bgcolor="Gainsboro">#FFB6C1</td>
+</tr><tr><td bgcolor="pink"><br></td><td>Pink</td><td bgcolor="Gainsboro">#FFC0CB</td>
+</tr><tr><td bgcolor="crimson"><br></td><td>Crimson</td><td bgcolor="Gainsboro">#DC143C</td>
+</tr><tr><td bgcolor="lavenderblush"><br></td><td>LavenderBlush</td><td bgcolor="Gainsboro">#FFF0F5</td>
+</tr><tr><td bgcolor="palevioletred"><br></td><td>PaleVioletRed</td><td bgcolor="Gainsboro">#DB7093</td>
+</tr><tr><td bgcolor="hotpink"><br></td><td>HotPink</td><td bgcolor="Gainsboro">#FF69B4</td>
+</tr><tr><td bgcolor="deeppink"><br></td><td>DeepPink</td><td bgcolor="Gainsboro">#FF1493</td>
+</tr><tr><td bgcolor="mediumvioletred"><br></td><td>MediumVioletRed</td><td bgcolor="Gainsboro">#C71585</td>
+</tr><tr><td bgcolor="orchid"><br></td><td>Orchid</td><td bgcolor="Gainsboro">#DA70D6</td>
+</tr><tr><td bgcolor="thistle"><br></td><td>Thistle</td><td bgcolor="Gainsboro">#D8BFD8</td>
+</tr><tr><td bgcolor="plum"><br></td><td>Plum</td><td bgcolor="Gainsboro">#DDA0DD</td>
+</tr><tr><td bgcolor="violet"><br></td><td>Violet</td><td bgcolor="Gainsboro">#EE82EE</td>
+</tr><tr><td bgcolor="magenta"><br></td><td>Magenta</td><td bgcolor="Gainsboro">#FF00FF</td>
+</tr><tr><td bgcolor="fuchsia"><br></td><td>Fuchsia</td><td bgcolor="Gainsboro">#FF00FF</td>
+</tr><tr><td bgcolor="darkmagenta"><br></td><td>DarkMagenta</td><td bgcolor="Gainsboro">#8B008B</td>
+</tr><tr><td bgcolor="purple"><br></td><td>Purple</td><td bgcolor="Gainsboro">#800080</td>
+</tr><tr><td bgcolor="mediumorchid"><br></td><td>MediumOrchid</td><td bgcolor="Gainsboro">#BA55D3</td>
+</tr><tr><td bgcolor="darkviolet"><br></td><td>DarkViolet</td><td bgcolor="Gainsboro">#9400D3</td>
+</tr><tr><td bgcolor="darkorchid"><br></td><td>DarkOrchid</td><td bgcolor="Gainsboro">#9932CC</td>
+</tr><tr><td bgcolor="indigo"><br></td><td>Indigo</td><td bgcolor="Gainsboro">#4B0082</td>
+</tr><tr><td bgcolor="blueviolet"><br></td><td>BlueViolet</td><td bgcolor="Gainsboro">#8A2BE2</td>
+</tr><tr><td bgcolor="mediumpurple"><br></td><td>MediumPurple</td><td bgcolor="Gainsboro">#9370DB</td>
+</tr><tr><td bgcolor="mediumslateblue"><br></td><td>MediumSlateBlue</td><td bgcolor="Gainsboro">#7B68EE</td>
+</tr><tr><td bgcolor="slateblue"><br></td><td>SlateBlue</td><td bgcolor="Gainsboro">#6A5ACD</td>
+</tr><tr><td bgcolor="darkslateblue"><br></td><td>DarkSlateBlue</td><td bgcolor="Gainsboro">#483D8B</td>
+</tr><tr><td bgcolor="lavender"><br></td><td>Lavender</td><td bgcolor="Gainsboro">#E6E6FA</td>
+</tr><tr><td bgcolor="ghostwhite"><br></td><td>GhostWhite</td><td bgcolor="Gainsboro">#F8F8FF</td>
+</tr><tr><td bgcolor="blue"><br></td><td>Blue</td><td bgcolor="Gainsboro">#0000FF</td>
+</tr><tr><td bgcolor="mediumblue"><br></td><td>MediumBlue</td><td bgcolor="Gainsboro">#0000CD</td>
+</tr><tr><td bgcolor="midnightblue"><br></td><td>MidnightBlue</td><td bgcolor="Gainsboro">#191970</td>
+</tr><tr><td bgcolor="darkblue"><br></td><td>DarkBlue</td><td bgcolor="Gainsboro">#00008B</td>
+</tr><tr><td bgcolor="navy"><br></td><td>Navy</td><td bgcolor="Gainsboro">#000080</td>
+</tr><tr><td bgcolor="royalblue"><br></td><td>RoyalBlue</td><td bgcolor="Gainsboro">#4169E1</td>
+</tr><tr><td bgcolor="cornflowerblue"><br></td><td>CornflowerBlue</td><td bgcolor="Gainsboro">#6495ED</td>
+</tr><tr><td bgcolor="lightsteelblue"><br></td><td>LightSteelBlue</td><td bgcolor="Gainsboro">#B0C4DE</td>
+</tr><tr><td bgcolor="lightslategray"><br></td><td>LightSlateGray</td><td bgcolor="Gainsboro">#778899</td>
+</tr><tr><td bgcolor="slategray"><br></td><td>SlateGray</td><td bgcolor="Gainsboro">#708090</td>
+</tr><tr><td bgcolor="dodgerblue"><br></td><td>DodgerBlue</td><td bgcolor="Gainsboro">#1E90FF</td>
+</tr><tr><td bgcolor="aliceblue"><br></td><td>AliceBlue</td><td bgcolor="Gainsboro">#F0F8FF</td>
+</tr><tr><td bgcolor="steelblue"><br></td><td>SteelBlue</td><td bgcolor="Gainsboro">#4682B4</td>
+</tr><tr><td bgcolor="lightskyblue"><br></td><td>LightSkyBlue</td><td bgcolor="Gainsboro">#87CEFA</td>
+</tr><tr><td bgcolor="skyblue"><br></td><td>SkyBlue</td><td bgcolor="Gainsboro">#87CEEB</td>
+</tr><tr><td bgcolor="deepskyblue"><br></td><td>DeepSkyBlue</td><td bgcolor="Gainsboro">#00BFFF</td>
+</tr><tr><td bgcolor="lightblue"><br></td><td>LightBlue</td><td bgcolor="Gainsboro">#ADD8E6</td>
+</tr><tr><td bgcolor="powderblue"><br></td><td>PowderBlue</td><td bgcolor="Gainsboro">#B0E0E6</td>
+</tr><tr><td bgcolor="cadetblue"><br></td><td>CadetBlue</td><td bgcolor="Gainsboro">#5F9EA0</td>
+</tr><tr><td bgcolor="azure"><br></td><td>Azure</td><td bgcolor="Gainsboro">#F0FFFF</td>
+</tr><tr><td bgcolor="lightcyan"><br></td><td>LightCyan</td><td bgcolor="Gainsboro">#E0FFFF</td>
+</tr><tr><td bgcolor="paleturquoise"><br></td><td>PaleTurquoise</td><td bgcolor="Gainsboro">#AFEEEE</td>
+</tr><tr><td bgcolor="cyan"><br></td><td>Cyan</td><td bgcolor="Gainsboro">#00FFFF</td>
+</tr><tr><td bgcolor="aqua"><br></td><td>Aqua</td><td bgcolor="Gainsboro">#00FFFF</td>
+</tr><tr><td bgcolor="darkturquoise"><br></td><td>DarkTurquoise</td><td bgcolor="Gainsboro">#00CED1</td>
+</tr><tr><td bgcolor="darkslategray"><br></td><td>DarkSlateGray</td><td bgcolor="Gainsboro">#2F4F4F</td>
+</tr><tr><td bgcolor="darkcyan"><br></td><td>DarkCyan</td><td bgcolor="Gainsboro">#008B8B</td>
+</tr><tr><td bgcolor="teal"><br></td><td>Teal</td><td bgcolor="Gainsboro">#008080</td>
+</tr><tr><td bgcolor="mediumturquoise"><br></td><td>MediumTurquoise</td><td bgcolor="Gainsboro">#48D1CC</td>
+</tr><tr><td bgcolor="lightseagreen"><br></td><td>LightSeaGreen</td><td bgcolor="Gainsboro">#20B2AA</td>
+</tr><tr><td bgcolor="turquoise"><br></td><td>Turquoise</td><td bgcolor="Gainsboro">#40E0D0</td>
+</tr><tr><td bgcolor="aquamarine"><br></td><td>Aquamarine</td><td bgcolor="Gainsboro">#7FFFD4</td>
+</tr><tr><td bgcolor="mediumaquamarine"><br></td><td>MediumAquamarine</td><td bgcolor="Gainsboro">#66CDAA</td>
+</tr><tr><td bgcolor="mediumspringgreen"><br></td><td>MediumSpringGreen</td><td bgcolor="Gainsboro">#00FA9A</td>
+</tr><tr><td bgcolor="mintcream"><br></td><td>MintCream</td><td bgcolor="Gainsboro">#F5FFFA</td>
+</tr><tr><td bgcolor="springgreen"><br></td><td>SpringGreen</td><td bgcolor="Gainsboro">#00FF7F</td>
+</tr><tr><td bgcolor="mediumseagreen"><br></td><td>MediumSeaGreen</td><td bgcolor="Gainsboro">#3CB371</td>
+</tr><tr><td bgcolor="seagreen"><br></td><td>SeaGreen</td><td bgcolor="Gainsboro">#2E8B57</td>
+</tr><tr><td bgcolor="honeydew"><br></td><td>Honeydew</td><td bgcolor="Gainsboro">#F0FFF0</td>
+</tr><tr><td bgcolor="lightgreen"><br></td><td>LightGreen</td><td bgcolor="Gainsboro">#90EE90</td>
+</tr><tr><td bgcolor="palegreen"><br></td><td>PaleGreen</td><td bgcolor="Gainsboro">#98FB98</td>
+</tr><tr><td bgcolor="darkseagreen"><br></td><td>DarkSeaGreen</td><td bgcolor="Gainsboro">#8FBC8F</td>
+</tr><tr><td bgcolor="limegreen"><br></td><td>LimeGreen</td><td bgcolor="Gainsboro">#32CD32</td>
+</tr></tbody></table>
+
+</td><td valign="TOP">
+<table>
+<tbody><tr><td bgcolor="black"><font color="yellow"><b>Color&nbsp;</b></font></td><td bgcolor="black"><font color="yellow"><b>Color Name</b></font></td><td bgcolor="black"><font color="yellow"><b>RGB Value&nbsp;</b></font></td>
+</tr><tr><td bgcolor="lime"><br></td><td>Lime</td><td bgcolor="Gainsboro">#00FF00</td>
+</tr><tr><td bgcolor="forestgreen"><br></td><td>ForestGreen</td><td bgcolor="Gainsboro">#228B22</td>
+</tr><tr><td bgcolor="green"><br></td><td>Green</td><td bgcolor="Gainsboro">#008000</td>
+</tr><tr><td bgcolor="darkgreen"><br></td><td>DarkGreen</td><td bgcolor="Gainsboro">#006400</td>
+</tr><tr><td bgcolor="chartreuse"><br></td><td>Chartreuse</td><td bgcolor="Gainsboro">#7FFF00</td>
+</tr><tr><td bgcolor="lawngreen"><br></td><td>LawnGreen</td><td bgcolor="Gainsboro">#7CFC00</td>
+</tr><tr><td bgcolor="greenyellow"><br></td><td>GreenYellow</td><td bgcolor="Gainsboro">#ADFF2F</td>
+</tr><tr><td bgcolor="darkolivegreen"><br></td><td>DarkOliveGreen</td><td bgcolor="Gainsboro">#556B2F</td>
+</tr><tr><td bgcolor="yellowgreen"><br></td><td>YellowGreen</td><td bgcolor="Gainsboro">#9ACD32</td>
+</tr><tr><td bgcolor="olivedrab"><br></td><td>OliveDrab</td><td bgcolor="Gainsboro">#6B8E23</td>
+</tr><tr><td bgcolor="beige"><br></td><td>Beige</td><td bgcolor="Gainsboro">#F5F5DC</td>
+</tr><tr><td bgcolor="lightgoldenrodyellow"><br></td><td>LightGoldenrodYellow</td><td bgcolor="Gainsboro">#FAFAD2</td>
+</tr><tr><td bgcolor="ivory"><br></td><td>Ivory</td><td bgcolor="Gainsboro">#FFFFF0</td>
+</tr><tr><td bgcolor="lightyellow"><br></td><td>LightYellow</td><td bgcolor="Gainsboro">#FFFFE0</td>
+</tr><tr><td bgcolor="yellow"><br></td><td>Yellow</td><td bgcolor="Gainsboro">#FFFF00</td>
+</tr><tr><td bgcolor="olive"><br></td><td>Olive</td><td bgcolor="Gainsboro">#808000</td>
+</tr><tr><td bgcolor="darkkhaki"><br></td><td>DarkKhaki</td><td bgcolor="Gainsboro">#BDB76B</td>
+</tr><tr><td bgcolor="lemonchiffon"><br></td><td>LemonChiffon</td><td bgcolor="Gainsboro">#FFFACD</td>
+</tr><tr><td bgcolor="palegoldenrod"><br></td><td>PaleGoldenrod</td><td bgcolor="Gainsboro">#EEE8AA</td>
+</tr><tr><td bgcolor="khaki"><br></td><td>Khaki</td><td bgcolor="Gainsboro">#F0E68C</td>
+</tr><tr><td bgcolor="gold"><br></td><td>Gold</td><td bgcolor="Gainsboro">#FFD700</td>
+</tr><tr><td bgcolor="cornsilk"><br></td><td>Cornsilk</td><td bgcolor="Gainsboro">#FFF8DC</td>
+</tr><tr><td bgcolor="goldenrod"><br></td><td>Goldenrod</td><td bgcolor="Gainsboro">#DAA520</td>
+</tr><tr><td bgcolor="darkgoldenrod"><br></td><td>DarkGoldenrod</td><td bgcolor="Gainsboro">#B8860B</td>
+</tr><tr><td bgcolor="floralwhite"><br></td><td>FloralWhite</td><td bgcolor="Gainsboro">#FFFAF0</td>
+</tr><tr><td bgcolor="oldlace"><br></td><td>OldLace</td><td bgcolor="Gainsboro">#FDF5E6</td>
+</tr><tr><td bgcolor="wheat"><br></td><td>Wheat</td><td bgcolor="Gainsboro">#F5DEB3</td>
+</tr><tr><td bgcolor="moccasin"><br></td><td>Moccasin</td><td bgcolor="Gainsboro">#FFE4B5</td>
+</tr><tr><td bgcolor="orange"><br></td><td>Orange</td><td bgcolor="Gainsboro">#FFA500</td>
+</tr><tr><td bgcolor="papayawhip"><br></td><td>PapayaWhip</td><td bgcolor="Gainsboro">#FFEFD5</td>
+</tr><tr><td bgcolor="blanchedalmond"><br></td><td>BlanchedAlmond</td><td bgcolor="Gainsboro">#FFEBCD</td>
+</tr><tr><td bgcolor="navajowhite"><br></td><td>NavajoWhite</td><td bgcolor="Gainsboro">#FFDEAD</td>
+</tr><tr><td bgcolor="antiquewhite"><br></td><td>AntiqueWhite</td><td bgcolor="Gainsboro">#FAEBD7</td>
+</tr><tr><td bgcolor="tan"><br></td><td>Tan</td><td bgcolor="Gainsboro">#D2B48C</td>
+</tr><tr><td bgcolor="burlywood"><br></td><td>BurlyWood</td><td bgcolor="Gainsboro">#DEB887</td>
+</tr><tr><td bgcolor="bisque"><br></td><td>Bisque</td><td bgcolor="Gainsboro">#FFE4C4</td>
+</tr><tr><td bgcolor="darkorange"><br></td><td>DarkOrange</td><td bgcolor="Gainsboro">#FF8C00</td>
+</tr><tr><td bgcolor="linen"><br></td><td>Linen</td><td bgcolor="Gainsboro">#FAF0E6</td>
+</tr><tr><td bgcolor="peru"><br></td><td>Peru</td><td bgcolor="Gainsboro">#CD853F</td>
+</tr><tr><td bgcolor="peachpuff"><br></td><td>PeachPuff</td><td bgcolor="Gainsboro">#FFDAB9</td>
+</tr><tr><td bgcolor="sandybrown"><br></td><td>SandyBrown</td><td bgcolor="Gainsboro">#F4A460</td>
+</tr><tr><td bgcolor="chocolate"><br></td><td>Chocolate</td><td bgcolor="Gainsboro">#D2691E</td>
+</tr><tr><td bgcolor="saddlebrown"><br></td><td>SaddleBrown</td><td bgcolor="Gainsboro">#8B4513</td>
+</tr><tr><td bgcolor="seashell"><br></td><td>Seashell</td><td bgcolor="Gainsboro">#FFF5EE</td>
+</tr><tr><td bgcolor="sienna"><br></td><td>Sienna</td><td bgcolor="Gainsboro">#A0522D</td>
+</tr><tr><td bgcolor="lightsalmon"><br></td><td>LightSalmon</td><td bgcolor="Gainsboro">#FFA07A</td>
+</tr><tr><td bgcolor="coral"><br></td><td>Coral</td><td bgcolor="Gainsboro">#FF7F50</td>
+</tr><tr><td bgcolor="orangered"><br></td><td>OrangeRed</td><td bgcolor="Gainsboro">#FF4500</td>
+</tr><tr><td bgcolor="darksalmon"><br></td><td>DarkSalmon</td><td bgcolor="Gainsboro">#E9967A</td>
+</tr><tr><td bgcolor="tomato"><br></td><td>Tomato</td><td bgcolor="Gainsboro">#FF6347</td>
+</tr><tr><td bgcolor="mistyrose"><br></td><td>MistyRose</td><td bgcolor="Gainsboro">#FFE4E1</td>
+</tr><tr><td bgcolor="salmon"><br></td><td>Salmon</td><td bgcolor="Gainsboro">#FA8072</td>
+</tr><tr><td bgcolor="snow"><br></td><td>Snow</td><td bgcolor="Gainsboro">#FFFAFA</td>
+</tr><tr><td bgcolor="lightcoral"><br></td><td>LightCoral</td><td bgcolor="Gainsboro">#F08080</td>
+</tr><tr><td bgcolor="rosybrown"><br></td><td>RosyBrown</td><td bgcolor="Gainsboro">#BC8F8F</td>
+</tr><tr><td bgcolor="indianred"><br></td><td>IndianRed</td><td bgcolor="Gainsboro">#CD5C5C</td>
+</tr><tr><td bgcolor="red"><br></td><td>Red</td><td bgcolor="Gainsboro">#FF0000</td>
+</tr><tr><td bgcolor="brown"><br></td><td>Brown</td><td bgcolor="Gainsboro">#A52A2A</td>
+</tr><tr><td bgcolor="firebrick"><br></td><td>FireBrick</td><td bgcolor="Gainsboro">#B22222</td>
+</tr><tr><td bgcolor="darkred"><br></td><td>DarkRed</td><td bgcolor="Gainsboro">#8B0000</td>
+</tr><tr><td bgcolor="maroon"><br></td><td>Maroon</td><td bgcolor="Gainsboro">#800000</td>
+</tr><tr><td bgcolor="white"><br></td><td>White</td><td bgcolor="Gainsboro">#FFFFFF</td>
+</tr><tr><td bgcolor="whitesmoke"><br></td><td>WhiteSmoke</td><td bgcolor="Gainsboro">#F5F5F5</td>
+</tr><tr><td bgcolor="gainsboro"><br></td><td>Gainsboro</td><td bgcolor="Gainsboro">#DCDCDC</td>
+</tr><tr><td bgcolor="lightgrey"><br></td><td>LightGrey</td><td bgcolor="Gainsboro">#D3D3D3</td>
+</tr><tr><td bgcolor="Silver"><br></td><td>Silver</td><td bgcolor="Gainsboro">#C0C0C0</td>
+</tr><tr><td bgcolor="darkgray"><br></td><td>DarkGray</td><td bgcolor="Gainsboro">#A9A9A9</td>
+</tr><tr><td bgcolor="gray"><br></td><td>Gray</td><td bgcolor="Gainsboro">#808080</td>
+</tr><tr><td bgcolor="dimgray"><br></td><td>DimGray</td><td bgcolor="Gainsboro">#696969</td>
+</tr><tr><td bgcolor="black"><br></td><td>Black</td><td bgcolor="Gainsboro">#000000</td>
+
+</tr></tbody></table>
+</td></tr></tbody></table>
+</div>
+  
+
+
+ 
