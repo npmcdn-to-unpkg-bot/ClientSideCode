@@ -186,6 +186,7 @@ div.gradient div {
 
 .list{
     height: 1em;
+   
 }
 #table {
         
@@ -197,7 +198,7 @@ div.gradient div {
 #table1 {
    
   display: none; 
-   
+  
         
 }
 #container3{
@@ -280,3 +281,10 @@ div.gradient div {
 #svg1,#svg2 {
    background-color: WhiteSmoke;
 }
+
+.colorSample{
+    width: 3em;
+    height: 2em;
+    
+}
+

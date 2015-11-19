@@ -109,7 +109,7 @@ $(function() {
 $('#table').dialog({
         height: 300,
         width: 560,
-        title: "Instructions",
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",,
          modal: true
     });
     var width = 250;
@@ -303,9 +303,9 @@ $('#table').dialog({
      $("#"+elementid).addClass('highlight');
    
     $('#table1').dialog({
-        height: 500,
-        width: 560,
-        title: "Color Name List"
+        height: 180,
+        width: 660,
+        title: "Color List"
     });
     
       $( "#table1" ).dialog({
@@ -339,7 +339,7 @@ d3.csv("ColorName.csv", type, function(error, data) {
 });
 
 
-d3.csv("MapCategory.csv", function(data) {
+d3.csv("MapCategory1.csv", function(data) {
 
      
 d3.json("us-states.json", function(json) {
@@ -368,7 +368,7 @@ d3.json("us-states.json", function(json) {
 					}
 					
 dataset=json.features;					
-DefaultColors=["#ffff00","#ffa500","#800080","#0000ff","#008000"] ;
+DefaultColors=['#8E909C','#9B4B32','#8E909C','#9B4B32','#8E909C'] ;
 drawChart1(DefaultColors,json.features);
 drawChart2(DefaultColors,json.features);
 				});});
@@ -472,9 +472,9 @@ updateObj.push(UpdateDetails);
 }
 function showColors(){
        $('#table1').dialog({
-        height: 500,
-        width: 560,
-        title: "Color Name List"
+        height: 180,
+        width: 660,
+        title: "Color List"
     });
 }
 function showInstructions(){
@@ -575,18 +575,18 @@ rating2=0;
                                   <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
-                                                    <li id="li1" style="background: pink;" class="list">pink</li>
-                                                    <li id="li2" style="background: red;" class="list">red</li>
-                                                    <li id="li3" style="background: yellow;" class="list">yellow</li>
-                                                    <li id="li4" style="background: green;" class="list">green</li>
-                                                    <li id="li5" style="background: cyan;" class="list">cyan</li>
+                                                     <li id="li1" style="background: #8E909C;font-size:smaller;width: 5em;" class="list" >#8E909C</li>
+                                                    <li id="li2" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li3" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
+                                                    <li id="li4" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li5" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
                                            </ul>
                                  </div> 
  
                                  <div id="container5">
                                  <div id="left">
-                                     <label style="color: black;margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                     <input id="steps-seq1" checked="checked" type="number" value="5"  READONLY/>
+                                     <label style="color: black;margin-bottom: 0px;"></label>
+                                     <input style="display:none;" id="steps-seq1" checked="checked" type="number" value="5"  READONLY/>
                                  </div>
                                  <div id="out1" > </div> 
                                  </div>
@@ -605,18 +605,18 @@ rating2=0;
                          <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
-                                                    <li id="li6" style="background: pink;" class="list">pink</li>
-                                                    <li id="li7" style="background: red;" class="list">red</li>
-                                                    <li id="li8" style="background: yellow;" class="list">yellow</li>
-                                                    <li id="li9" style="background: green;" class="list">green</li>
-                                                    <li id="li10" style="background: cyan;" class="list">cyan</li>
+                                                   <li id="li6" style="background: #8E909C;font-size:smaller; width: 5em" class="list">#8E909C</li>
+                                                    <li id="li7" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li8" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
+                                                    <li id="li9" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li10" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
   
                                             </ul>
                                  </div>   
                         <div id="container6">
                                   <div id="left2">
-                                    <label style="color: black;margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                    <input id="steps-seq2" checked="checked" type="number" value="5" READONLY/>
+                                    <label style="color: black;margin-bottom: 0px;"></label>
+                                    <input style="display:none;" id="steps-seq2" checked="checked" type="number" value="5" READONLY/>
                             </div>
                             <div id="out2" > </div> 
 
@@ -659,167 +659,117 @@ rating2=0;
 <div style="clear:both;"></div>
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table1" >
 
-<TABLE BORDER=4 CELLPADDING=5>
+<TABLE  CELLPADDING=5>
 <TR>
 <TD VALIGN=TOP>
 
 <TABLE>
-<TR><TD BGCOLOR="black" ><FONT COLOR="yellow"><B>Color&nbsp;</B></FONT></TD><TD BGCOLOR="black"><Font color="yellow"><B>Color Name</B></FONT></TD>
-<TR><TD BGCOLOR="lightpink" id="lightpink"  class="colorSample" ><BR></TD><TD>LightPink</TD>
-<TR><TD BGCOLOR="pink" id="pink" draggable="true" class="colorSample"><BR></TD><TD>Pink</TD>
-<TR><TD BGCOLOR ="crimson" id="crimson" draggable="true" class="colorSample"><BR></TD><TD>Crimson</TD>
-<TR><TD BGCOLOR="lavenderblush" id="lavenderblush" draggable="true" class="colorSample"><BR></TD><TD>LavenderBlush</TD>
-<TR><TD BGCOLOR="palevioletred" id="palevioletred" draggable="true" ondragstart="drag(event)"><BR></TD><TD>PaleVioletRed</TD>
-<TR><TD BGCOLOR="hotpink"><BR></TD><TD>HotPink</TD>
-<TR><TD BGCOLOR="deeppink"><BR></TD><TD>DeepPink</TD>
-<TR><TD BGCOLOR="mediumvioletred"><BR></TD><TD>MediumVioletRed</TD>
-<TR><TD BGCOLOR="orchid"><BR></TD><TD>Orchid</TD>
-<TR><TD BGCOLOR="thistle"><BR></TD><TD>Thistle</TD>
-<TR><TD BGCOLOR="plum"><BR></TD><TD>Plum</TD>
-<TR><TD BGCOLOR="violet"><BR></TD><TD>Violet</TD>
-<TR><TD BGCOLOR="magenta"><BR></TD><TD>Magenta</TD>
-<TR><TD BGCOLOR="fuchsia"><BR></TD><TD>Fuchsia</TD>
-<TR><TD BGCOLOR="darkmagenta"><BR></TD><TD>DarkMagenta</TD>
-<TR><TD BGCOLOR="purple"><BR></TD><TD>Purple</TD>
-<TR><TD BGCOLOR="mediumorchid"><BR></TD><TD>MediumOrchid</TD>
-<TR><TD BGCOLOR="darkviolet"><BR></TD><TD>DarkViolet</TD>
-<TR><TD BGCOLOR="darkorchid"><BR></TD><TD>DarkOrchid</TD>
-<TR><TD BGCOLOR="indigo"><BR></TD><TD>Indigo</TD>
-<TR><TD BGCOLOR="blueviolet"><BR></TD><TD>BlueViolet</TD>
-<TR><TD BGCOLOR="mediumpurple"><BR></TD><TD>MediumPurple</TD>
-<TR><TD BGCOLOR="mediumslateblue"><BR></TD><TD>MediumSlateBlue</TD>
-<TR><TD BGCOLOR="slateblue"><BR></TD><TD>SlateBlue</TD>
-<TR><TD BGCOLOR="darkslateblue"><BR></TD><TD>DarkSlateBlue</TD>
-<TR><TD BGCOLOR="lavender"><BR></TD><TD>Lavender</TD>
-<TR><TD BGCOLOR="ghostwhite"><BR></TD><TD>GhostWhite</TD>
-<TR><TD BGCOLOR="blue"><BR></TD><TD>Blue</TD>
-<TR><TD BGCOLOR="mediumblue"><BR></TD><TD>MediumBlue</TD>
-<TR><TD BGCOLOR="midnightblue"><BR></TD><TD>MidnightBlue</TD>
-<TR><TD BGCOLOR="darkblue"><BR></TD><TD>DarkBlue</TD>
-<TR><TD BGCOLOR="navy"><BR></TD><TD>Navy</TD>
-<TR><TD BGCOLOR="royalblue"><BR></TD><TD>RoyalBlue</TD>
-<TR><TD BGCOLOR="cornflowerblue"><BR></TD><TD>CornflowerBlue</TD>
-<TR><TD BGCOLOR="lightsteelblue"><BR></TD><TD>LightSteelBlue</TD>
-<TR><TD BGCOLOR="lightslategray"><BR></TD><TD>LightSlateGray</TD>
-<TR><TD BGCOLOR="slategray"><BR></TD><TD>SlateGray</TD>
-<TR><TD BGCOLOR="dodgerblue"><BR></TD><TD>DodgerBlue</TD>
-<TR><TD BGCOLOR="aliceblue"><BR></TD><TD>AliceBlue</TD>
-<TR><TD BGCOLOR="steelblue"><BR></TD><TD>SteelBlue</TD>
-<TR><TD BGCOLOR="lightskyblue"><BR></TD><TD>LightSkyBlue</TD>
-<TR><TD BGCOLOR="skyblue"><BR></TD><TD>SkyBlue</TD>
-<TR><TD BGCOLOR="deepskyblue"><BR></TD><TD>DeepSkyBlue</TD>
-<TR><TD BGCOLOR="lightblue"><BR></TD><TD>LightBlue</TD>
-<TR><TD BGCOLOR="powderblue"><BR></TD><TD>PowderBlue</TD>
-<TR><TD BGCOLOR="cadetblue"><BR></TD><TD>CadetBlue</TD>
-<TR><TD BGCOLOR="azure"><BR></TD><TD>Azure</TD>
-<TR><TD BGCOLOR="lightcyan"><BR></TD><TD>LightCyan</TD>
-<TR><TD BGCOLOR="paleturquoise"><BR></TD><TD>PaleTurquoise</TD>
-<TR><TD BGCOLOR="cyan"><BR></TD><TD>Cyan</TD>
-<TR><TD BGCOLOR="aqua"><BR></TD><TD>Aqua</TD>
-<TR><TD BGCOLOR="darkturquoise"><BR></TD><TD>DarkTurquoise</TD>
-<TR><TD BGCOLOR="darkslategray"><BR></TD><TD>DarkSlateGray</TD>
-<TR><TD BGCOLOR="darkcyan"><BR></TD><TD>DarkCyan</TD>
-<TR><TD BGCOLOR="teal"><BR></TD><TD>Teal</TD>
-<TR><TD BGCOLOR="mediumturquoise"><BR></TD><TD>MediumTurquoise</TD>
-<TR><TD BGCOLOR="lightseagreen"><BR></TD><TD>LightSeaGreen</TD>
-<TR><TD BGCOLOR="turquoise"><BR></TD><TD>Turquoise</TD>
-<TR><TD BGCOLOR="aquamarine"><BR></TD><TD>Aquamarine</TD>
-<TR><TD BGCOLOR="mediumaquamarine"><BR></TD><TD>MediumAquamarine</TD>
-<TR><TD BGCOLOR="mediumspringgreen"><BR></TD><TD>MediumSpringGreen</TD>
-<TR><TD BGCOLOR="mintcream"><BR></TD><TD>MintCream</TD>
-<TR><TD BGCOLOR="springgreen"><BR></TD><TD>SpringGreen</TD>
-<TR><TD BGCOLOR="mediumseagreen"><BR></TD><TD>MediumSeaGreen</TD>
-<TR><TD BGCOLOR="seagreen"><BR></TD><TD>SeaGreen</TD>
-<TR><TD BGCOLOR="honeydew"><BR></TD><TD>Honeydew</TD>
-<TR><TD BGCOLOR="lightgreen"><BR></TD><TD>LightGreen</TD>
-<TR><TD BGCOLOR="palegreen"><BR></TD><TD>PaleGreen</TD>
-<TR><TD BGCOLOR="darkseagreen"><BR></TD><TD>DarkSeaGreen</TD>
-<TR><TD BGCOLOR="limegreen"><BR></TD><TD>LimeGreen</TD>
-</TABLE>
-
-<TD VALIGN=TOP>
-<TABLE>
-<TR><TD BGCOLOR="black"><Font color="yellow"><B>Color&nbsp;</B></FONT></TD><TD BGCOLOR="black"><Font color="yellow"><B>Color Name</B></FONT></TD>
-<TR><TD BGCOLOR="lime"><BR></TD><TD>Lime</TD>
-<TR><TD BGCOLOR="forestgreen"><BR></TD><TD>ForestGreen</TD>
-<TR><TD BGCOLOR="green"><BR></TD><TD>Green</TD>
-<TR><TD BGCOLOR="darkgreen"><BR></TD><TD>DarkGreen</TD>
-<TR><TD BGCOLOR="chartreuse"><BR></TD><TD>Chartreuse</TD>
-<TR><TD BGCOLOR="lawngreen"><BR></TD><TD>LawnGreen</TD>
-<TR><TD BGCOLOR="greenyellow"><BR></TD><TD>GreenYellow</TD>
-<TR><TD BGCOLOR="darkolivegreen"><BR></TD><TD>DarkOliveGreen</TD>
-<TR><TD BGCOLOR="yellowgreen"><BR></TD><TD>YellowGreen</TD>
-<TR><TD BGCOLOR="olivedrab"><BR></TD><TD>OliveDrab</TD>
-<TR><TD BGCOLOR="beige"><BR></TD><TD>Beige</TD>
-<TR><TD BGCOLOR="lightgoldenrodyellow"><BR></TD><TD>LightGoldenrodYellow</TD>
-<TR><TD BGCOLOR="ivory"><BR></TD><TD>Ivory</TD>
-<TR><TD BGCOLOR="lightyellow"><BR></TD><TD>LightYellow</TD>
-<TR><TD BGCOLOR="yellow"><BR></TD><TD>Yellow</TD>
-<TR><TD BGCOLOR="olive"><BR></TD><TD>Olive</TD>
-<TR><TD BGCOLOR="darkkhaki"><BR></TD><TD>DarkKhaki</TD>
-<TR><TD BGCOLOR="lemonchiffon"><BR></TD><TD>LemonChiffon</TD>
-<TR><TD BGCOLOR="palegoldenrod"><BR></TD><TD>PaleGoldenrod</TD>
-<TR><TD BGCOLOR="khaki"><BR></TD><TD>Khaki</TD>
-<TR><TD BGCOLOR="gold"><BR></TD><TD>Gold</TD>
-<TR><TD BGCOLOR="cornsilk"><BR></TD><TD>Cornsilk</TD>
-<TR><TD BGCOLOR="goldenrod"><BR></TD><TD>Goldenrod</TD>
-<TR><TD BGCOLOR="darkgoldenrod"><BR></TD><TD>DarkGoldenrod</TD>
-<TR><TD BGCOLOR="floralwhite"><BR></TD><TD>FloralWhite</TD>
-<TR><TD BGCOLOR="oldlace"><BR></TD><TD>OldLace</TD>
-<TR><TD BGCOLOR="wheat"><BR></TD><TD>Wheat</TD>
-<TR><TD BGCOLOR="moccasin"><BR></TD><TD>Moccasin</TD>
-<TR><TD BGCOLOR="orange"><BR></TD><TD>Orange</TD>
-<TR><TD BGCOLOR="papayawhip"><BR></TD><TD>PapayaWhip</TD>
-<TR><TD BGCOLOR="blanchedalmond"><BR></TD><TD>BlanchedAlmond</TD>
-<TR><TD BGCOLOR="navajowhite"><BR></TD><TD>NavajoWhite</TD>
-<TR><TD BGCOLOR="antiquewhite"><BR></TD><TD>AntiqueWhite</TD>
-<TR><TD BGCOLOR="tan"><BR></TD><TD>Tan</TD>
-<TR><TD BGCOLOR="burlywood"><BR></TD><TD>BurlyWood</TD>
-<TR><TD BGCOLOR="bisque"><BR></TD><TD>Bisque</TD>
-<TR><TD BGCOLOR="darkorange"><BR></TD><TD>DarkOrange</TD>
-<TR><TD BGCOLOR="linen"><BR></TD><TD>Linen</TD>
-<TR><TD BGCOLOR="peru"><BR></TD><TD>Peru</TD>
-<TR><TD BGCOLOR="peachpuff"><BR></TD><TD>PeachPuff</TD>
-<TR><TD BGCOLOR="sandybrown"><BR></TD><TD>SandyBrown</TD>
-<TR><TD BGCOLOR="chocolate"><BR></TD><TD>Chocolate</TD>
-<TR><TD BGCOLOR="saddlebrown"><BR></TD><TD>SaddleBrown</TD>
-<TR><TD BGCOLOR="seashell"><BR></TD><TD>Seashell</TD>
-<TR><TD BGCOLOR="sienna"><BR></TD><TD>Sienna</TD>
-<TR><TD BGCOLOR="lightsalmon"><BR></TD><TD>LightSalmon</TD>
-<TR><TD BGCOLOR="coral"><BR></TD><TD>Coral</TD>
-<TR><TD BGCOLOR="orangered"><BR></TD><TD>OrangeRed</TD>
-<TR><TD BGCOLOR="darksalmon"><BR></TD><TD>DarkSalmon</TD>
-<TR><TD BGCOLOR="tomato"><BR></TD><TD>Tomato</TD>
-<TR><TD BGCOLOR="mistyrose"><BR></TD><TD>MistyRose</TD>
-<TR><TD BGCOLOR="salmon"><BR></TD><TD>Salmon</TD>
-<TR><TD BGCOLOR="snow"><BR></TD><TD>Snow</TD>
-<TR><TD BGCOLOR="lightcoral"><BR></TD><TD>LightCoral</TD>
-<TR><TD BGCOLOR="rosybrown"><BR></TD><TD>RosyBrown</TD>
-<TR><TD BGCOLOR="indianred"><BR></TD><TD>IndianRed</TD>
-<TR><TD BGCOLOR="red"><BR></TD><TD>Red</TD>
-<TR><TD BGCOLOR="brown"><BR></TD><TD>Brown</TD>
-<TR><TD BGCOLOR="firebrick"><BR></TD><TD>FireBrick</TD>
-<TR><TD BGCOLOR="darkred"><BR></TD><TD>DarkRed</TD>
-<TR><TD BGCOLOR="maroon"><BR></TD><TD>Maroon</TD>
-<TR><TD BGCOLOR="white"><BR></TD><TD>White</TD>
-<TR><TD BGCOLOR="whitesmoke"><BR></TD><TD>WhiteSmoke</TD>
-<TR><TD BGCOLOR="gainsboro"><BR></TD><TD>Gainsboro</TD>
-<TR><TD BGCOLOR="lightgrey"><BR></TD><TD>LightGrey</TD>
-<TR><TD BGCOLOR="Silver"><BR></TD><TD>Silver</TD>
-<TR><TD BGCOLOR="darkgray"><BR></TD><TD>DarkGray</TD>
-<TR><TD BGCOLOR="gray"><BR></TD><TD>Gray</TD>
-<TR><TD BGCOLOR="dimgray"><BR></TD><TD>DimGray</TD>
-<TR><TD BGCOLOR="black"><BR></TD><TD>Black</TD>
+<tr><td BGCOLOR="#FC1F05" id="#FC1F05"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#4D1C0A" id="#4D1C0A"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#F07012" id="#F07012"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#F8B010" id="#F8B010"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#5F5D2F" id="#5F5D2F"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#F2F634" id="#F2F634"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#477E17" id="#477E17"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#64F13E" id="#64F13E"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#09C738" id="#09C738"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#1F5D3A" id="#1F5D3A"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#24BEB9" id="#24BEB9"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#20BFF9" id="#20BFF9"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#0B82CF" id="#0B82CF"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#1B4C79" id="#1B4C79"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#8E909C" id="#8E909C"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#292F58" id="#292F58"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#6764F3" id="#6764F3"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#8755E2" id="#8755E2"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#A133B1" id="#A133B1"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#FE4BF3" id="#FE4BF3"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#F64389" id="#F64389"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#A70B2B" id="#A70B2B"  class="colorSample" ></td>
+</tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr><td BGCOLOR="#9C6E69" id="#9C6E69"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#9B4B32" id="#9B4B32"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#EAC793" id="#EAC793"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#D5C17B" id="#D5C17B"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#27200E" id="#27200E"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#8BA552" id="#8BA552"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#93A87A" id="#93A87A"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#C4E4BD" id="#C4E4BD"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#639D73" id="#639D73"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#90A298" id="#90A298"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#92BCB1" id="#92BCB1"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#A7E0EF" id="#A7E0EF"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#8EB6CD" id="#8EB6CD"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#335671" id="#335671"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#434751" id="#434751"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#52538F" id="#52538F"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#756C8E" id="#756C8E"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#9B77D5" id="#9B77D5"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#A571B0" id="#A571B0"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#59033D" id="#59033D"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#E5B1C8" id="#E5B1C8"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#D78CA3" id="#D78CA3"  class="colorSample" ></td>
+</tr>
 
 </TABLE>
 </TABLE>
 </DIV>
   <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
-In the 2 charts displayed, color is used to represent <I>5 Categories </I>.For each of the two chart you need to use 5 colors that can be
-used to encode categories.For first chart use 5 colors that you think will be appropriate for <B>making it look Positive to Users </B>.For 
+In the 2 charts displayed, color is used to represent <I>5 Categories </I>.For each chart use 5 colors that you think will be appropriate for <B>making it look Positive to Users </B>.For 
 the second chart use 5 colors that you think will be appropriate for <B>making it look Negative to Users</B> 
-Click on the <B>Show Named Color List</B> provided below to select from a list of colors.
-    </div>
+<p>Follow The following Steps:</p>
+<p><B>1. Click on the color buttons Underneath "Design for POSITIVE" and "Design for NEGATIVE". Once color palette opens up you can transfer the
+    color by just selecting the color from the palette.</B></p>
+<p><B>2. For each Chart you need to select 5 colors as it represents 5 categories.</B></p>
+<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Bar Transparency".</B></p>
+<p><B>4. For each chart you can need to rate your own task using the scale below <i>(1-being least satisfied  to 10-being most satisfied)</i>. Once you have rated your task it enables you to finish your training and move to task.</B></p>
+
+  </div>
 </body>  
 </html>
 

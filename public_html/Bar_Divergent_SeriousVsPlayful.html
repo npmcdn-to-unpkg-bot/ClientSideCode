@@ -103,10 +103,10 @@ $(function() {
 $('#table').dialog({
         height: 300,
         width: 560,
-        title: "Instructions",
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",,
          modal: true
     });
-    var width = 330;
+    var width = 250;
     var sequential=true;
     var firstChart = true;
 
@@ -298,9 +298,9 @@ $('#table').dialog({
      $("#"+elementid).addClass('highlight');
    
     $('#table1').dialog({
-        height: 500,
-        width: 560,
-        title: "Color Name List"
+        height: 180,
+        width: 660,
+        title: "Color List"
     });
     
       $( "#table1" ).dialog({
@@ -333,12 +333,12 @@ d3.csv("ColorName.csv", type, function(error, data) {
      colorNames.push(d["Names"]);
   });
 });
-d3.csv("BarDivergent1.csv", type, function(error, data) {
+d3.csv("BarDivergent.csv", type, function(error, data) {
   x.domain(data.map(function(d) { return d.letter; }));
   y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
 dataset=data;
 
-DefaultColors=["#0000ff","#6b54f9","#908cf3","#a7c2ea","#a7d6e7","#9cd3e8","#91d0ea","#90cfea","#b7d6e8","#d9dce5","#f9e3e2","#ffc7bb","#ffa38d","#ff7c61","#ff5c40","#ff4a2e","#ff321b","#ff0000"] ;
+DefaultColors=['#9b4b32','#9c513b','#9c5844','#9c5e4d','#9c6456','#9b6a5f','#9a7068','#997671','#987b7b','#968184','#93878e','#908d97','#908d97','#93878e','#968184','#987b7b','#997671','#9a7068','#9b6a5f','#9c6456','#9c5e4d','#9c5844','#9c513b','#9b4b32'] ;
 
 drawChart1(DefaultColors);
 drawChart2(DefaultColors);
@@ -431,10 +431,10 @@ updateObj.push(UpdateDetails);
 });
 }
 function showColors(){
-       $('#table1').dialog({
-        height: 500,
-        width: 560,
-        title: "Color Name List"
+      $('#table1').dialog({
+        height: 180,
+        width: 660,
+        title: "Color List"
     });
 }
 function showInstructions(){
@@ -531,9 +531,9 @@ rating2=0;
                                   <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
-                                                    <li id="li1" style="background: pink;" class="list">pink</li>
-                                                    <li id="li2" style="background: red;" class="list">red</li>
-                                                    <li id="li3" style="background: yellow;" class="list">yellow</li>
+                                                    <li id="li1" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list">#9B4B32</li>
+                                                    <li id="li2" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
+                                                    <li id="li3" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
                                                     
                                            </ul>
                                  </div> 
@@ -541,7 +541,7 @@ rating2=0;
                                  <div id="container5">
                                  <div id="left">
                                      <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                     <input id="steps-seq1" checked="checked" type="number" value="25"  />
+                                     <input id="steps-seq1"  type="number" value="25"  />
                                  </div>
                                  <div id="out1" > </div> 
                                  </div>
@@ -560,9 +560,9 @@ rating2=0;
                          <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
-                                                    <li id="li4" style="background: pink;" class="list">pink</li>
-                                                    <li id="li5" style="background: red;" class="list">red</li>
-                                                    <li id="li6" style="background: yellow;" class="list">yellow</li>
+                                                    <li id="li4" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list" >#9B4B32</li>
+                                                    <li id="li5" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
+                                                    <li id="li6" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
                                                     
   
                                             </ul>
@@ -570,7 +570,7 @@ rating2=0;
                         <div id="container6">
                                   <div id="left2">
                                     <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                    <input id="steps-seq2" checked="checked" type="number" value="25" />
+                                    <input id="steps-seq2"  type="number" value="25" />
                             </div>
                             <div id="out2" > </div> 
 
@@ -769,10 +769,15 @@ rating2=0;
 </TABLE>
 </DIV>
   <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
-In the 2 charts displayed, color is used to represent <I>5 Categories </I>.For each of the two chart you need to use 5 colors that can be
-used to encode categories.For first chart use 5 colors that you think will be appropriate for <B>making it look Serious to Users </B>.For 
-the second chart use 5 colors that you think will be appropriate for <B>making it look Playful to Users</B> 
-Click on the <B>Show Named Color List</B> provided below to select from a list of colors.
+In the 2 charts displayed, color is used to represent <I>Diverging values </I>.For each chart use 3 colors that you think will be appropriate for <B>making it look Serious to Users </B>.For 
+the second chart use 3 colors that you think will be appropriate for <B>making it look Playful to Users</B> 
+<p>Follow The following Steps:</p>
+<p><B>1. Click on the color buttons Underneath "Design for SERIOUS" and "Design for PLAYFUL". Once color palette opens up you can transfer the
+    color by just selecting the color from the palette.</B></p>
+<p><B>2. For each Chart you need to select 3 colors with the middle color preferably light as it represents Divergent values.</B></p>
+<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Bar Transparency".</B></p>
+<p><B>4. For each chart you can need to rate your own task using the scale below <i>(1-being least satisfied  to 10-being most satisfied)</i>. Once you have rated your task it enables you to finish your training and move to next task.</B></p>
+
     </div>
 </body>  
 </html>

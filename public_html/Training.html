@@ -107,7 +107,7 @@ function type(d) {
 
 $(function() {
 $('#table').dialog({
-        height: 300,
+        height: 480,
         width: 560,
         title: "Training Instructions",
          modal: true
@@ -283,6 +283,7 @@ $('#table').dialog({
 
     $('#mode-toggle').click(toggleMode);
 
+    $("#next").click(updateTask);
     $("#save").click(writeDownloadLink);
     $("#startTask").click(updateTask);
     $("#list").click(showColors);
@@ -436,8 +437,8 @@ function drawChart2(myColor,data){
 
 function writeDownloadLink(){
    
-  
-   createJSON();
+    document.getElementById("next").disabled = false;
+    createJSON();
 };
 function updateTask(){
     
@@ -578,7 +579,7 @@ rating2=0;
                                  <div id="container5">
                                  <div id="left">
                                      <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                     <input id="steps-seq1" checked="checked" type="number" value="5"  READONLY/>
+                                     <input id="steps-seq1" style="color: black; display:none;" checked="checked" type="number" value="5"  READONLY/>
                                  </div>
                                  <div id="out1" > </div> 
                                  </div>
@@ -643,7 +644,7 @@ rating2=0;
      <label id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to save and move to next task</B></label>
      <div id="rate"></div>
      <button id="save" disabled><b>Click here to Save Task</b></button> 
-     <button id="next" disabled><b>Finish Training</b></button> 
+     <button id="next" style="margin-left: 50%" disabled><b>Finish Training</b></button> 
    
     
 </div>
@@ -811,9 +812,9 @@ For each of the two chart you need to choose colors that you think will be appro
 <p><B>1. Click on the color buttons Underneath "Training 1". Once color palette opens up you can transfer the
     color by just selecting the color from the palette.</B></p>
 <p><B>2. For Bar Chart you need to select 5 colors. It represents a categorical dataset.</B></p>
-<p><B>3. For US Map Chart you need to select 3 colors. You can select colors by clicking on the color buttons similar to training 1.</B></p>
+<p><B>3. For US Map Chart you need to select 3 colors. The color scale below represents a diverging color scale. You can select colors by clicking on the color buttons similar to training 1.</B></p>
 <p><B>4. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Bar Transparency".</B></p>
-<p><B>5. For each chart you can need to rate your own task using the scale below. </B></p>
+<p><B>5. For each chart you can need to rate your own task using the scale below <i>(1-being least satisfied  to 10-being most satisfied)</i>. Once you have rated your task it enables you to finish your training and move to task.</B></p>
 
     </div>
 </body>  
