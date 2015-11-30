@@ -14,6 +14,12 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>  
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type = "text/javascript" >
+    history.pushState(null, null, 'TrainingCategorical.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'TrainingCategorical.html');
+    });
+    </script>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
@@ -441,26 +447,13 @@ function writeDownloadLink(){
 };
 function updateTask(){
     
- jsonObj=[];
-          UserTable = {};
-          UserTable ["UserName"] = localStorage.getItem('uname');;
-          jsonObj.push(UserTable)
-          $.ajax({
-    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
-    type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
-    data: JSON.stringify(jsonObj),
-    contentType: 'application/json',
-    success: function (data) {
-        console.log(data);
-    result=JSON.parse(data)
-    window.localStorage.setItem('id', result[0].id);
-    window.localStorage.setItem('uname', result[0].Username);
-    window.location=result[0].link; 
-                            }
+            
+            window.localStorage.setItem('uname', localStorage.getItem('uname'));
+            window.location='TrainingSequential.html'; 
+                            
     
 
-});
+
 }
 function showColors(){
         $('#table1').dialog({
@@ -597,17 +590,18 @@ rating2=0;
                          <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
-                                                    <li id="li6" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list" >#9B4B32</li>
-                                                    <li id="li7" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
-                                                    <li id="li8" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
-                                                    
+                                                    <li id="li6" style="background: #8E909C;font-size:smaller; width: 5em" class="list">#8E909C</li>
+                                                    <li id="li7" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li8" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
+                                                    <li id="li9" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
+                                                    <li id="li10" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
   
                                             </ul>
                                  </div>   
                         <div id="container6">
                                   <div id="left2">
-                                    <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                    <input id="steps-seq2" checked="checked" type="number" value="25" />
+                                    <label style="color: black;margin-bottom: 0px;"></label>
+                                    <input style="display:none;" id="steps-seq2"  type="number" value="5" READONLY/>
                             </div>
                             <div id="out2" > </div> 
 

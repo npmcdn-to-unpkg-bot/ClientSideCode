@@ -11,10 +11,19 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type = "text/javascript" >
+    history.pushState(null, null, 'Start.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Start.html');
+    });
+    </script>
             <script>
   $(function() {
    $("#submit").click(createKey);
+   $("#checkbox1").click(checkbox2);
+   $("#checkbox2").click(checkbox1);
   });
+  
   </script>
          <script>
  function createKey(){
@@ -24,15 +33,13 @@ and open the template in the editor.
             alert("Enter Valid Email id");
             return;
         };
-     
-       if($("#fname").val()=="" && $("#lname").val()=="" ){
-           alert("Please insert your name")
-       }else{
-          var key=$("#fname").val()+$("#lname").val()+Date.now();
+        if(document.getElementById('checkbox1').checked ){
+               
+          var key=$("#email").val()+Date.now();
           jsonObj=[];
           UserTable = {};
           UserTable ["UserId"] = key;
-          UserTable ["UserFnameLname"] = $("#fname").val()+" "+$("#lname").val();
+          UserTable ["Sex"] = 'male';
           UserTable ["UserName"] = $("#email").val();
           jsonObj.push(UserTable)
           $.ajax({
@@ -52,33 +59,80 @@ and open the template in the editor.
     }else{
         window.localStorage.setItem('uname', result[0].Username);
         
-        window.location='Training.html';  
+        window.location='TrainingCategorical.html';  
     }
     
                             }
     
 
 });
-       }
+   
+            
+        }else if(document.getElementById('checkbox2').checked ){
+               
+          var key=$("#email").val()+Date.now();
+          jsonObj=[];
+          UserTable = {};
+          UserTable ["UserId"] = key;
+          UserTable ["Sex"] = 'female';
+          UserTable ["UserName"] = $("#email").val();
+          jsonObj.push(UserTable)
+          $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+    console.log(data); 
+    
+    result=JSON.parse(data)
+    if(result[0].firstTime==="true"){
+        window.localStorage.setItem('uname', result[0].Username);
+        
+        window.location='Informed Consent.html';  
+    }else{
+        window.localStorage.setItem('uname', result[0].Username);
+        
+        window.location='TrainingCategorical.html';  
+    }
+    
+                            }
+    
+
+});
+   
+            
+        }else{
+            alert("Please select the check box");
+            return;
+        }
+    
        
        
          
 }
+function checkbox1(){
+    $("#checkbox1").attr("checked",false);
+} 
+function checkbox2(){
+    $("#checkbox2").attr("checked",false);
+} 
+
 
   </script>
+ 
     </head>
     <body>
-       
-  First name:<br>
-  <input  id="fname" type="text" name="firstname" >
-  <br>
-  Last name:<br>
-  <input id="lname" type="text" name="lastname" >
-   <br>
   Email id:<br>
   <input id="email" type="text" name="lastname" >
+  <br><br>
+  <input id="checkbox1" type="checkbox" > Male<br>
+  <input id="checkbox2" type="checkbox" > Female<br>
   <br><br>
   <button id="submit" ><b>Submit</b></button> 
   <h4 align="center">Remember your details so that you can log in later to continue your tasks.</h4>  
     </body>
+    
+  
 </html>

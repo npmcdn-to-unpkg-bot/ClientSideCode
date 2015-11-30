@@ -11,6 +11,12 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type = "text/javascript" >
+    history.pushState(null, null, 'Informed Consent.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Informed Consent.html');
+    });
+    </script>
             <script>
   $(function() {
    $("#submit").click(createKey);
@@ -36,9 +42,9 @@ and open the template in the editor.
     contentType: 'application/json',
     success: function (data) {
     console.log(data); 
-    result=JSON.parse(data)
+    result=JSON.parse(data);
     window.localStorage.setItem('uname', result[0].Username);
-    window.location='Training.html'; 
+    window.location='TrainingCategorical.html'; 
                             }
     
 

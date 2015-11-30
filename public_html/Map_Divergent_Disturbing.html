@@ -14,6 +14,12 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>  
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+   <script type = "text/javascript" >
+    history.pushState(null, null, 'Map_Divergent_Disturbing.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Map_Divergent_Disturbing.html');
+    });
+    </script>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
@@ -306,8 +312,8 @@ $('#table').dialog({
      $("#"+elementid).addClass('highlight');
    
     $('#table1').dialog({
-        height: 180,
-        width: 660,
+       height: 470,
+        width: 170,
         title: "Color List"
     });
     
@@ -476,8 +482,8 @@ updateObj.push(UpdateDetails);
 }
 function showColors(){
        $('#table1').dialog({
-        height: 180,
-        width: 660,
+       height: 470,
+        width: 170,
         title: "Color List"
     });
 }
@@ -632,96 +638,106 @@ rating2=0;
 <TD VALIGN=TOP>
 
 <TABLE>
-<tr><td BGCOLOR="#FC1F05" id="#FC1F05"  class="colorSample" ></td>
+<tr><td BGCOLOR="#fc1a00" id="#fc1a00"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#4D1C0A" id="#4D1C0A"  class="colorSample" ></td>
+    <td BGCOLOR="#cf2616" id="#cf2616"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#F07012" id="#F07012"  class="colorSample" ></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#F8B010" id="#F8B010"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#5F5D2F" id="#5F5D2F"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#F2F634" id="#F2F634"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#477E17" id="#477E17"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#64F13E" id="#64F13E"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#09C738" id="#09C738"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#1F5D3A" id="#1F5D3A"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#24BEB9" id="#24BEB9"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#20BFF9" id="#20BFF9"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#0B82CF" id="#0B82CF"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#1B4C79" id="#1B4C79"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#8E909C" id="#8E909C"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#292F58" id="#292F58"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#6764F3" id="#6764F3"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#8755E2" id="#8755E2"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#A133B1" id="#A133B1"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#FE4BF3" id="#FE4BF3"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#F64389" id="#F64389"  class="colorSample" ></td>
-    <td></td> 
-    <td BGCOLOR="#A70B2B" id="#A70B2B"  class="colorSample" ></td>
 </tr>
-<tr><td></td></tr>
-<tr><td></td></tr>
-<tr><td></td></tr>
-<tr><td BGCOLOR="#9C6E69" id="#9C6E69"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#9B4B32" id="#9B4B32"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#EAC793" id="#EAC793"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#D5C17B" id="#D5C17B"  class="colorSample" ></td>
-    <td></td>
-    <td BGCOLOR="#27200E" id="#27200E"  class="colorSample" ></td>
+<tr>
+    <td BGCOLOR="#f3d02d" id="#f3d02d"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#8BA552" id="#8BA552"  class="colorSample" ></td>
+    <td BGCOLOR="#f8b010" id="#f8b010"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#93A87A" id="#93A87A"  class="colorSample" ></td>
+    <td BGCOLOR="#f27c13" id="#f27c13"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#C4E4BD" id="#C4E4BD"  class="colorSample" ></td>
+</tr>
+<tr>
+    <td BGCOLOR="#eac793" id="#eac793"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#639D73" id="#639D73"  class="colorSample" ></td>
+    <td BGCOLOR="#c67036" id="#c67036"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#90A298" id="#90A298"  class="colorSample" ></td>
+    <td BGCOLOR="#713713" id="#713713"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#92BCB1" id="#92BCB1"  class="colorSample" ></td>
+</tr>  
+<tr>
+    <td BGCOLOR="#ccd61b" id="#ccd61b"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#A7E0EF" id="#A7E0EF"  class="colorSample" ></td>
+    <td BGCOLOR="#a5b34b" id="#a5b34b"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#8EB6CD" id="#8EB6CD"  class="colorSample" ></td>
+    <td BGCOLOR="#465e20" id="#465e20"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#335671" id="#335671"  class="colorSample" ></td>
+</tr>
+<tr>
+    <td BGCOLOR="#add9a1" id="#add9a1"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#434751" id="#434751"  class="colorSample" ></td>
+    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#52538F" id="#52538F"  class="colorSample" ></td>
+    <td BGCOLOR="#23bf0c" id="#23bf0c"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#756C8E" id="#756C8E"  class="colorSample" ></td>
+</tr>
+<tr>
+    <td BGCOLOR="#a2ccc0" id="#a2ccc0"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#9B77D5" id="#9B77D5"  class="colorSample" ></td>
+    <td BGCOLOR="#24beb9" id="#24beb9"  class="colorSample" ></td>
     <td></td>
-    <td BGCOLOR="#A571B0" id="#A571B0"  class="colorSample" ></td>
+    <td BGCOLOR="#478f8d" id="#478f8d"  class="colorSample" ></td>
+    <td></td>
+    
+    
+</tr>
+<tr>
+    <td BGCOLOR="#91d2f5" id="#91d2f5"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#59033D" id="#59033D"  class="colorSample" ></td>
+    <td BGCOLOR="#40c9ff" id="#40c9ff"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#E5B1C8" id="#E5B1C8"  class="colorSample" ></td>
+    <td BGCOLOR="#005e5c" id="#005e5c"  class="colorSample" ></td>
+    <td></td>
+    
+</tr>
+<tr>
+    <td BGCOLOR="#87acec" id="#87acec"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#9796bb" id="#9796bb"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#0878b0" id="#0878b0"  class="colorSample" ></td>
+    <td></td>
+    
+</tr>
+<tr>
+    
+    <td BGCOLOR="#6d6eb9" id="#6d6eb9"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#6e47bc" id="#6e47bc"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#853d84" id="#853d84"  class="colorSample" ></td>
     <td></td> 
-    <td BGCOLOR="#D78CA3" id="#D78CA3"  class="colorSample" ></td>
+    
+</tr>
+<tr>
+    <td BGCOLOR="#ddb1c7" id="#ddb1c7"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#a857aa" id="#a857aa"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#f64389" id="#f64389"  class="colorSample" ></td>
+    <td></td>
+    
+</tr>
+<tr>
+    <td BGCOLOR="#ded9bb" id="#ded9bb"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#f4e5d4" id="#f4e5d4"  class="colorSample" ></td>
+    <td></td> 
+    <td BGCOLOR="#d4b5bb" id="#d4b5bb"  class="colorSample" ></td>
+    <td></td>
+</tr>
+<tr>
+    <td BGCOLOR="#d4d4d4" id="#d4d4d4"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#989898" id="#989898"  class="colorSample" ></td>
+    <td></td>
+    <td BGCOLOR="#3b3b3b" id="#3b3b3b"  class="colorSample" ></td>
 </tr>
 
 </TABLE>
