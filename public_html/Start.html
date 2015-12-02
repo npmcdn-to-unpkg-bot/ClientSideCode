@@ -8,6 +8,9 @@ and open the template in the editor.
     <head>
         <title>Color Study</title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="Style.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -22,7 +25,11 @@ and open the template in the editor.
    $("#submit").click(createKey);
    $("#checkbox1").click(checkbox2);
    $("#checkbox2").click(checkbox1);
-  });
+   $("#no").click(openTask);
+   $("#yes").click(openTraining);
+    
+    
+    });
   
   </script>
          <script>
@@ -59,7 +66,11 @@ and open the template in the editor.
     }else{
         window.localStorage.setItem('uname', result[0].Username);
         
-        window.location='TrainingCategorical.html';  
+       $('#table').dialog({
+        height: 310,
+        width: 400,
+        title: "Take Training?"
+    });
     }
     
                             }
@@ -94,7 +105,11 @@ and open the template in the editor.
     }else{
         window.localStorage.setItem('uname', result[0].Username);
         
-        window.location='TrainingCategorical.html';  
+        $('#table').dialog({
+        height: 310,
+        width: 400,
+        title: "Take Training?"
+    });
     }
     
                             }
@@ -119,6 +134,31 @@ function checkbox2(){
     $("#checkbox2").attr("checked",false);
 } 
 
+function openTraining(){
+    window.location='TrainingCategorical.html';  
+} 
+function openTask(){
+          jsonObj=[];
+          UserTable = {};
+          UserTable ["UserName"] = localStorage.getItem('uname');;
+          jsonObj.push(UserTable)
+          $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+        console.log(data);
+    result=JSON.parse(data)
+    window.localStorage.setItem('id', result[0].id);
+    window.localStorage.setItem('uname', result[0].Username);
+    window.location=result[0].link; 
+                            }
+    
+
+});
+} 
 
   </script>
  
@@ -134,6 +174,18 @@ function checkbox2(){
   <h4 align="center">Remember your details so that you can log in later to continue your tasks.</h4>  
   
   <h4 align="center">If you have any problem logging in, please contact Abhisekh Patra at: apatra@sfu.ca or +1604-376-8384.</h4>
+
+  
+  
+  
+<DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
+    <h3>Welcome Back! Press yes if you wish to take the training again. Press no if you want to continue your task. </h3>
+    
+    <button id="yes" ><b>Yes</b></button> 
+    <br><br>
+    <button id="no" ><b>No</b></button> 
+    
+  </div>
 
 </body>
     
