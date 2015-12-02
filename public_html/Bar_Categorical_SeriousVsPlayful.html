@@ -17,7 +17,7 @@
     window.addEventListener('popstate', function(event) {
     history.pushState(null, null, 'Bar_Categorical_SeriousVsPlayful.html');
     });
-</script>
+    </script>
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -59,6 +59,7 @@
     </div>
 <script>
 
+
 var list;
 
 var margin = {top: 0, right: 0, bottom: 0, left: 2},
@@ -94,8 +95,7 @@ var svg2 = d3.select("#chart2").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    
- 
+
 function type(d) {
   d.frequency = +d.frequency;
   return d;
@@ -105,18 +105,18 @@ function type(d) {
 
 
 $(function() {
-    $('#table').dialog({
+    
+$('#table').dialog({
         height: 300,
         width: 560,
         title: "Task no "+localStorage.getItem('id')+" :Instructions",
          modal: true
     });
-
-    var width = 330;
+    var width = 250;
     var sequential=true;
     var firstChart = true;
 
-     function update1() {
+    function update1() {
         
     
         var id1="sortable1";
@@ -267,9 +267,7 @@ $(function() {
 
     //updateMode();
 
-    
-    
-    $('#colors1').change(update1);
+     $('#colors1').change(update1);
     $('#steps-seq1').change(update1);
     $('#colors2').change(update2);
     $('#steps-seq2').change(update2);
@@ -359,7 +357,7 @@ function drawChart1(myColor){
     var color= d3.scale.ordinal()
         .domain([1,2,3,4,5])
         .range(myColor);
-
+//console.log(color.range());
     var bar= svg1.selectAll("rect")
       .data(dataset);
   
@@ -399,21 +397,25 @@ function drawChart2(myColor){
 }
 
 function writeDownloadLink(){
-       
    
-    createJSON();
+     
+   
+   createJSON();
+ 
 };
-
 function updateTask(){
-    $.ajax({
+    
+     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
     url: 'http://affectstudy.iat.sfu.ca:3000/colors',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
-      console.log(data); }});
+      console.log(data); }
 
+
+});
 updateObj=[];
 UpdateDetails = {};
 UpdateDetails ["id"] = localStorage.getItem('id');
@@ -439,7 +441,7 @@ updateObj.push(UpdateDetails);
 }
 function showColors(){
        $('#table1').dialog({
-        height: 510,
+       height: 510,
         width: 200,
         title: "Color List"
     });
@@ -465,9 +467,9 @@ function createJSON() {
     // console.log(string);  
 
         UserDetails = {};
-        UserDetails ["UserId"] = localStorage.getItem('uname');
+         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Serious";
+         UserDetails ["Task"] = "Serious";
         UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
@@ -491,14 +493,14 @@ function createJSON() {
         UserDetails = {};
         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Playful";
+         UserDetails ["Task"] = "Playful";
         UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
         UserDetails ["ColorsUsed"] = string2;
         UserDetails ["AlphaValue"] = sliderValue2;
         UserDetails ["Timestamp"] = Date.now();
-        UserDetails ["UserRating"] = sliderValue4;
+        UserDetails ["UserRating"] = sliderValue3;
         
 //  $.each(colorNames, function( index, value ) {
 // 
@@ -513,18 +515,17 @@ function createJSON() {
      //window.localStorage.setItem('jsonObj', JSON.stringify(jsonObj));
     
  updateTask();
-
 }   
- function drag(ev) {
+
+function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     colorData=ev.target.id;
 }
 
 
 function drop(ev) {
-    console.log("hi");
+    
 }
-
 rating1=0;
 rating2=0;
 </script>
@@ -551,8 +552,8 @@ rating2=0;
  
                                  <div id="container5">
                                  <div id="left">
-                                     <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                     <input style="display:none;" id="steps-seq1" type="number" value="5"  READONLY/>
+                                     <label style="color: black; margin-bottom: 0px;"></label>
+                                     <input style="display:none;" id="steps-seq1" checked="checked" type="number" value="5"  READONLY/>
                                  </div>
                                  <div id="out1" > </div> 
                                  </div>
@@ -561,7 +562,7 @@ rating2=0;
                     </div>
             <div style="clear:both;"></div>
             <div><label style="color: black;display:none;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
-             <input style="display:none;" id="bgColor1" class="colors"  type="text" value="#f8f8f8" />           
+             <input style="display:none;" id="bgColor1" class="colors" checked="checked" type="text" value="#f8f8f8" />           
         </div>
         <div id="rightcolumn">
                 
@@ -577,13 +578,12 @@ rating2=0;
                                                     <li id="li9" style="background: #9B4B32;font-size:smaller;width: 5em" class="list">#9B4B32</li>
                                                     <li id="li10" style="background: #8E909C;font-size:smaller;width: 5em" class="list">#8E909C</li>
   
-  
                                             </ul>
                                  </div>   
                         <div id="container6">
                                   <div id="left2">
-                                    <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                    <input style="display:none;" id="steps-seq2"  type="number" value="5" READONLY/>
+                                    <label style="color: black; margin-bottom: 0px;"></label>
+                                    <input style="display:none;" id="steps-seq2" checked="checked" type="number" value="5" READONLY/>
                             </div>
                             <div id="out2" > </div> 
 
@@ -592,8 +592,8 @@ rating2=0;
                     </div>
             
                  <div style="clear:both;"></div>
-                <div><label style="display:none;color: black;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
-                <input style="display:none;" id="bgColor2" class="colors" type="text" value="#f8f8f8"/>   
+                <div><label input style="display:none;" style="color: black;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
+                <input style="display:none;" id="bgColor2" class="colors" checked="checked" type="text" value="#f8f8f8"/>   
                </div>
                   
                 
@@ -604,7 +604,7 @@ rating2=0;
 
 <div style="clear:both;"></div>
 <div id="container4" >
-        <div id="leftbox"><label style="color: black;"><B>Vary transparency </B></label></div>
+        <div id="leftbox"><label style="color: black;"><B>Vary  transparency </B></label></div>
         <div id="leftmidbox"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
         <div id="rightbox"><label style="color: black;"><B>Vary transparency</B></label></div>
         <div id="rightmidbox"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
@@ -750,8 +750,8 @@ according to the stated goal:<b>Chart 1: Serious</b> and <b>Chart 2: Playful</b>
 <p><B>2. For each chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
 <p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Transparency".</B></p>
 <p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below 
-        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>  
-  </div>
+        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>
+    </div>
 </body>  
 </html>
 
