@@ -376,7 +376,7 @@ d3.json("us-states.json", function(json) {
 					}
 					
 dataset=json.features;					
-DefaultColors2=['#9b4b32','#9c513b','#9c5844','#9c5e4d','#9c6456','#9b6a5f','#9a7068','#997671','#987b7b','#968184','#93878e','#908d97','#908d97','#93878e','#968184','#987b7b','#997671','#9a7068','#9b6a5f','#9c6456','#9c5e4d','#9c5844','#9c513b','#9b4b32'] ;
+DefaultColors2=['#9b4b32', '#9c5039', '#9c5541', '#9c5a48', '#9c5f4f', '#9c6457', '#9b695e', '#9b6e66', '#9a736d', '#997875', '#977d7d', '#958284', '#93868c', '#918b94', '#8e909c', '#918b94', '#93868c', '#958284', '#977d7d', '#997875', '#9a736d', '#9b6e66', '#9b695e', '#9c6457', '#9c5f4f', '#9c5a48', '#9c5541', '#9c5039', '#9b4b32'] ;
 
 drawChart2(DefaultColors2,json.features);
 				});});
@@ -387,7 +387,8 @@ d3.csv("BarDivergent.csv", type, function(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
 dataset1=data;
 
-DefaultColors1=['#9b4b32','#9c513b','#9c5844','#9c5e4d','#9c6456','#9b6a5f','#9a7068','#997671','#987b7b','#968184','#93878e','#908d97','#908d97','#93878e','#968184','#987b7b','#997671','#9a7068','#9b6a5f','#9c6456','#9c5e4d','#9c5844','#9c513b','#9b4b32'];
+DefaultColors1=['#9b4b32', '#9c5039', '#9c5541', '#9c5a48', '#9c5f4f', '#9c6457', '#9b695e', '#9b6e66', '#9a736d', '#997875', '#977d7d', '#958284', '#93868c', '#918b94', '#8e909c', '#918b94', '#93868c', '#958284', '#977d7d', '#997875', '#9a736d', '#9b6e66', '#9b695e', '#9c6457', '#9c5f4f', '#9c5a48', '#9c5541', '#9c5039', '#9b4b32'] ;
+
 drawChart1(DefaultColors1,dataset1);
 
 });
@@ -565,36 +566,7 @@ rating2=0;
 <div id="container1" >
    
       
-        <div id="leftcolumn" >
-               
-                    <div>
-                           
-                        <div><label  style="color: black;"><B><I>Training 1:Categorical Colors--</I></B>Modify colors by clicking on color names below.</label></div>
-                             <div >
-                                  <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
-                                            <ul id="sortable1" >
- 
-                                                    <li id="li1" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list">#9B4B32</li>
-                                                    <li id="li2" style="background: #8E909C;font-size:smaller;width: 5em;" class="list">#8E909C</li>
-                                                    <li id="li3" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list">#9B4B32</li>
-                                                    
-                                           </ul>
-                                 </div> 
- 
-                                 <div id="container5">
-                                 <div id="left">
-                                     <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
-                                     <input  id="steps-seq1" type="number" value="29" style="display:none;" />
-                                 </div>
-                                 <div id="out1" > </div> 
-                                 </div>
-                            </div>
-                          
-                    </div>
-            <div style="clear:both;"></div>
-            <div><label style="color: black;display:none;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
-             <input style="display:none;" id="bgColor1" class="colors" type="text" value="#f8f8f8" />           
-        </div>
+       
         <div id="rightcolumn">
                 
                     <div>
@@ -626,7 +598,36 @@ rating2=0;
                 <input style="display:none;" id="bgColor2" class="colors" checked="checked" type="text" value="#f8f8f8"/>   
                </div>
                   
-                
+              <div id="leftcolumn" >
+               
+                    <div>
+                           
+                        <div><label  style="color: black;"><B><I>Training 1:Categorical Colors--</I></B>Modify colors by clicking on color names below.</label></div>
+                             <div >
+                                  <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
+                                            <ul id="sortable1" >
+ 
+                                                    <li id="li1" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list">#9B4B32</li>
+                                                    <li id="li2" style="background: #8E909C;font-size:smaller;width: 5em;" class="list">#8E909C</li>
+                                                    <li id="li3" style="background: #9B4B32;font-size:smaller;width: 5em;" class="list">#9B4B32</li>
+                                                    
+                                           </ul>
+                                 </div> 
+ 
+                                 <div id="container5">
+                                 <div id="left">
+                                     <label style="color: black; margin-bottom: 0px;">Use Step count to vary the gradient</label>
+                                     <input  id="steps-seq1" type="number" value="29" style="display:none;" />
+                                 </div>
+                                 <div id="out1" > </div> 
+                                 </div>
+                            </div>
+                          
+                    </div>
+            <div style="clear:both;"></div>
+            <div><label style="color: black;display:none;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
+             <input style="display:none;" id="bgColor1" class="colors" type="text" value="#f8f8f8" />           
+        </div>   
         </div>
             
        
@@ -635,7 +636,7 @@ rating2=0;
 <div style="clear:both;"></div>
 <div id="container4" >
         
-    <div id="rightbox" style="padding-left:5%"><label style="color: black;"><B>Vary bar transparency</B></label></div>
+    <div id="rightbox" style="padding-left:8%"><label style="color: black;"><B>Vary bar transparency</B></label></div>
         <div id="rightmidbox" style="padding-left:10%"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
         <div id="leftbox" style="padding-left:23%"><label style="color: black;"><B>Vary bar transparency </B></label></div>
         <div id="leftmidbox"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
