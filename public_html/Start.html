@@ -106,7 +106,7 @@ and open the template in the editor.
         window.location='Informed Consent.html';  
     }else{
         window.localStorage.setItem('uname', result[0].Username);
-        
+        window.localStorage.setItem('link', result[0].link);
         $('#table').dialog({
         height: 310,
         width: 400,
@@ -137,7 +137,7 @@ function checkbox2(){
 } 
 
 function openTraining(){
-    window.location='TrainingCategorical.html';  
+    window.location=localStorage.getItem('link');  
 } 
 function openTask(){
           jsonObj=[];
