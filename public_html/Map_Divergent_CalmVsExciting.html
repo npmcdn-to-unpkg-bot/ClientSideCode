@@ -447,7 +447,7 @@ function updateTask(){
     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/colors',
+    url: 'http://affectstudy.iat.sfu.ca:3000/colors',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -464,7 +464,7 @@ updateObj.push(UpdateDetails);
     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/updateTask',
+    url: 'http://affectstudy.iat.sfu.ca:3000/updateTask',
     data: JSON.stringify(updateObj),
     contentType: 'application/json',
     success: function (data) {
