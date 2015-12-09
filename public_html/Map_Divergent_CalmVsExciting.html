@@ -447,7 +447,7 @@ function updateTask(){
     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/colors',
+    url: 'http://localhost:3000/colors',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -464,7 +464,7 @@ updateObj.push(UpdateDetails);
     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/updateTask',
+    url: 'http://localhost:3000/updateTask',
     data: JSON.stringify(updateObj),
     contentType: 'application/json',
     success: function (data) {
@@ -654,10 +654,10 @@ rating2=0;
 <script src="Slider_4.js"></script> 
 <div style="clear:both;"></div>
 <div id="container2">
-     <button id="inst">Show Instruction</button> 
-     <label id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to save and move to next task</B></label>
+     <button id="inst"><b>Show Instruction</b></button> 
+     <label id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to move to next task</B></label>
      <div id="rate"></div>
-     <button id="save" disabled><b>Click here to Save Task</b></button> 
+     <button id="save" disabled><b>Move to next task</b></button> 
     
    
     

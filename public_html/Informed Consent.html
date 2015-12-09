@@ -37,14 +37,14 @@ and open the template in the editor.
             $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/buildTaskMap',
+    url: 'http://localhost:3000/buildTaskMap',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
     console.log(data); 
     result=JSON.parse(data);
     window.localStorage.setItem('uname', result[0].Username);
-    window.location='TrainingCategorical.html'; 
+    window.location=result[0].Training; 
                             }
     
 
@@ -57,7 +57,7 @@ and open the template in the editor.
             $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/unregisterUser',
+    url: 'http://localhost:3000/unregisterUser',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -99,11 +99,11 @@ The purpose of this study will be to understand how visual designers explore, us
 <h4 align="left" ><b>Participant Recruitment and Selection</b></h4>  
 You must be over 19 years of age and have no major physical or cognitive disabilities. You should have at least 1 year of experience in design. 
 <h4 align="left" ><b> Study Method</b></h4> 
-You will be provided with one of the 2 kinds of chart bar and map chart. Each chart will further have two categories representing categorical, and diverging values and you will have to color each chart to represent positive-negative, trustworthy, disturbing, serious-playful, and calm-exciting. There will be a total of 20 tasks. Once each task is completed you will need to submit the details for further analysis. We will be recording your color choices for further analysis.  
+You will be provided with 2 kinds of chart bar and map chart. Each chart will further have two categories representing categorical, and diverging values and you will have to color each chart to represent positive-negative, trustworthy, disturbing, serious-playful, and calm-exciting. There will be a total of 10 tasks. Once each task is completed you will need to submit the details for further analysis. We will be recording your color choices for further analysis.  
 <h4 align="left" ><b> Data Collection</b></h4>
 For Analysis, the design generated will be saved by us for further analysis. Data collection such as notes and audio of the interview will be kept anonymous.  If you choose to participate in the study using an online communication tool such as Skype, we cannot fully guarantee your anonymity because data is transmitted over the Internet. You have the option to participate (or not) over such mediums. The data will be kept in secure SFU server and will be deleted after analysis and interpretation from the data is done.
 <h4 align="left" ><b> Remuneration</b></h4>
-You will be entered into a lottery for $200 only on completion of all 20 tasks. 
+You will be entered into a lottery for $200 only on completion of all 10 tasks. 
 <h4 align="left" ><b> Acceptance of this Form</b></h4>
 By completing this form you: 1) <b>understand to your satisfaction the information provided to you about your participation in this research project,</b> and 2) <b>agree to participate as a research subject.</b> 
 In no way does this waive your legal rights nor release the investigators, sponsors, or involved institutions from their legal and professional responsibilities. You are free to withdraw from this research project at any time. You should feel free to ask for clarification or new information throughout your participation. To accept this form, please print your name below, sign, and date the form. 

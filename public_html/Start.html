@@ -48,11 +48,12 @@ and open the template in the editor.
           UserTable ["UserId"] = key;
           UserTable ["Sex"] = 'male';
           UserTable ["UserName"] = $("#email").val();
+          UserTable ["DataType"] = 'NA';
           jsonObj.push(UserTable)
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
+    url: 'http://localhost:3000/registerUser',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -87,11 +88,12 @@ and open the template in the editor.
           UserTable ["UserId"] = key;
           UserTable ["Sex"] = 'female';
           UserTable ["UserName"] = $("#email").val();
+          UserTable ["DataType"] = 'NA';
           jsonObj.push(UserTable)
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
+    url: 'http://localhost:3000/registerUser',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -100,7 +102,7 @@ and open the template in the editor.
     result=JSON.parse(data)
     if(result[0].firstTime==="true"){
         window.localStorage.setItem('uname', result[0].Username);
-        
+        window.localStorage.setItem('link', result[0].link);
         window.location='Informed Consent.html';  
     }else{
         window.localStorage.setItem('uname', result[0].Username);
@@ -145,7 +147,7 @@ function openTask(){
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
+    url: 'http://localhost:3000/taskDetails',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
