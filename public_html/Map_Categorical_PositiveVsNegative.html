@@ -112,12 +112,7 @@ function type(d) {
 
 
 $(function() {
-$('#table').dialog({
-        height: 300,
-        width: 560,
-        title: "Task no "+localStorage.getItem('id')+" :Instructions",
-         modal: true
-    });
+
     var width = 250;
     var sequential=true;
     var firstChart = true;
@@ -484,7 +479,12 @@ function showColors(){
     });
 }
 function showInstructions(){
-       $( "#table" ).dialog();
+       $('#table').dialog({
+        height:300,
+        width:560,
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",
+        modal: true
+    });
     
 };
 function createJSON() {
