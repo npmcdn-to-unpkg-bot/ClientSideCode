@@ -33,9 +33,9 @@
   </style>
     <script>
   $(function() {
-    $( "#sortable1" ).sortable();
+   // $( "#sortable1" ).sortable();
     $( "#sortable1" ).disableSelection();
-    $( "#sortable2" ).sortable();
+   //  $( "#sortable2" ).sortable();
     $( "#sortable2" ).disableSelection();
   });
   </script>
@@ -303,7 +303,7 @@ $(function() {
      $("#"+elementid).addClass('highlight');
    
     $('#table1').dialog({
-        height: 510,
+        height: 580,
         width: 200,
         title: "Color List"
     });
@@ -368,7 +368,7 @@ d3.json("us-states.json", function(json) {
 					}
 					
 dataset=json.features;					
-DefaultColors=['#989898','#c67036','#989898','#c67036','#989898'];
+DefaultColors=['#d4d4d4','#899390','#d4d4d4','#899390','#d4d4d4'];
 drawChart1(DefaultColors,json.features);
 drawChart2(DefaultColors,json.features);
 				});});
@@ -436,7 +436,7 @@ function updateTask(){
      $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/colors',
+    url: 'http://localhost:3000/colors',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -453,7 +453,7 @@ updateObj.push(UpdateDetails);
     $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/updateTask',
+    url: 'http://localhost:3000/updateTask',
     data: JSON.stringify(updateObj),
     contentType: 'application/json',
     success: function (data) {
@@ -469,7 +469,7 @@ updateObj.push(UpdateDetails);
 }
 function showColors(){
        $('#table1').dialog({
-       height: 510,
+       height: 580,
         width: 200,
         title: "Color List"
     });
@@ -577,11 +577,11 @@ rating2=0;
                                   <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
-                                                    <li id="li1" style="background: #989898;font-size:smaller;width: 5em;" class="list" >#989898</li>
-                                                    <li id="li2" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li3" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
-                                                    <li id="li4" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li5" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
+                                                    <li id="li1" style="background: #d4d4d4;font-size:smaller;width: 5em;" class="list" >#d4d4d4</li>
+                                                    <li id="li2" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li3" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li4" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li5" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
                                            </ul>
                                  </div> 
  
@@ -607,11 +607,11 @@ rating2=0;
                          <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
-                                                    <li id="li6" style="background: #989898;font-size:smaller; width: 5em" class="list">#989898</li>
-                                                    <li id="li7" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li8" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
-                                                    <li id="li9" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li10" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
+                                                    <li id="li6" style="background: #d4d4d4;font-size:smaller; width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li7" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li8" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li9" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li10" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
                                             </ul>
                                  </div>   
                         <div id="container6">
@@ -661,118 +661,135 @@ rating2=0;
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table1" >
 
 <TABLE>
-<tr><td BGCOLOR="#fc1a00" id="#fc1a00"  class="colorSample" ></td>
+<tr><td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#cf2616" id="#cf2616"  class="colorSample" ></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
     <td class="hack"></td>
 </tr>
 <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#f3d02d" id="#f3d02d"  class="colorSample" ></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
     <td class="hack"></td> 
-    <td BGCOLOR="#f8b010" id="#f8b010"  class="colorSample" ></td>
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
     <td class="hack"></td> 
-    <td BGCOLOR="#f27c13" id="#f27c13"  class="colorSample" ></td>
+    <td BGCOLOR="#ff8000" id="#ff8000"  class="colorSample" ></td>
     <td class="hack"></td>
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#eac793" id="#eac793"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#c67036" id="#c67036"  class="colorSample" ></td>
+    <td BGCOLOR="#ffab1c" id="#ffab1c"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#713713" id="#713713"  class="colorSample" ></td>
+    <td BGCOLOR="#f3d027" id="#f3d027"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr> 
  <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#ccd61b" id="#ccd61b"  class="colorSample" ></td>
+    <td BGCOLOR="#ddd8ba" id="#ddd8ba"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#a5b34b" id="#a5b34b"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#465e20" id="#465e20"  class="colorSample" ></td>
+    <td BGCOLOR="#b7de55" id="#b7de55"  class="colorSample" ></td>
+     <td class="hack"></td>
+</tr>
+ <td class="hack"></td>
+<tr>
+    <td BGCOLOR="#51692b" id="#51692b"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#6e746a" id="#6e746a"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#add9a1" id="#add9a1"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
-     <td class="hack"></td>
     <td BGCOLOR="#23bf0c" id="#23bf0c"  class="colorSample" ></td>
      <td class="hack"></td>
+    <td BGCOLOR="#899390" id="#899390"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+    
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#a2ccc0" id="#a2ccc0"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#24beb9" id="#24beb9"  class="colorSample" ></td>
-     <td class="hack"></td>
     <td BGCOLOR="#478f8d" id="#478f8d"  class="colorSample" ></td>
      <td class="hack"></td>
-    
-    
-</tr>
- <td class="hack"></td>
-<tr>
-    <td BGCOLOR="#91d2f5" id="#91d2f5"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#40c9ff" id="#40c9ff"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#005e5c" id="#005e5c"  class="colorSample" ></td>
+    <td BGCOLOR="#00beb9" id="#00beb9"  class="colorSample" ></td>
      <td class="hack"></td>
     
 </tr>
  <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#87acec" id="#87acec"  class="colorSample" ></td>
+    <td BGCOLOR="#116160" id="#116160"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#aad2e0" id="#aad2e0"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#32bff2" id="#32bff2"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+<td class="hack"></td>
+<tr>
+    
+    <td BGCOLOR="#8ad2f1" id="#8ad2f1"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#0073aa" id="#0073aa"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#335671" id="#335671"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+<td class="hack"></td>
+<tr>
+    <td BGCOLOR="#0572cd" id="#0572cd"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#1b4c79" id="#1b4c79"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#83b3e3" id="#83b3e3"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+ <td class="hack"></td>
+<tr>
+    <td BGCOLOR="#30355f" id="#30355f"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#6d6eb9" id="#6d6eb9"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#9796bb" id="#9796bb"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#0878b0" id="#0878b0"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
 </tr>
-<td class="hack"></td>
+ <td class="hack"></td>
 <tr>
-    
-    <td BGCOLOR="#6d6eb9" id="#6d6eb9"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#6e47bc" id="#6e47bc"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#853d84" id="#853d84"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
-</tr>
-<td class="hack"></td>
-<tr>
-    <td BGCOLOR="#ddb1c7" id="#ddb1c7"  class="colorSample" ></td>
+    <td BGCOLOR="#423fa8" id="#423fa8"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#a857aa" id="#a857aa"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#f64389" id="#f64389"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
-</tr>
- <td class="hack"></td>
-<tr>
-    <td BGCOLOR="#ded9bb" id="#ded9bb"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#f4e5d4" id="#f4e5d4"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#d4b5bb" id="#d4b5bb"  class="colorSample" ></td>
+    <td BGCOLOR="#863e85" id="#863e85"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr>
- <td class="hack"></td>
+<td class="hack"></td>
 <tr>
+    <td BGCOLOR="#dfb0c7" id="#dfb0c7"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#f9468c" id="#f9468c"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#f80f19" id="#f80f19"  class="colorSample" ></td>
+     <td class="hack"></td>
+</tr>
+<td class="hack"></td>
+<tr>
+    <td BGCOLOR="#3c3c3c" id="#3c3c3c"  class="colorSample" ></td>
+     <td class="hack"></td>
     <td BGCOLOR="#d4d4d4" id="#d4d4d4"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#989898" id="#989898"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#3b3b3b" id="#3b3b3b"  class="colorSample" ></td>
-     <td class="hack"></td>
+   
 </tr>
 </TABLE>
 </DIV>

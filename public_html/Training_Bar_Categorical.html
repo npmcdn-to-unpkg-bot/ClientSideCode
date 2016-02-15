@@ -14,15 +14,15 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>  
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script type = "text/javascript" >
-    history.pushState(null, null, 'TrainingCategorical.html');
+ <script type = "text/javascript" >
+    history.pushState(null, null, 'Training_Bar_Categorical.html');
     window.addEventListener('popstate', function(event) {
-    history.pushState(null, null, 'TrainingCategorical.html');
+    history.pushState(null, null, 'Training_Bar_Categorical.html');
     });
     </script>
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
 <style>
   #cart1 { width: 100%; height: 20%; float: left; margin: 0px; }
   #sortable1 { list-style-type: none; margin: 0; padding: 0; width:100%; background-color: white;}
@@ -33,9 +33,9 @@
   </style>
     <script>
   $(function() {
-    $( "#sortable1" ).sortable();
+   // $( "#sortable1" ).sortable();
     $( "#sortable1" ).disableSelection();
-    $( "#sortable2" ).sortable();
+   //  $( "#sortable2" ).sortable();
     $( "#sortable2" ).disableSelection();
   });
   </script>
@@ -58,6 +58,7 @@
         
     </div>
 <script>
+
 
 var list;
 
@@ -94,15 +95,7 @@ var svg2 = d3.select("#chart2").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    
-    
-var projection = d3.geo.albersUsa()
-     .scale(width+100)
-    .translate([(width/ 2), height/ 2]);
 
-			//Define path generator
-var path = d3.geo.path()
-.projection(projection);
 function type(d) {
   d.frequency = +d.frequency;
   return d;
@@ -112,6 +105,7 @@ function type(d) {
 
 
 $(function() {
+    
 $('#table').dialog({
         height: 480,
         width: 560,
@@ -199,11 +193,11 @@ $('#table').dialog({
         var range = _.range(steps).map(function(s) {
             return 'min+'+(s+1)+'*d';
         });
-     console.log(list);
+     //export_palette(list);
       if(firstChart)
-      {drawChart1(cols,dataset1);    //export_palette(d3_syntax_full);
+      {drawChart1(cols);    //export_palette(d3_syntax_full);
       }else{
-      drawChart2(cols,dataset);  
+      drawChart2(cols);  
       }
     }
 
@@ -272,7 +266,8 @@ $('#table').dialog({
    // if (location.hash) unserializeUrl()
 
     //updateMode();
-    $('#colors1').change(update1);
+
+     $('#colors1').change(update1);
     $('#steps-seq1').change(update1);
     $('#colors2').change(update2);
     $('#steps-seq2').change(update2);
@@ -287,11 +282,10 @@ $('#table').dialog({
     update1();
     update2();
 
-    $('#mode-toggle').click(toggleMode);
+     $('#mode-toggle').click(toggleMode);
 
-    $("#next").click(updateTask);
     $("#save").click(writeDownloadLink);
-    $("#startTask").click(updateTask);
+    $("#next").click(updateTask);
     $("#list").click(showColors);
     $("#inst").click(showInstructions);
     $( "#cart1" ).droppable({
@@ -309,11 +303,12 @@ $('#table').dialog({
       elementid=ev.target.id;
      $("#"+elementid).addClass('highlight');
    
-     $('#table1').dialog({
-        height: 510,
+    $('#table1').dialog({
+        height: 580,
         width: 200,
         title: "Color List"
     });
+    
       $( "#table1" ).dialog({
   close: function( event, ui ) {
       $(".list").removeClass('highlight');
@@ -334,11 +329,9 @@ $('#table').dialog({
     
   
     
-
 });
 var dataset=[];
-var dataset1=[];
-var jsonObj = [];
+
 var colorNames=[];
 d3.csv("ColorName.csv", type, function(error, data) {
   data.forEach(function(d) {
@@ -346,61 +339,27 @@ d3.csv("ColorName.csv", type, function(error, data) {
      colorNames.push(d["Names"]);
   });
 });
-d3.csv("MapCategory1.csv", function(data) {
-
-     
-d3.json("us-states.json", function(json) {
-					//Merge the ag. data and GeoJSON
-					//Loop through once for each ag. data value
-					for (var i = 0; i < data.length; i++) {
-				
-						var dataState = data[i].state;				//Grab state name
-						var dataValue = parseFloat(data[i].value);	//Grab data value, and convert from string to float
-				
-						//Find the corresponding state inside the GeoJSON
-						for (var j = 0; j < json.features.length; j++) {
-						
-							var jsonState = json.features[j].properties.name;
-				
-							if (dataState == jsonState) {
-						
-								//Copy the data value into the JSON
-								json.features[j].properties.value = dataValue;
-								
-								//Stop looking through the JSON
-								break;
-								
-							}
-						}		
-					}
-					
-dataset=json.features;					
-DefaultColors2=['#c67036','#9c513b','#9c5844','#9c5e4d','#9c6456','#9b6a5f','#9a7068','#997671','#987b7b','#968184','#93878e','#908d97','#908d97','#93878e','#968184','#987b7b','#997671','#9a7068','#9b6a5f','#9c6456','#9c5e4d','#9c5844','#9c513b','#c67036'] ;
-
-drawChart2(DefaultColors2,json.features);
-				});});
 
 
 d3.csv("BarCategory.csv", type, function(error, data) {
   x.domain(data.map(function(d) { return d.letter; }));
   y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
-dataset1=data;
+dataset=data;
 
-DefaultColors1=['#989898','#c67036','#989898','#c67036','#989898'];
-drawChart1(DefaultColors1,dataset1);
-
+DefaultColors=['#d4d4d4','#899390','#d4d4d4','#899390','#d4d4d4'] ;
+drawChart1(DefaultColors);
+drawChart2(DefaultColors);
 });
 
 
-function drawChart1(myColor,data){
+
+function drawChart1(myColor){
     var color= d3.scale.ordinal()
         .domain([1,2,3,4,5])
         .range(myColor);
-//       console.log(x.domain());
-//        console.log(y.domain());
-       
+//console.log(color.range());
     var bar= svg1.selectAll("rect")
-      .data(data);
+      .data(dataset);
   
     var rateById = {};
     bar.enter().append("rect");
@@ -415,36 +374,36 @@ function drawChart1(myColor,data){
 
 
 }
-function drawChart2(myColor,data){ 
-     var color= d3.scale.ordinal()
+function drawChart2(myColor){
+    var color= d3.scale.ordinal()
         .domain([1,2,3,4,5])
         .range(myColor);
-    var map= svg2.selectAll("path")
-            .data(data)
-	
-        map.enter()
-	.append("path")
-	.attr("d", path)
-	map .style("fill", function(d) {
-					  
-					   		var value = d.properties.value;
-					   		
-					   		if (value) {
-					   			//If value exists…
-						   		return color(value);
-					   		} else {
-					   			//If value is undefined…
-						   		return "#ccc";
-					   		}
-					   });
+//console.log(color.range());
+  
+  var bar1= svg2.selectAll("rect")
+      .data(dataset);
+  
+    
+    bar1.enter().append("rect");
+   
+   
+    bar1.attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .style("fill", function(d) { return color(d.letter); })
+      .attr("height", function(d) { return height - y(d.frequency); });
+  
 
 }
 
 function writeDownloadLink(){
    
-    document.getElementById("next").disabled = false;
+     
+   
+   //document.getElementById("next").disabled = false;
   //  createJSON();
     updateTask();
+ 
 };
 function updateTask(){
     
@@ -456,7 +415,7 @@ function updateTask(){
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
+    url: 'http://localhost:3000/taskDetails',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -467,15 +426,13 @@ function updateTask(){
     window.location=result[0].link; 
                             }
     
-
 });
 }
-
 function showColors(){
-        $('#table1').dialog({
-        height: 510,
-        width: 200,
-        title: "Color List"
+       $('#table1').dialog({
+      height: 580,
+      width: 200,
+      title: "Color List"
     });
 }
 function showInstructions(){
@@ -484,8 +441,7 @@ function showInstructions(){
 };
       
 function createJSON() {
-  
- jsonObj = [];
+    jsonObj = [];
     string1=[];
     string2=[];
     $( '#sortable1' ).find("li").each(function( index ) {
@@ -500,10 +456,10 @@ function createJSON() {
     // console.log(string);  
 
         UserDetails = {};
-        UserDetails ["UserId"] = localStorage.getItem('uname');
+         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Calm";
-        UserDetails ["ChartType"] = "Map";
+         UserDetails ["Task"] = "Calm";
+        UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
         UserDetails ["ColorsUsed"] = string1;
@@ -527,14 +483,14 @@ function createJSON() {
         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
         UserDetails ["Task"] = "Exciting";
-        UserDetails ["ChartType"] = "Map";
+        UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
         UserDetails ["ColorsUsed"] = string2;
         UserDetails ["AlphaValue"] = sliderValue2;
         UserDetails ["Timestamp"] = Date.now();
         UserDetails ["UserRating"] = sliderValue4;
-       
+        
 //  $.each(colorNames, function( index, value ) {
 // 
 //  if(string2.indexOf(colorNames[index].toString())>-1){
@@ -547,10 +503,9 @@ function createJSON() {
     
      //window.localStorage.setItem('jsonObj', JSON.stringify(jsonObj));
     
- 
+ updateTask();
+}   
 
-
-}  
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     colorData=ev.target.id;
@@ -558,12 +513,12 @@ function drag(ev) {
 
 
 function drop(ev) {
-    console.log("hi");
+    
 }
 rating1=0;
-rating2=0;        
+rating2=0;
 </script>
-  <div style="clear:both;"></div> 
+<div style="clear:both;"></div> 
 <div id="container1" >
    
       
@@ -576,11 +531,11 @@ rating2=0;
                                   <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
-                                                    <li id="li1" style="background: #989898;font-size:smaller;width: 5em;" class="list" >#989898</li>
-                                                    <li id="li2" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li3" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
-                                                    <li id="li4" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li5" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
+                                                    <li id="li1" style="background: #d4d4d4;font-size:smaller;width: 5em;" class="list" >#d4d4d4</li>
+                                                    <li id="li2" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li3" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li4" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li5" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
                                            </ul>
                                  </div> 
  
@@ -606,11 +561,11 @@ rating2=0;
                          <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
-                                                    <li id="li6" style="background: #989898;font-size:smaller; width: 5em" class="list">#989898</li>
-                                                    <li id="li7" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li8" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
-                                                    <li id="li9" style="background: #c67036;font-size:smaller;width: 5em" class="list">#c67036</li>
-                                                    <li id="li10" style="background: #989898;font-size:smaller;width: 5em" class="list">#989898</li>
+                                                    <li id="li6" style="background: #d4d4d4;font-size:smaller; width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li7" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li8" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li9" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                    <li id="li10" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
   
                                             </ul>
                                  </div>   
@@ -661,134 +616,148 @@ rating2=0;
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table1" >
 
 <TABLE>
-<tr><td BGCOLOR="#fc1a00" id="#fc1a00"  class="colorSample" ></td>
+<tr><td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#cf2616" id="#cf2616"  class="colorSample" ></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
     <td class="hack"></td>
 </tr>
 <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#f3d02d" id="#f3d02d"  class="colorSample" ></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
     <td class="hack"></td> 
-    <td BGCOLOR="#f8b010" id="#f8b010"  class="colorSample" ></td>
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
     <td class="hack"></td> 
-    <td BGCOLOR="#f27c13" id="#f27c13"  class="colorSample" ></td>
+    <td BGCOLOR="#ff8000" id="#ff8000"  class="colorSample" ></td>
     <td class="hack"></td>
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#eac793" id="#eac793"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#c67036" id="#c67036"  class="colorSample" ></td>
+    <td BGCOLOR="#ffab1c" id="#ffab1c"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#713713" id="#713713"  class="colorSample" ></td>
+    <td BGCOLOR="#f3d027" id="#f3d027"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr> 
  <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#ccd61b" id="#ccd61b"  class="colorSample" ></td>
+    <td BGCOLOR="#ddd8ba" id="#ddd8ba"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#a5b34b" id="#a5b34b"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#465e20" id="#465e20"  class="colorSample" ></td>
+    <td BGCOLOR="#b7de55" id="#b7de55"  class="colorSample" ></td>
+     <td class="hack"></td>
+</tr>
+ <td class="hack"></td>
+<tr>
+    <td BGCOLOR="#51692b" id="#51692b"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#6e746a" id="#6e746a"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#add9a1" id="#add9a1"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
-     <td class="hack"></td>
     <td BGCOLOR="#23bf0c" id="#23bf0c"  class="colorSample" ></td>
      <td class="hack"></td>
+    <td BGCOLOR="#899390" id="#899390"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+    
 </tr>
  <td class="hack"></td>
 <tr>
     <td BGCOLOR="#a2ccc0" id="#a2ccc0"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#24beb9" id="#24beb9"  class="colorSample" ></td>
-     <td class="hack"></td>
     <td BGCOLOR="#478f8d" id="#478f8d"  class="colorSample" ></td>
      <td class="hack"></td>
-    
-    
-</tr>
- <td class="hack"></td>
-<tr>
-    <td BGCOLOR="#91d2f5" id="#91d2f5"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#40c9ff" id="#40c9ff"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#005e5c" id="#005e5c"  class="colorSample" ></td>
+    <td BGCOLOR="#00beb9" id="#00beb9"  class="colorSample" ></td>
      <td class="hack"></td>
     
 </tr>
  <td class="hack"></td>
 <tr>
-    <td BGCOLOR="#87acec" id="#87acec"  class="colorSample" ></td>
+    <td BGCOLOR="#116160" id="#116160"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#aad2e0" id="#aad2e0"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#32bff2" id="#32bff2"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+<td class="hack"></td>
+<tr>
+    
+    <td BGCOLOR="#8ad2f1" id="#8ad2f1"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#0073aa" id="#0073aa"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#335671" id="#335671"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+<td class="hack"></td>
+<tr>
+    <td BGCOLOR="#0572cd" id="#0572cd"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#1b4c79" id="#1b4c79"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#83b3e3" id="#83b3e3"  class="colorSample" ></td>
+     <td class="hack"></td>
+    
+</tr>
+ <td class="hack"></td>
+<tr>
+    <td BGCOLOR="#30355f" id="#30355f"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#6d6eb9" id="#6d6eb9"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#9796bb" id="#9796bb"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#0878b0" id="#0878b0"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
 </tr>
-<td class="hack"></td>
+ <td class="hack"></td>
 <tr>
-    
-    <td BGCOLOR="#6d6eb9" id="#6d6eb9"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#6e47bc" id="#6e47bc"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#853d84" id="#853d84"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
-</tr>
-<td class="hack"></td>
-<tr>
-    <td BGCOLOR="#ddb1c7" id="#ddb1c7"  class="colorSample" ></td>
+    <td BGCOLOR="#423fa8" id="#423fa8"  class="colorSample" ></td>
      <td class="hack"></td>
     <td BGCOLOR="#a857aa" id="#a857aa"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#f64389" id="#f64389"  class="colorSample" ></td>
-     <td class="hack"></td>
-    
-</tr>
- <td class="hack"></td>
-<tr>
-    <td BGCOLOR="#ded9bb" id="#ded9bb"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#f4e5d4" id="#f4e5d4"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#d4b5bb" id="#d4b5bb"  class="colorSample" ></td>
+    <td BGCOLOR="#863e85" id="#863e85"  class="colorSample" ></td>
      <td class="hack"></td>
 </tr>
- <td class="hack"></td>
+<td class="hack"></td>
 <tr>
+    <td BGCOLOR="#dfb0c7" id="#dfb0c7"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#f9468c" id="#f9468c"  class="colorSample" ></td>
+     <td class="hack"></td>
+    <td BGCOLOR="#f80f19" id="#f80f19"  class="colorSample" ></td>
+     <td class="hack"></td>
+</tr>
+<td class="hack"></td>
+<tr>
+    <td BGCOLOR="#3c3c3c" id="#3c3c3c"  class="colorSample" ></td>
+     <td class="hack"></td>
     <td BGCOLOR="#d4d4d4" id="#d4d4d4"  class="colorSample" ></td>
      <td class="hack"></td>
-    <td BGCOLOR="#989898" id="#989898"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#3b3b3b" id="#3b3b3b"  class="colorSample" ></td>
-     <td class="hack"></td>
+   
 </tr>
 </TABLE>
 </DIV>
   <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
       For each of chart in this section  we ask you to choose colors that you think would be appropriate to convey the following impressions: <b>Training 1(left) Happy</b> and <b>Training 2(right): Sad</b>
 <p>Follow The following Steps:</p>
-<p><B>1. Click on the color buttons Underneath "Training 1". Once the color palette opens , you can choose a color by just selecting it from the palette.</B></p>
-<p><B>2. For the  Bar Chart (Training 1) you need to select 5 colors. It represents a categorical dataset, where each color refers to one category.</B></p>
-<p><B>3. For the US Map Chart (Training 2) you need to select 5 colors. It represents a categorical dataset, where each color refers to one category.</B></p>
-<p><B>4. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Bar Transparency".</B></p>
-<p><B>5. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below <i>(1-being least satisfied to 10-being most satisfied)</i>. 
+<p><B>1. Click on the color buttons Underneath "Training 1" and "Training 2". Once the color palette opens , you can choose a color by just selecting it from the palette.</B></p>
+<p><B>2. For the  Bar Chart (Training 1 and 2) you need to select 5 colors. It represents a categorical dataset, where each color refers to one category.</B></p>
+<p><B>3. For each chart you can vary transparency to your choice by using the slider below the "Vary Transparency".</B></p>
+<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below <i>(1-being least satisfied to 10-being most satisfied)</i>. 
          Once you have rated both charts in this training task,  you finish your training and move to the main experiment.</B></p>
-<p><B>6. Once both the tasks are rated it enables the button "Move to next Task". Click it and move to main experiment.</B></p>
+<p><B>5. Once both the tasks are rated it enables the button "Move to next Task". Click it and move to main experiment.</B></p>
 
     </div>
 </body>  
 </html>
-
- 

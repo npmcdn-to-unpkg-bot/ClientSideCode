@@ -14,14 +14,14 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>  
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script type = "text/javascript" >
-    history.pushState(null, null, 'Map_Categorical_Trust.html');
-    window.addEventListener('popstate', function(event) {
-    history.pushState(null, null, 'Map_Categorical_Trust.html');
-    });
-</script>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+   <script type = "text/javascript" >
+    history.pushState(null, null, 'Training_Map_Diverging.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Training_Map_Diverging.html');
+    });
+    </script>
   <link rel="stylesheet" href="/resources/demos/style.css">
 <style>
   #cart1 { width: 100%; height: 20%; float: left; margin: 0px; }
@@ -47,18 +47,17 @@
 
   <div id="container3">
         
-    <label id="task1" style="color: black;padding-left:25%;"><b>1.Trustworthy</b></label>
-    <label id="task2" style="color: black; display:none;"><b>2.Questionable</b></label>
+    <label id="task1" style="color: black;"><b>1.Happy</b></label>
+     <label id="task2" style="color: black;"><b>2.Sad</b></label>
         
     </div>
     <div id="container">
         
-        <div style="padding-left:25%;" id="chart1"></div>  
-        <div style="display:none;" id="chart2"></div>  
+        <div id="chart1"></div>  
+        <div id="chart2"></div>  
         
     </div>
 <script>
-
 var list;
 
 var margin = {top: 0, right: 0, bottom: 0, left: 2},
@@ -99,8 +98,6 @@ var svg2 = d3.select("#chart2").append("svg")
 var projection = d3.geo.albersUsa()
      .scale(width+100)
     .translate([(width/ 2), height/ 2]);
-
-
 			//Define path generator
 var path = d3.geo.path()
 .projection(projection);
@@ -112,8 +109,15 @@ function type(d) {
 
 
 
-$(function() {
 
+
+$(function() {
+$('#table').dialog({
+        height: 480,
+        width: 560,
+        title: "Training Instructions For Diverging Data",
+         modal: true
+    });
     var width = 250;
     var sequential=true;
     var firstChart = true;
@@ -269,11 +273,7 @@ $(function() {
 
     //updateMode();
 
-    
-
-    
-    
-    
+     //updateMode();
     $('#colors1').change(update1);
     $('#steps-seq1').change(update1);
     $('#colors2').change(update2);
@@ -287,9 +287,9 @@ $(function() {
 //
 //  }
     update1();
-   // update2();
+    update2();
 
-     $('#mode-toggle').click(toggleMode);
+    $('#mode-toggle').click(toggleMode);
 
     $("#save").click(writeDownloadLink);
     $("#next").click(updateTask);
@@ -310,7 +310,7 @@ $(function() {
       elementid=ev.target.id;
      $("#"+elementid).addClass('highlight');
    
-     $('#table1').dialog({
+    $('#table1').dialog({
         height: 580,
         width: 200,
         title: "Color List"
@@ -331,11 +331,10 @@ $(function() {
    $('#'+elementid).text(color);
    
    update1();
-   //update2();
+   update2();
     });
     
   
-       
         
   
 });
@@ -348,7 +347,7 @@ d3.csv("ColorName.csv", type, function(error, data) {
      colorNames.push(d["Names"]);
   });
 });
-d3.csv("MapCategory.csv", function(data) {
+d3.csv("MapDiverging.csv", function(data) {
 
      
 d3.json("us-states.json", function(json) {
@@ -377,7 +376,8 @@ d3.json("us-states.json", function(json) {
 					}
 					
 dataset=json.features;					
-DefaultColors=['#d4d4d4','#899390','#d4d4d4','#899390','#d4d4d4'] ;
+DefaultColors=['#899390','#8e9795','#939c99','#99a19e','#9ea5a3','#a3aaa8','#a8aead','#aeb3b1','#b3b8b6','#b9bcbb','#bec1c0','#c3c6c5','#c9caca','#cecfcf','#d4d4d4','#cecfcf','#c9caca','#c3c6c5','#bec1c0','#b9bcbb','#b3b8b6','#aeb3b1','#a8aead','#a3aaa8','#9ea5a3','#99a19e','#939c99','#8e9795','#899390'] ;
+
 drawChart1(DefaultColors,json.features);
 drawChart2(DefaultColors,json.features);
 				});});
@@ -387,8 +387,8 @@ drawChart2(DefaultColors,json.features);
 
 
 function drawChart1(myColor,data){
-       var color= d3.scale.ordinal()
-        .domain([1,2,3,4,5])
+      var color= d3.scale.quantize()
+        .domain(d3.range(0,30))
         .range(myColor);
     var map= svg1.selectAll("path")
             .data(data)
@@ -411,8 +411,8 @@ function drawChart1(myColor,data){
 
 }
 function drawChart2(myColor,data){ 
-     var color= d3.scale.ordinal()
-        .domain([1,2,3,4,5])
+    var color= d3.scale.quantize()
+        .domain(d3.range(0,30))
         .range(myColor);
     var map= svg2.selectAll("path")
             .data(data)
@@ -420,7 +420,7 @@ function drawChart2(myColor,data){
         map.enter()
 	.append("path")
 	.attr("d", path)
-	map .style("fill", function(d) {
+	map.style("fill", function(d) {
 					  
 					   		var value = d.properties.value;
 					   		
@@ -437,63 +437,48 @@ function drawChart2(myColor,data){
 
 function writeDownloadLink(){
    
+     
+   
   // document.getElementById("next").disabled = false;
-   createJSON();
+  //  createJSON();
+    updateTask();
+ 
 };
-
 function updateTask(){
-    $.ajax({
+    
+            
+        jsonObj=[];
+          UserTable = {};
+          UserTable ["UserName"] = localStorage.getItem('uname');;
+          jsonObj.push(UserTable)
+          $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/colors',
+    url: 'http://localhost:3000/taskDetails',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
-      console.log(data); }
-
-
-});
-updateObj=[];
-UpdateDetails = {};
-UpdateDetails ["id"] = localStorage.getItem('id');
-UpdateDetails ["Username"] =localStorage.getItem('uname');
-UpdateDetails ["TaskDone"] ="true";
-updateObj.push(UpdateDetails);
-    $.ajax({
-    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
-    type: 'POST',
-    url: 'http://localhost:3000/updateTask',
-    data: JSON.stringify(updateObj),
-    contentType: 'application/json',
-    success: function (data) {
+        console.log(data);
     result=JSON.parse(data)
     window.localStorage.setItem('id', result[0].id);
     window.localStorage.setItem('uname', result[0].Username);
     window.location=result[0].link; 
-                            
-    }
+                            }
     
-
 });
 }
 function showColors(){
-        $('#table1').dialog({
+       $('#table1').dialog({
         height: 580,
         width: 200,
         title: "Color List"
     });
 }
 function showInstructions(){
-       $('#table').dialog({
-        height:300,
-        width:560,
-        title: "Task no "+localStorage.getItem('id')+" :Instructions",
-        modal: true
-    });
-    
+       $( "#table" ).dialog();
 };
 function createJSON() {
-       jsonObj = [];
+    jsonObj = [];
     string1=[];
     string2=[];
     $( '#sortable1' ).find("li").each(function( index ) {
@@ -510,15 +495,15 @@ function createJSON() {
         UserDetails = {};
         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Trustworthy";
+        UserDetails ["Task"] = "Calm";
         UserDetails ["ChartType"] = "Map";
-        UserDetails ["ValueType"] = "Category";
+        UserDetails ["ValueType"] = "Divergent";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
         UserDetails ["ColorsUsed"] = string1;
         UserDetails ["AlphaValue"] = sliderValue1;
         UserDetails ["Timestamp"] = Date.now();
-        UserDetails ["UserRating"] = sliderValue5;
-       
+        UserDetails ["UserRating"] = sliderValue3;
+        
          
 //        $.each(colorNames, function( index, value ) {
 // 
@@ -530,46 +515,72 @@ function createJSON() {
 //});
        
         jsonObj.push(UserDetails);
-        updateTask();
+    
+        UserDetails = {};
+        UserDetails ["UserId"] = localStorage.getItem('uname');
+        UserDetails ["TaskId"] = localStorage.getItem('id');
+        UserDetails ["Task"] = "Exciting";
+        UserDetails ["ChartType"] = "Map";
+        UserDetails ["ValueType"] = "Divergent";
+        UserDetails ["StepperCount"] = $('#steps-seq1').val();
+        UserDetails ["ColorsUsed"] = string2;
+        UserDetails ["AlphaValue"] = sliderValue2;
+        UserDetails ["Timestamp"] = Date.now();
+        UserDetails ["UserRating"] = sliderValue4;
+       
+//  $.each(colorNames, function( index, value ) {
+// 
+//  if(string2.indexOf(colorNames[index].toString())>-1){
+//      UserDetails[colorNames[index].toString()]=1;
+//  }else{
+//      UserDetails[colorNames[index].toString()]=0;
+//  };
+//}); 
+     jsonObj.push(UserDetails);
+    
+     //window.localStorage.setItem('jsonObj', JSON.stringify(jsonObj));
+    updateTask();
+ 
+  
 }   
 
- function drag(ev) {
+
+function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     colorData=ev.target.id;
 }
 
 
 function drop(ev) {
-  
+   
 }
 rating1=0;
-rating2=0;     
+rating2=0;
 </script>
 <div style="clear:both;"></div> 
 <div id="container1" >
    
       
-        <div id="leftcolumn" style="margin-left: 27%;">
+        <div id="leftcolumn" >
                
-                  <div>
+                    <div>
                            
-                        <div><label style="color: black;"><B>Training 1:Happy--<I>TRUSTWORTHY</I>:</B>Modify colors by clicking on color names below.</label></div>
+                         <div><label  style="color: black;"><B><I>Training 1:Happy--</I></B>Modify colors by clicking on color names below.</label></div>
                              <div >
                                   <div id="cart1" style="background-color: white;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
-                                                    <li id="li1" style="background: #d4d4d4;font-size:smaller;width: 5em;" class="list" >#d4d4d4</li>
-                                                    <li id="li2" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
-                                                    <li id="li3" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
-                                                    <li id="li4" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
-                                                    <li id="li5" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li1" style="background: #899390;font-size:smaller;width: 5em;" class="list">#899390</li>
+                                                    <li id="li2" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li3" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                   
                                            </ul>
                                  </div> 
  
                                  <div id="container5">
                                  <div id="left">
-                                     <label style="color: black;margin-bottom: 0px"></label>
-                                     <input id="steps-seq1"  style="color: black;display:none;" type="number" value="5" READONLY/>
+                                     
+                                     <input id="steps-seq1" type="number" value="29" style="display:none;" />
                                  </div>
                                  <div id="out1" > </div> 
                                  </div>
@@ -578,20 +589,29 @@ rating2=0;
                     </div>
             <div style="clear:both;"></div>
             <div><label style="color: black;display:none;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
-             <input style="display:none;" id="bgColor1" class="colors" checked="checked" type="text" value="#f8f8f8" />           
+             <input style="display:none;" id="bgColor1" class="colors" type="text" value="#f8f8f8" />           
         </div>
-        <div style="display:none;" id="rightcolumn">
+        <div id="rightcolumn">
                 
                     <div>
-                        <div><label style="color: black;"><B>Chart2:</B>Enter 5 colors to design for <I>DISTURBING</I>. Refer table below for a list of Colors or hex codes</label></div>
-                        <div>
-                        <input id="colors2" class="colors" checked="checked" type="text" value="yellow,orange,purple,blue,green" />     
+                        <div><label  style="color: black;"><B><I>Training 2:Sad--</I></B>Modify colors by clicking on color names below.</label></div>
+                             <div>
+                         <div id="cart2" style="background-color: white;" ondrop="drop(event)" >
+                                            <ul id="sortable2" >
+ 
+                                                    <li id="li4" style="background: #899390;font-size:smaller;width: 5em;" class="list" >#899390</li>
+                                                    <li id="li5" style="background: #d4d4d4;font-size:smaller;width: 5em" class="list">#d4d4d4</li>
+                                                    <li id="li6" style="background: #899390;font-size:smaller;width: 5em" class="list">#899390</li>
+                                                   
+  
+                                            </ul>
+                                 </div>   
                         <div id="container6">
                                   <div id="left2">
-                                   
-                                    <input id="steps-seq2" checked="checked" type="number" value="5" READONLY/>
+                                    
+                                    <input id="steps-seq2"  type="number" value="29" style="display:none;"/>
                             </div>
-                            <div id="out2" ></div> 
+                            <div id="out2" > </div> 
 
                            </div>
                         </div>
@@ -599,10 +619,9 @@ rating2=0;
             
                  <div style="clear:both;"></div>
                 <div><label input style="display:none;" style="color: black;"><B>Chart1:</B>Enter colors for <I>Background</I>. Refer table below for a list of Colors or hex codes</label></div>
-                <input style="display:none;" id="bgColor2" class="colors" checked="checked" type="text" value="#f8f8f8" />   
+                <input style="display:none;" id="bgColor2" class="colors" type="text" value="#f8f8f8"/>   
                </div>
                   
-                
                 
         </div>
             
@@ -611,24 +630,25 @@ rating2=0;
 </div>
 <div style="clear:both;"></div>
 <div id="container4" >
-        <div id="leftbox" style="padding-left:30%;"><label style="color: black;"><B>Vary transparency</B></label></div>
+        <div id="leftbox"><label style="color: black;"><B>Vary transparency</B></label></div>
         <div id="leftmidbox"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
-        
-        <div style="display:none;" id="rightbox"><label style="color: black;"><B>Vary transparency using the slider below</B></label></div>
+        <div id="rightbox"><label style="color: black;"><B>Vary transparency</B></label></div>
+        <div id="rightmidbox"><label style="color: black;"><B>Rate task satisfaction</B></label></div>
 </div>
 <script src="Slider_Map1.js"></script> 
-<script src="Slider_5.js"></script> 
+<script src="Slider_Map2.js"></script> 
+<script src="Slider_3.js"></script> 
+<script src="Slider_4.js"></script> 
 <div style="clear:both;"></div>
-<div style="margin-left: 27%" id="container2">
+<div id="container2">
      <button id="inst"><b>Show Instruction</b></button> 
      <label id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to move to next task</B></label>
      <div id="rate"></div>
      <button id="save" disabled><b>Move to next task</b></button> 
     
    
-     
+    
 </div>
-
 <div style="clear:both;"></div>
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table1" >
 
@@ -766,16 +786,16 @@ rating2=0;
 </TABLE>
 </DIV>
   <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
-In the displayed chart, color is used to represent 5 Categories.Use 5 colors that you think will be appropriate for making the right impression and communicating the overall message of the data, 
-according to the stated goal:<b>Chart 1: Trustworthy</b>.
+For each of chart in this section  we ask you to choose colors that you think would be appropriate to convey the following impressions: <b>Training 1(left) Happy</b> and <b>Training 2(right): Sad</b>
 <p>Follow The following Steps:</p>
-<p><B>1. Click on the color name buttons Underneath "Trustworthy". When the color palette opens select the colors you want from the palette.</B></p>
-<p><B>2. For each Chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
-<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Transparency".</B></p>
-<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below 
-        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>
- </div>
+<p><B>1. Click on the color buttons Underneath "Training 1" and "Training 2". Once the color palette opens , you can choose a color by just selecting it from the palette.</B></p>
+<p><B>2. For the US Map Chart (Training 1 and 2) you need to select 3 colors. The color scale below represents a <i>diverging</i> color scale, where the left and right colors represent the end points of the scale, and they fade into each using the middle color.
+        <i>Diverging</i> scales are typically used to show values related to some threshold (the middle color).You can select colors by clicking on the color buttons underneath.</B></p>
+<p><B>3. For each chart you can vary transparency to your choice by using the slider below the "Vary Transparency".</B></p>
+<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below <i>(1-being least satisfied to 10-being most satisfied)</i>. 
+         Once you have rated both charts in this training task,  you finish your training and move to the main experiment.</B></p>
+<p><B>5. Once both the tasks are rated it enables the button "Move to next Task". Click it and move to main experiment.</B></p>
+
+    </div>
 </body>  
 </html>
-
- 

@@ -201,6 +201,9 @@ div.gradient div {
   
         
 }
+#palette,td{
+    height: 2px;
+}
 #container3{
     height: 10px;
 }
@@ -284,7 +287,7 @@ div.gradient div {
 
 .colorSample{
     width: 3em;
-    height: 2em;
+    height: 1.7em;
     
 }
 
