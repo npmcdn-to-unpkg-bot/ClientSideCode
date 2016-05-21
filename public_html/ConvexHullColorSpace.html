@@ -1,0 +1,194 @@
+<html>
+<meta charset="utf-8">
+<head>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
+  
+  <style type="text/css">
+  body {
+    font: 11px sans-serif;
+    margin: 10px;
+  }
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.hull {
+  fill: steelblue;
+  stroke: steelblue;
+  stroke-width: 32px;
+  stroke-linejoin: round;
+}
+
+
+.point {
+  stroke: #000;
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="filter">
+    <b>Affect:</b>
+</div>  
+  <div id="vis"></div>
+<script type="text/javascript">
+
+var margin = {top: 45, right: 100, bottom: 20, left: 20},
+    width = 450 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom-55;
+
+ fill = d3.scale.category10();
+ basedata=[]; 
+ x = d3.scale.linear()
+    .range([0, width]);
+
+ y = d3.scale.linear()
+    .range([height, 0]);
+x.domain([-1,1]);
+y.domain([1,-1]);
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .ticks(2);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(2)
+    .orient("left");
+    
+    
+    
+affect=["Calm","Disturbing","Exciting","Negative","Playful","Positive","Serious","Trustworthy"]
+var dropDown = d3.select("#filter").append("select")
+                    .attr("name", "affect-list");
+var options = dropDown.selectAll("option")
+         .data(affect)
+         .enter()
+         .append("option");
+options.text(function (d) { return d; })
+       .attr("value", function (d) { return d; }) ;
+
+        
+             
+        
+        
+        
+        
+dropDown.on("change", function() {
+      var selected = this.value;
+     var data=baseData.filter(function(d,i){
+          console.log(d);
+             return d.affect==selected;
+     });
+     console.log(data);
+     
+draw(data); });
+
+
+d3.csv("Sheet.csv", type, function(data) {
+baseData=data;       
+draw(baseData);     });
+
+function type(d) {
+  d.x = +d.x;
+  d.y = +d.y;
+  return d;
+}
+function draw(data){
+d3.selectAll("svg").remove();
+ids=[];
+ids = d3.nest()
+      .key(function(d) {return d.id; })
+      .entries(data);
+
+
+ 
+   
+drawHull(ids)};
+
+function drawHull(data){
+var groupPath = function(d) {
+
+return "M" + 
+      d3.geom.hull(d.values.map(function(i) { return [x(i.x), y(i.y)]; }))
+        .join("L")
+    + "Z";
+};
+var groupFill = function(d, i) { return fill(i & 3); };     
+ 
+ svgArray=[];
+ svgArray=d3.selectAll(".svgele");  
+ svg=svgArray[0];
+ for(i=0;i<ids.length;i++){
+     vertices=[];
+     l=[];
+     svgid=[];
+     var name=ids[i];
+     svgid.push(name.key);
+     
+      
+       vertices = d3.nest()
+      .key(function(d) {return d.id; })
+      .entries(ids[i].values);
+     
+     var svg = d3.select("#vis")
+     .append("svg")
+    .attr("class", "svgele")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height/2 + ")")
+      .call(xAxis);
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + width/2 + ",0)")
+    .call(yAxis)
+
+    
+ svg.append("circle")
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("r", width/2)
+    .style("stroke", "#000")
+    .style("fill", "none")
+    .style("stroke-width", 1)
+    .attr("transform", "translate(" + width/2 + "," +height/2 + ")");
+
+  svg.selectAll(".point")
+      .data(vertices[0].values)
+      .enter()
+      .append("circle")
+      .attr("class", "point")
+      .attr("cx", function(d) {console.log(d.x);return x(d.x); })
+      .attr("cy", function(d) { return y(d.y); })
+      .attr("r", 6)
+      .attr("fill", function(d) {return d.data});
+      
+      svg.append("g")
+      .attr("class", "hull")
+      .attr("transform", "translate(" + 0 + "," + 0+ ")")
+      .selectAll("path")
+      .data(vertices)
+      .attr("d", groupPath)
+      .enter()
+      .insert("path")
+      .style("fill", groupFill)
+      .style("stroke", groupFill)
+      .style("stroke-width", 40)
+      .style("stroke-linejoin", "round")
+      .style("opacity", .2)
+      .attr("d", groupPath);
+     
+}
+}
+</script>
+</body>
+</html>

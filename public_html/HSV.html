@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://d3js.org/d3.v3.min.js"></script> 
+    <script src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
+    <script src="jsonToCSV.js"></script> 
+    <script src="saveSvgasPng.js"></script> 
+  </head>
+  <body>
+    <script type="text/javascript">
+    
+ColorData= [];
+
+var colorNames=[];
+d3.csv("ColorName_1.csv", function(error, data) {
+data1=data;   
+  data.forEach(function(d) {
+     console.log(d);
+     colorNames.push(d["Color Code"]);
+  });
+  help();
+});
+
+
+
+
+function help(){
+   // d3.selectAll("svg").drag(move, start, up);
+  
+            
+  store1=[];
+  store2=[];
+  store3=[];
+  store4=[];
+  jsonObj=[];
+ 
+for(i= 0; i < colorNames.length; i++){
+     HSLvalues={};
+    console.log(colorNames[i]);
+    
+     store1.push(d3.hsl(colorNames[i]));
+     store2.push(d3.hcl(colorNames[i]));
+     store3.push(d3.lab(colorNames[i]));
+     store4.push(d3.rgb(colorNames[i]));
+     HSLvalues ["Color"] = colorNames[i];
+     HSLvalues ["Hue"] = store1[i].h;
+     HSLvalues ["Chroma"] = store2[i].c;
+     HSLvalues ["Saturation"] = store1[i].s;
+     HSLvalues ["Lightness"] = store2[i].l;
+     HSLvalues ["L*"] = store3[i].l;
+     HSLvalues ["a"] = store3[i].a;
+     HSLvalues ["b"] = store3[i].b;
+     HSLvalues ["R"] = store4[i].r;
+     HSLvalues ["G"] = store4[i].g;
+     HSLvalues ["B"] = store4[i].b;
+     jsonObj.push(HSLvalues);
+}
+    var json=JSON.parse(JSON.stringify(jsonObj));
+    var csv= JSON2CSV(json);
+    console.log(JSON.stringify(jsonObj));
+    blob = new Blob([csv], { type: 'text/csv' }); 
+    saveAs(blob, "data.csv");
+}
+//console.log(d3.rgb(123,23,145).hsl());
+
+    </script>
+  </body>
+</html>
