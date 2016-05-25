@@ -15,9 +15,9 @@
 <script src="jsonToCSV.js"></script>  
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
  <script type = "text/javascript" >
-    history.pushState(null, null, 'Bar_Categorical_CalmVsExciting_1.html');
+    history.pushState(null, null, 'Bar_Categorical_Exciting.html');
     window.addEventListener('popstate', function(event) {
-    history.pushState(null, null, 'Bar_Categorical_CalmVsExciting_1.html');
+    history.pushState(null, null, 'Bar_Categorical_Exciting.html');
     });
     </script>
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -47,8 +47,8 @@
 
   <div id="container3">
         
-    <label id="task1" style="color: black;"><b>1.Calm</b></label>
-    <label id="task2" style="color: black;"><b>2.Exciting</b></label>
+    <label id="task1" style="color: black;"><b>1.Exciting-Select Best Palette</b></label>
+    <label id="task2" style="color: black;"><b>2.Exciting-Select Worst Palette</b></label>
         
     </div>
     <div id="container">
@@ -106,7 +106,8 @@ function type(d) {
 
 $(function() {
     
-
+flag1=false;
+flag2=false;
     var width = 250;
     var sequential=true;
     var firstChart = true;
@@ -281,7 +282,8 @@ $(function() {
 
     $("#save").click(writeDownloadLink);
     $("#next").click(updateTask);
-    $("#list").click(showColors);
+    $(".list1").click(showColors1);
+    $(".list2").click(showColors2);
     $("#inst").click(showInstructions);
     $( "#cart1" ).droppable({
     drop: function( event, ui ) {
@@ -310,6 +312,19 @@ $(function() {
   }
 });
 
+ $('#table2').dialog({
+        height: 580,
+        width: 200,
+        title: "Color List"
+    });
+    
+      $( "#table2" ).dialog({
+  close: function( event, ui ) {
+      $(".list").removeClass('highlight');
+  }
+});
+
+
 });
  
   $(".colorSample").click(function(ev){
@@ -322,8 +337,48 @@ $(function() {
    update2();
     });
     
-  
+$(".radio1").click(function (ev) {
+col=[];
+var tableRow=ev.target.name;
+     $('#'+tableRow).find(".colorSample").each(function (i, cell){console.log(cell.id);col.push(cell.id)});
     
+     $("#sortable1").find(".list").each(function (i, cell){
+          var elementid=cell.id;
+   $('#'+elementid).css('background-color',col[i]);
+   $('#'+elementid).text(col[i]);
+   
+    })
+    
+     update1();
+     flag1=true;
+     if(flag1===true && flag2===true){
+        document.getElementById("save").disabled = false;    
+     }
+});  
+$(".radio1").on('change', function(){
+    $(".radio1").not(this).prop('checked', false);
+});   
+
+$(".radio2").click(function (ev) {
+col=[];
+var tableRow=ev.target.name;
+     $('#'+tableRow).find(".colorSample").each(function (i, cell){console.log(cell.id);col.push(cell.id)});
+    
+     $("#sortable2").find(".list").each(function (i, cell){
+          var elementid=cell.id;
+   $('#'+elementid).css('background-color',col[i]);
+   $('#'+elementid).text(col[i]);
+   
+    })
+     update2();
+      flag2=true;
+     if(flag1===true && flag2===true){
+        document.getElementById("save").disabled = false;    
+     }
+});  
+$(".radio2").on('change', function(){
+    $(".radio2").not(this).prop('checked', false);
+}); 
 });
 var dataset=[];
 
@@ -434,12 +489,23 @@ updateObj.push(UpdateDetails);
 
 });
 }
-function showColors(){
+function showColors1(){
+    
        $('#table1').dialog({
       height: 580,
       width: 200,
       title: "Color List"
     });
+    $('#table2').dialog('close');
+}
+function showColors2(){
+    
+       $('#table2').dialog({
+      height: 580,
+      width: 200,
+      title: "Color List"
+    });
+    $('#table1').dialog('close');
 }
 function showInstructions(){
        $('#table').dialog({
@@ -469,7 +535,7 @@ function createJSON() {
         UserDetails = {};
          UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-         UserDetails ["Task"] = "Calm";
+         UserDetails ["Task"] = "Exciting-Best";
         UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
@@ -493,7 +559,7 @@ function createJSON() {
         UserDetails = {};
         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Exciting";
+        UserDetails ["Task"] = "Exciting-Worst";
         UserDetails ["ChartType"] = "Bar";
         UserDetails ["ValueType"] = "Category";
         UserDetails ["StepperCount"] = $('#steps-seq1').val();
@@ -526,10 +592,7 @@ function drag(ev) {
 function drop(ev) {
     
 }
-function radio(ev) {
-    console.log();
-     $("tr[id='asdf']").find(".colorSample").each(function (i, cell){console.log(cell.id)});
-}
+
 rating1=0;
 rating2=0;
 </script>
@@ -543,7 +606,7 @@ rating2=0;
                            
                         <div><label  style="color: black;"><B>Design for <I>CALM</I>:</B>Modify colors by clicking on color names below.</label></div>
                              <div >
-                                  <button id="btn1" class="list"><b>Select Palette</b></button>
+                                  <button id="btn1" class="list1"><b>Select Palette</b></button>
                                   <div id="cart1" style="background-color: white;display:none;" ondrop="drop(event)" >
                                             <ul id="sortable1" >
  
@@ -574,7 +637,7 @@ rating2=0;
                     <div>
                         <div><label style="color: black;"><B>Design for <I>EXCITING</I>:</B>Modify colors by clicking on color names below.</label></div>
                              <div>
-                                  <button id="btn2" class="list"><b>Select Palette</b></button>
+                                  <button id="btn2" class="list2"><b>Select Palette</b></button>
                          <div id="cart2" style="background-color: white;display:none;" ondrop="drop(event)" >
                                             <ul id="sortable2" >
  
@@ -617,7 +680,7 @@ rating2=0;
 <div style="clear:both;"></div>
 <div id="container2">
      <button id="inst"><b>Show Instruction</b></button> 
-     <label id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to move to next task</B></label>
+     <label style="display:none;" id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Rate how satisfied are you with your design. Then it enables you to move to next task</B></label>
      <div id="rate"></div>
      <button id="save" disabled><b>Move to next task</b></button> 
     
@@ -628,8 +691,8 @@ rating2=0;
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table1" >
 
 <TABLE>
-<tr id="asdf">
-    <td> <input type="radio" name="asdf"  onclick="radio(event)"></td>
+<tr id="r1">
+    <td> <input type="radio" name="r1"  class="radio1"></td>
     <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
     <td class="hack"></td>
     <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
@@ -642,60 +705,140 @@ rating2=0;
     <td class="hack"></td> 
 </tr>
 <td class="hack"></td>
-<tr>
-     <td> <input type="radio" name="asdf"></td>
+<tr id="r2">
+    <td> <input type="radio" name="r2"  class="radio1"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
     <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
     <td class="hack"></td> 
     <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
     <td class="hack"></td> 
-    <td BGCOLOR="#ff8000" id="#ff8000"  class="colorSample" ></td>
-    <td class="hack"></td>
 </tr>
  <td class="hack"></td>
-<tr> 
-     <td> <input type="radio" name="asdf"></td>
-    <td BGCOLOR="#eac793" id="#eac793"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#ffab1c" id="#ffab1c"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#f3d027" id="#f3d027"  class="colorSample" ></td>
-     <td class="hack"></td>
-</tr> 
- <td class="hack"></td>
-<tr>
-     <td> <input type="radio" name="asdf"></td>
-    <td BGCOLOR="#ddd8ba" id="#ddd8ba"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#a5b34b" id="#a5b34b"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#b7de55" id="#b7de55"  class="colorSample" ></td>
-     <td class="hack"></td>
+<tr id="r3">
+    <td> <input type="radio" name="r3"  class="radio1"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
 </tr>
  <td class="hack"></td>
-<tr>
-     <td> <input type="radio" name="asdf"></td>
-    <td BGCOLOR="#51692b" id="#51692b"  class="colorSample" ></td>
+<tr id="r4">
+    <td> <input type="radio" name="r4"  class="radio1"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#5a922d" id="#5a922d"  class="colorSample" ></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
     <td class="hack"></td>
-    <td BGCOLOR="#6e746a" id="#6e746a"  class="colorSample" ></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
     <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
 </tr>
  <td class="hack"></td>
-<tr>
-     <td> <input type="radio" name="asdf"></td>
-    <td BGCOLOR="#add9a1" id="#add9a1"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#23bf0c" id="#23bf0c"  class="colorSample" ></td>
-     <td class="hack"></td>
-    <td BGCOLOR="#899390" id="#899390"  class="colorSample" ></td>
-     <td class="hack"></td>   
+<tr id="r5">
+    <td> <input type="radio" name="r5"  class="radio1"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
+</tr>
+</TABLE>
+</DIV>
+<DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table2" >
+
+<TABLE>
+<tr id="r6">
+    <td> <input type="radio" name="r6"  class="radio2"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
+</tr>
+<td class="hack"></td>
+<tr id="r7">
+    <td> <input type="radio" name="r7"  class="radio2"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
+</tr>
+ <td class="hack"></td>
+<tr id="r8">
+    <td> <input type="radio" name="r8"  class="radio2"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
+</tr>
+ <td class="hack"></td>
+<tr id="r9">
+    <td> <input type="radio" name="r9"  class="radio2"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
+</tr>
+ <td class="hack"></td>
+<tr id="r10">
+    <td> <input type="radio" name="r10"  class="radio2"></td>
+    <td BGCOLOR="#920000" id="#920000"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#c91e11" id="#c91e11"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#845145" id="#845145"  class="colorSample" ></td>
+    <td class="hack"></td>
+    <td BGCOLOR="#69301d" id="#69301d"  class="colorSample" ></td>
+    <td class="hack"></td> 
+    <td BGCOLOR="#f1d9ca" id="#f1d9ca"  class="colorSample" ></td>
+    <td class="hack"></td> 
 </tr>
 </TABLE>
 </DIV>
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
 In each of the displayed charts, color is used to represent 5 Categories.For each chart use 5 colors that you think will be appropriate for making the right impression and communicating the overall message of the data, 
-according to the stated goal:<b>Chart 1: Calm</b> and <b>Chart 2: Exciting</b>.
+according to the stated goal:<b>Chart 1: Exciting-Best</b> and <b>Chart 2: Exciting-Worst</b>.
 <p>Follow The following Steps:</p>
 <p><B>1. Click on the color name buttons Underneath "CALM" and "EXCITING". When the color palette opens select the colors you want from the palette.</B></p>
 <p><B>2. For each chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
