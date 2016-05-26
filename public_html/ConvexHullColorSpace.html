@@ -16,11 +16,16 @@
   shape-rendering: crispEdges;
 }
 .hull {
-  fill: steelblue;
+fill: none;
+  border: black;
+  border-style: solid;
   stroke: steelblue;
   stroke-width: 32px;
   stroke-linejoin: round;
+  opacity: 0.2;
 }
+  
+
 
 
 .point {
@@ -185,7 +190,7 @@ var groupFill = function(d, i) { return fill(i & 3); };
       .enter()
       .insert("path")
       .style("fill", groupFill)
-      .style("stroke", groupFill)
+      .style("stroke", "#000")
       .style("stroke-width", 40)
       .style("stroke-linejoin", "round")
       .style("opacity", .9)
