@@ -34,6 +34,9 @@
   <div id="filter">
     <b>Affect:</b>
 </div>  
+  <div id="filter2">
+    <b>Chart:</b>
+</div>     
   <div id="vis"></div>
 <script type="text/javascript">
 
@@ -62,6 +65,7 @@ var yAxis = d3.svg.axis()
     
     
 affect=["Calm","Disturbing","Exciting","Negative","Playful","Positive","Serious","Trustworthy"]
+
 var dropDown = d3.select("#filter").append("select")
                     .attr("name", "affect-list");
 var options = dropDown.selectAll("option")
