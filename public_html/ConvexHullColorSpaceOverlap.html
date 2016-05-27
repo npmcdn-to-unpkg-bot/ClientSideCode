@@ -43,7 +43,16 @@
   <div id="filter1">
     <b>Chart:</b>
 </div>     
-  <div id="vis"></div>
+  <div id="Calm"></div>
+  <div id="Exciting"></div>
+  <div id="Serious"></div>
+  <div id="Playful"></div>
+  <div id="Positive"></div>
+  <div id="Negative"></div>
+  <div id="Disturbing"></div>
+  <div id="Trustworthy"></div>
+  
+  
 <script type="text/javascript">
 
 var margin = {top: 45, right: 100, bottom: 20, left: 20},
@@ -182,7 +191,7 @@ var groupFill = function(d, i) { return fill(i & 3); };
  svg=svgArray[0];
  for(i=0;i<ids.length;i++){
  var vertices=[];
- var svg = d3.select("#vis")
+ var svg = d3.select(ids[i].key)
     .append("svg")
     .attr("class", "svgele")
     .attr("width", width + margin.left + margin.right)
