@@ -27,12 +27,19 @@
   opacity: 0.02;
   stroke-style:solid;
 }
-
+.right {
+    float: right;
+   
+}
 
 .point {
   stroke: #000;
 }
 
+.hue{
+    float: left;
+    width: 25%;
+}
   </style>
 </head>
 
@@ -43,15 +50,16 @@
   <div id="filter1">
     <b>Chart:</b>
 </div>     
-  <div id="Calm"></div>
-  <div id="Exciting"></div>
-  <div id="Serious"></div>
-  <div id="Playful"></div>
-  <div id="Positive"></div>
-  <div id="Negative"></div>
-  <div id="Disturbing"></div>
-  <div id="Trustworthy"></div>
-  
+    <div id="container">
+  <div class="hue" id="Calm"></div>
+  <div class="hue" id="Exciting"></div>
+  <div class="hue" id="Serious"></div>
+  <div class="hue" id="Playful"></div>
+  <div class="hue" id="Positive"></div>
+  <div class="hue" id="Negative"></div>
+  <div class="hue" id="Disturbing"></div>
+  <div class="hue" id="Trustworthy"></div>
+</div>  
   
 <script type="text/javascript">
 
@@ -191,7 +199,8 @@ var groupFill = function(d, i) { return fill(i & 3); };
  svg=svgArray[0];
  for(i=0;i<ids.length;i++){
  var vertices=[];
- var svg = d3.select(ids[i].key)
+ var divele="#"+ids[i].key;
+ var svg = d3.select(divele)
     .append("svg")
     .attr("class", "svgele")
     .attr("width", width + margin.left + margin.right)
