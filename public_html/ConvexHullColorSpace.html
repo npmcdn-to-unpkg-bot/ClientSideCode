@@ -89,15 +89,15 @@ options.text(function (d) { return d; })
 dropDown.on("change", function() {
       var selected = this.value;
      var data=baseData.filter(function(d,i){
-          console.log(d);
+         // console.log(d);
              return d.affect==selected;
      });
-     console.log(data);
+    // console.log(data);
      
 draw(data); });
 
 
-d3.csv("Sheet.csv", type, function(data) {
+d3.csv("Sheet1.csv", type, function(data) {
 baseData=data;       
 draw(baseData); });
 
@@ -176,7 +176,7 @@ var groupFill = function(d, i) { return fill(i & 3); };
       .enter()
       .append("circle")
       .attr("class", "point")
-      .attr("cx", function(d) {console.log(d.x);return x(d.x); })
+      .attr("cx", function(d) {return x(d.x); })
       .attr("cy", function(d) { return y(d.y); })
       .attr("r", 6)
       .attr("fill", function(d) {return d.data});
@@ -197,6 +197,13 @@ var groupFill = function(d, i) { return fill(i & 3); };
       .attr("d", groupPath);
      
 }
+
+
+d3.selectAll(".svgele").each( function(d, i){
+  
+    console.log(d);
+  
+});
 }
 </script>
 </body>
