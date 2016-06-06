@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html>
+<meta charset="utf-8">
+<head>
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
+  
+  <style type="text/css">
+  body {
+    font: 11px sans-serif;
+    margin: 10px;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+  .hue{
+    
+      float: left;
+      margin-left: 0.5%;
+  }
+  
+ .svg{
+   background-color: WhiteSmoke;
+  margin-left:  0.5%;
+   
+   
+}
+#table {
+        
+  display:none; 
+  height: 500px;
+  width: 560px;
+        
+}
+#container2 {
+    width: 100%;
+    height: 80%;
+   float: left;
+        
+}
+  </style>
+</head>
+
+<body>
+     
+<div id="vis">
+<!--  <div class="hue" id="test1"></div>
+  <div class="hue" id="test2"></div>
+  <div class="hue" id="test3"></div>
+  <div class="hue" id="test4"></div>
+  <div class="hue" id="test5"></div>-->
+</div>
+
+
+<script type="text/javascript">
+    history.pushState(null, null, 'Map_Calm.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Map_Calm.html');
+    });   
+ $(function() {
+     
+$("#inst").click(showInstructions);
+$("#save").click(writeDownloadLink);
+
+        
+function writeDownloadLink() {
+    
+    jsonObj = [];
+    string1=[];
+    string2=[];
+    calm.forEach(function(d,i){
+   
+        UserDetails = {};
+        UserDetails ["UserId"] = localStorage.getItem('uname');
+        UserDetails ["TaskId"] = localStorage.getItem('id');
+        UserDetails ["Task"] = "Calm";
+        UserDetails ["ChartType"] = "Bar";
+        UserDetails ["PaletteRank"] =$("input[type='radio'][name='chart"+i+"']:checked").val();
+        UserDetails ["ColorsPalette"] =d;
+        UserDetails ["Timestamp"] = Date.now();
+       
+
+     jsonObj.push(UserDetails);
+    
+    }); 
+ updateTask();
+}     
+function showInstructions(){
+       $('#table').dialog({
+        height:300,
+        width:560,
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",
+        modal: true
+    });} 
+
+var margin = {top: 45, right: 0, bottom: 20, left: 0},
+    width = (($("#vis").width())/5) - 10;
+    height = 200 - margin.top - margin.bottom;
+
+var formatPercent = d3.format(".0%");
+
+
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+// Scales. Note the inverted domain fo y-scale: bigger is up!
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(formatPercent);
+
+d3.csv("AffectPalette.csv", type, function(data) {
+calm=[];
+data.forEach(function(d){
+    
+    calm.push(d.calm);
+})
+loadChart();
+});
+
+
+
+function loadChart(){
+    
+
+d3.csv("MapCategory.csv",function(data) {
+
+
+  var category = d3.nest()
+      .key(function(d) { return d.chart; })
+      .entries(data);
+
+d3.json("us-states.json", function(json) {
+	for(i=0;i<category.length;i++){
+        col=(calm[i].replace(/\"/g, "")).split(',');
+        var color = d3.scale.ordinal()
+          .range(col)
+          .domain([1,2,3,4,5]);
+           var mapdata=category[i].values ; 				//Merge the ag. data and GeoJSON
+					//Loop through once for each ag. data value
+					for (var j = 0; j < mapdata.length; j++) {
+				
+						var dataState = mapdata[j].state;				//Grab state name
+						var dataValue = parseFloat(mapdata[j].value);	//Grab data value, and convert from string to float
+				
+						//Find the corresponding state inside the GeoJSON
+						for (var k = 0; k < json.features.length; k++) {
+						
+							var jsonState = json.features[k].properties.name;
+				
+							if (dataState == jsonState) {
+						
+								//Copy the data value into the JSON
+								json.features[k].properties.value = dataValue;
+								
+								//Stop looking through the JSON
+								break;
+								
+							}
+						}		
+					}
+                                        
+var svg = d3.select("#vis")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "svg")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+var projection = d3.geo.albersUsa()
+     .scale(width+100)
+     .translate([(width/ 2), height/ 2]);
+var path = d3.geo.path()
+      .projection(projection);
+     
+map=svg.selectAll(".path"+i)
+        .data(json.features)
+	
+ map.enter()
+    .append("path")
+    .attr("d", path)
+    .style("fill", function(d) {
+				var value = d.properties.value;
+				if (value) {
+					   return color(value);
+					   } else 
+                                           {
+					   return "#ccc";
+					   }
+					   });
+
+		}
+ $(".hue").css("width", d3.select("svg").style("width"));           });
+
+
+});
+}
+
+ });
+ 
+
+function type(d) {
+  d.letter = +d.letter;
+  d.frequency = +d.frequency;
+  return d;
+}
+
+</script>
+
+
+
+<div id="chart1">
+
+<div class="hue" id="test1">
+        <label>Select Rank:</label>  
+        <input type="radio" name="chart0" value="1">1
+        <input type="radio" name="chart0" value="2">2
+        <input type="radio" name="chart0" value="3">3 
+        <input type="radio" name="chart0" value="4">4
+        <input type="radio" name="chart0" value="5">5
+</div>
+    <div class="hue" id="test2">
+        <label>Select Rank:</label>  
+        <input type="radio" name="chart1" value="1">1
+        <input type="radio" name="chart1" value="2">2
+        <input type="radio" name="chart1" value="3">3 
+        <input type="radio" name="chart1" value="4">4
+        <input type="radio" name="chart1" value="5">5
+    </div>
+    <div class="hue" id="test3">
+        <label>Select Rank:</label>  
+        <input type="radio" name="chart2" value="1">1
+        <input type="radio" name="chart2" value="2">2
+        <input type="radio" name="chart2" value="3">3 
+        <input type="radio" name="chart2" value="4">4
+        <input type="radio" name="chart2" value="5">5
+    </div>
+    <div class="hue" id="test4">
+        <label>Select Rank:</label>  
+        <input type="radio" name="chart3" value="1">1
+        <input type="radio" name="chart3" value="2">2
+        <input type="radio" name="chart3" value="3">3 
+        <input type="radio" name="chart3" value="4">4
+        <input type="radio" name="chart3" value="5">5
+    </div>
+  <div class="hue" id="test5"><label>Select Rank:</label>  
+        <input type="radio" name="chart4" value="1">1
+        <input type="radio" name="chart4" value="2">2
+        <input type="radio" name="chart4" value="3">3 
+        <input type="radio" name="chart4" value="4">4
+        <input type="radio" name="chart4" value="5">5
+  </div>
+
+</div>
+<div id="container2">
+     <button id="inst" style="margin-top: 2%"><b>Show Instruction</b></button> 
+     
+     <label style="" id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Ranking all charts enables you to move to next task</B></label>
+   
+     <button id="save" style="margin-top: 2%"><b>Move to next task</b></button> 
+</div>
+
+
+<DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
+In each of the displayed charts, color is used to represent 5 Categories.For each chart use 5 colors that you think will be appropriate for making the right impression and communicating the overall message of the data, 
+according to the stated goal:<b>Chart 1: Exciting-Best</b> and <b>Chart 2: Exciting-Worst</b>.
+<p>Follow The following Steps:</p>
+<p><B>1. Click on the color name buttons Underneath "CALM" and "EXCITING". When the color palette opens select the colors you want from the palette.</B></p>
+<p><B>2. For each chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
+<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Transparency".</B></p>
+<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below 
+        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>
+</div>
+</body>  
+</html>
+</body>
+</html>

@@ -3,10 +3,13 @@
 <html>
 <meta charset="utf-8">
 <head>
+
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
   <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
   
   <style type="text/css">
   body {
@@ -33,13 +36,24 @@
   }
   
  .svg{
-   background-color: WhiteSmoke;
-  margin-left:  0.5%;
+    background-color: WhiteSmoke;
+    margin-left:  0.5%;
    
    
 }
-
-
+#table {
+        
+  display:none; 
+  height: 500px;
+  width: 560px;
+        
+}
+#container2 {
+    width: 100%;
+    height: 80%;
+   float: left;
+        
+}
   </style>
 </head>
 
@@ -55,13 +69,45 @@
 
 
 <script type="text/javascript">
-    
+    history.pushState(null, null, 'Bar_Calm.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Bar_Calm.html');
+    });   
  $(function() {
-   // $( "#sortable1" ).sortable();
-    $( "#sortable1" ).disableSelection();
-   //  $( "#sortable2" ).sortable();
-    $( "#sortable2" ).disableSelection();
- 
+     
+$("#inst").click(showInstructions);
+$("#save").click(writeDownloadLink);
+
+        
+function writeDownloadLink() {
+    
+    jsonObj = [];
+    string1=[];
+    string2=[];
+    calm.forEach(function(d,i){
+   
+        UserDetails = {};
+        UserDetails ["UserId"] = localStorage.getItem('uname');
+        UserDetails ["TaskId"] = localStorage.getItem('id');
+        UserDetails ["Task"] = "Calm";
+        UserDetails ["ChartType"] = "Bar";
+        UserDetails ["PaletteRank"] =$("input[type='radio'][name='chart"+i+"']:checked").val();
+        UserDetails ["ColorsPalette"] =d;
+        UserDetails ["Timestamp"] = Date.now();
+       
+
+     jsonObj.push(UserDetails);
+    
+    }); 
+ updateTask();
+}     
+function showInstructions(){
+       $('#table').dialog({
+        height:300,
+        width:560,
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",
+        modal: true
+    });} 
 
 var margin = {top: 45, right: 0, bottom: 20, left: 0},
     width = (($("#vis").width())/5) - 10;
@@ -119,7 +165,7 @@ for(i=0;i<category.length;i++){
     .attr("class", "svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    var col=(calm[i].replace(/\"/g, "")).split(',');
+     col=(calm[i].replace(/\"/g, "")).split(',');
 var color = d3.scale.ordinal()
           .range(col)
           .domain([1,2,3,4,5]);
@@ -175,44 +221,65 @@ function type(d) {
 
 <div class="hue" id="test1">
         <label>Select Rank:</label>  
+        <input type="radio" name="chart0" value="1">1
+        <input type="radio" name="chart0" value="2">2
+        <input type="radio" name="chart0" value="3">3 
+        <input type="radio" name="chart0" value="4">4
+        <input type="radio" name="chart0" value="5">5
+</div>
+    <div class="hue" id="test2">
+        <label>Select Rank:</label>  
         <input type="radio" name="chart1" value="1">1
         <input type="radio" name="chart1" value="2">2
         <input type="radio" name="chart1" value="3">3 
-        <input type="radio" name="chart1" value="3">4
-        <input type="radio" name="chart1" value="3">5
-</div>
-    <div class="hue" id="test2">
+        <input type="radio" name="chart1" value="4">4
+        <input type="radio" name="chart1" value="5">5
+    </div>
+    <div class="hue" id="test3">
         <label>Select Rank:</label>  
         <input type="radio" name="chart2" value="1">1
         <input type="radio" name="chart2" value="2">2
         <input type="radio" name="chart2" value="3">3 
-        <input type="radio" name="chart2" value="3">4
-        <input type="radio" name="chart2" value="3">5
+        <input type="radio" name="chart2" value="4">4
+        <input type="radio" name="chart2" value="5">5
     </div>
-    <div class="hue" id="test3">
+    <div class="hue" id="test4">
         <label>Select Rank:</label>  
         <input type="radio" name="chart3" value="1">1
         <input type="radio" name="chart3" value="2">2
         <input type="radio" name="chart3" value="3">3 
-        <input type="radio" name="chart3" value="3">4
-        <input type="radio" name="chart3" value="3">5
+        <input type="radio" name="chart3" value="4">4
+        <input type="radio" name="chart3" value="5">5
     </div>
-    <div class="hue" id="test4">
-        <label>Select Rank:</label>  
+  <div class="hue" id="test5"><label>Select Rank:</label>  
         <input type="radio" name="chart4" value="1">1
         <input type="radio" name="chart4" value="2">2
         <input type="radio" name="chart4" value="3">3 
-        <input type="radio" name="chart4" value="3">4
-        <input type="radio" name="chart4" value="3">5
-    </div>
-  <div class="hue" id="test5"><label>Select Rank:</label>  
-        <input type="radio" name="chart5" value="1">1
-        <input type="radio" name="chart5" value="2">2
-        <input type="radio" name="chart5" value="3">3 
-        <input type="radio" name="chart5" value="3">4
-        <input type="radio" name="chart5" value="3">5
+        <input type="radio" name="chart4" value="4">4
+        <input type="radio" name="chart4" value="5">5
   </div>
 
 </div>
+<div id="container2">
+     <button id="inst" style="margin-top: 2%"><b>Show Instruction</b></button> 
+     
+     <label style="" id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Ranking all charts enables you to move to next task</B></label>
+   
+     <button id="save" style="margin-top: 2%"><b>Move to next task</b></button> 
+</div>
+
+
+<DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
+In each of the displayed charts, color is used to represent 5 Categories.For each chart use 5 colors that you think will be appropriate for making the right impression and communicating the overall message of the data, 
+according to the stated goal:<b>Chart 1: Exciting-Best</b> and <b>Chart 2: Exciting-Worst</b>.
+<p>Follow The following Steps:</p>
+<p><B>1. Click on the color name buttons Underneath "CALM" and "EXCITING". When the color palette opens select the colors you want from the palette.</B></p>
+<p><B>2. For each chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
+<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Transparency".</B></p>
+<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below 
+        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>
+</div>
+</body>  
+</html>
 </body>
 </html>

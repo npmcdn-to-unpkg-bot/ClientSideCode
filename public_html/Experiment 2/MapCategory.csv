@@ -1,0 +1,261 @@
+state,patients,value,chart
+Wyoming,119,2,c1
+Wisconsin,693,3,c1
+West Virginia,254,3,c1
+Washington,968,5,c1
+Virginia,732,5,c1
+Virgin Islands,79,3,c1
+Vermont,81,4,c1
+Utah,895,2,c1
+Texas,5315,2,c1
+Tennessee,2556,1,c1
+South Dakota,176,2,c1
+South Carolina,1007,2,c1
+Rhode Island,260,2,c1
+Puerto Rico,153,3,c1
+Pennsylvania,2065,2,c1
+Oregon,852,4,c1
+Oklahoma,668,2,c1
+Ohio,2057,5,c1
+North Dakota,306,1,c1
+North Carolina,1244,1,c1
+New York,2947,4,c1
+New Mexico,303,5,c1
+New Jersey,1494,4,c1
+New Hampshire,352,3,c1
+Nevada,319,4,c1
+Nebraska,831,4,c1
+Montana,132,2,c1
+Missouri,1651,2,c1
+Mississippi,431,1,c1
+Minnesota,736,2,c1
+Michigan,1394,1,c1
+Massachusetts,1034,3,c1
+Maryland,855,1,c1
+Maine,220,2,c1
+Louisiana,1461,4,c1
+Kentucky,1711,4,c1
+Kansas,402,1,c1
+Iowa,533,2,c1
+Indiana,1013,4,c1
+Illinois,2265,2,c1
+Idaho,214,3,c1
+Hawaii,1125,3,c1
+Georgia,1221,4,c1
+Florida,3942,3,c1
+Delaware,225,5,c1
+DC,1010,3,c1
+Connecticut,486,4,c1
+Colorado,1991,4,c1
+California,5575,5,c1
+Arkansas,381,4,c1
+Arizona,818,4,c1
+Alabama,680,1,c1
+Wyoming,119,2,c2
+Wisconsin,1386,3,c2
+West Virginia,508,2,c2
+Washington,2904,1,c2
+Virginia,3660,5,c2
+Virgin Islands,316,2,c2
+Vermont,486,1,c2
+Utah,895,4,c2
+Texas,21260,3,c2
+Tennessee,2556,1,c2
+South Dakota,1056,4,c2
+South Carolina,4028,4,c2
+Rhode Island,1560,5,c2
+Puerto Rico,612,1,c2
+Pennsylvania,4130,2,c2
+Oregon,2556,4,c2
+Oklahoma,2004,3,c2
+Ohio,2057,5,c2
+North Dakota,1530,3,c2
+North Carolina,7464,2,c2
+New York,5894,3,c2
+New Mexico,606,1,c2
+New Jersey,8964,1,c2
+New Hampshire,2112,4,c2
+Nevada,1595,5,c2
+Nebraska,2493,2,c2
+Montana,528,4,c2
+Missouri,1651,1,c2
+Mississippi,431,1,c2
+Minnesota,1472,1,c2
+Michigan,6970,4,c2
+Massachusetts,2068,5,c2
+Maryland,855,3,c2
+Maine,220,3,c2
+Louisiana,7305,2,c2
+Kentucky,8555,1,c2
+Kansas,1608,2,c2
+Iowa,2665,1,c2
+Indiana,4052,2,c2
+Illinois,9060,5,c2
+Idaho,642,1,c2
+Hawaii,2250,2,c2
+Georgia,1221,3,c2
+Florida,11826,5,c2
+Delaware,225,5,c2
+DC,4040,1,c2
+Connecticut,1944,3,c2
+Colorado,1991,5,c2
+California,5575,4,c2
+Arkansas,381,3,c2
+Arizona,4090,1,c2
+Alabama,680,4,c2
+Wyoming,119,2,c3
+Wisconsin,1386,3,c3
+West Virginia,508,2,c3
+Washington,2904,1,c3
+Virginia,3660,5,c3
+Virgin Islands,316,2,c3
+Vermont,486,1,c3
+Utah,895,4,c3
+Texas,21260,3,c3
+Tennessee,2556,1,c3
+South Dakota,1056,4,c3
+South Carolina,4028,4,c3
+Rhode Island,1560,5,c3
+Puerto Rico,612,1,c3
+Pennsylvania,4130,2,c3
+Oregon,2556,4,c3
+Oklahoma,2004,3,c3
+Ohio,2057,5,c3
+North Dakota,1530,3,c3
+North Carolina,7464,2,c3
+New York,5894,3,c3
+New Mexico,606,1,c3
+New Jersey,8964,1,c3
+New Hampshire,2112,4,c3
+Nevada,1595,5,c3
+Nebraska,2493,2,c3
+Montana,528,4,c3
+Missouri,1651,1,c3
+Mississippi,431,1,c3
+Minnesota,1472,1,c3
+Michigan,6970,4,c3
+Massachusetts,2068,5,c3
+Maryland,855,3,c3
+Maine,220,3,c3
+Louisiana,7305,2,c3
+Kentucky,8555,1,c3
+Kansas,1608,2,c3
+Iowa,2665,1,c3
+Indiana,4052,2,c3
+Illinois,9060,5,c3
+Idaho,642,1,c3
+Hawaii,2250,2,c3
+Georgia,1221,3,c3
+Florida,11826,5,c3
+Delaware,225,5,c3
+DC,4040,1,c3
+Connecticut,1944,3,c3
+Colorado,1991,5,c3
+California,5575,4,c3
+Arkansas,381,3,c3
+Arizona,4090,1,c3
+Alabama,680,4,c3
+Wyoming,119,2,c4
+Wisconsin,1386,3,c4
+West Virginia,508,2,c4
+Washington,2904,1,c4
+Virginia,3660,5,c4
+Virgin Islands,316,2,c4
+Vermont,486,1,c4
+Utah,895,4,c4
+Texas,21260,3,c4
+Tennessee,2556,1,c4
+South Dakota,1056,4,c4
+South Carolina,4028,4,c4
+Rhode Island,1560,5,c4
+Puerto Rico,612,1,c4
+Pennsylvania,4130,2,c4
+Oregon,2556,4,c4
+Oklahoma,2004,3,c4
+Ohio,2057,5,c4
+North Dakota,1530,3,c4
+North Carolina,7464,2,c4
+New York,5894,3,c4
+New Mexico,606,1,c4
+New Jersey,8964,1,c4
+New Hampshire,2112,4,c4
+Nevada,1595,5,c4
+Nebraska,2493,2,c4
+Montana,528,4,c4
+Missouri,1651,1,c4
+Mississippi,431,1,c4
+Minnesota,1472,1,c4
+Michigan,6970,4,c4
+Massachusetts,2068,5,c4
+Maryland,855,3,c4
+Maine,220,3,c4
+Louisiana,7305,2,c4
+Kentucky,8555,1,c4
+Kansas,1608,2,c4
+Iowa,2665,1,c4
+Indiana,4052,2,c4
+Illinois,9060,5,c4
+Idaho,642,1,c4
+Hawaii,2250,2,c4
+Georgia,1221,3,c4
+Florida,11826,5,c4
+Delaware,225,5,c4
+DC,4040,1,c4
+Connecticut,1944,3,c4
+Colorado,1991,5,c4
+California,5575,4,c4
+Arkansas,381,3,c4
+Arizona,4090,1,c4
+Alabama,680,4,c4
+Wyoming,119,2,c5
+Wisconsin,1386,3,c5
+West Virginia,508,2,c5
+Washington,2904,1,c5
+Virginia,3660,5,c5
+Virgin Islands,316,2,c5
+Vermont,486,1,c5
+Utah,895,4,c5
+Texas,21260,3,c5
+Tennessee,2556,1,c5
+South Dakota,1056,4,c5
+South Carolina,4028,4,c5
+Rhode Island,1560,5,c5
+Puerto Rico,612,1,c5
+Pennsylvania,4130,2,c5
+Oregon,2556,4,c5
+Oklahoma,2004,3,c5
+Ohio,2057,5,c5
+North Dakota,1530,3,c5
+North Carolina,7464,2,c5
+New York,5894,3,c5
+New Mexico,606,1,c5
+New Jersey,8964,1,c5
+New Hampshire,2112,4,c5
+Nevada,1595,5,c5
+Nebraska,2493,2,c5
+Montana,528,4,c5
+Missouri,1651,1,c5
+Mississippi,431,1,c5
+Minnesota,1472,1,c5
+Michigan,6970,4,c5
+Massachusetts,2068,5,c5
+Maryland,855,3,c5
+Maine,220,3,c5
+Louisiana,7305,2,c5
+Kentucky,8555,1,c5
+Kansas,1608,2,c5
+Iowa,2665,1,c5
+Indiana,4052,2,c5
+Illinois,9060,5,c5
+Idaho,642,1,c5
+Hawaii,2250,2,c5
+Georgia,1221,3,c5
+Florida,11826,5,c5
+Delaware,225,5,c5
+DC,4040,1,c5
+Connecticut,1944,3,c5
+Colorado,1991,5,c5
+California,5575,4,c5
+Arkansas,381,3,c5
+Arizona,4090,1,c5
+Alabama,680,4,c5
