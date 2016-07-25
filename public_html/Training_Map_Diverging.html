@@ -454,7 +454,7 @@ function updateTask(){
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
+    url: 'http://localhost:3000/taskDetails',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {

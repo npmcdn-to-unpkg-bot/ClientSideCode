@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redux basic example</title>
+    <script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="combinatorics.js"></script>
+     <script src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
+      <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+    <script src="jsonToCSV.js"></script> 
+  </head>
+  <body>
+
+    <script>
+     
+//    $.ajax({
+//   
+//    type: 'POST',
+//    url: 'http://localhost:3000/colorPalette',
+//    contentType: 'application/json',
+//    success: function (data) {
+//      console.log(data); 
+//  }
+//});
+//            
+  
+d3.csv("weights.csv",type, function(data) {
+Colordata=data;
+calm=[];
+entries=[];
+data.forEach(function(d){
+    
+    calm.push(d.Hex);
+    
+})
+
+
+cmb = Combinatorics.bigCombination(calm, 5);
+
+
+
+d3.csv("edges.csv",type, function(data) {
+    
+    Edgedata=data;
+   buildPalettes();}); 
+   
+   
+});
+
+
+
+function type(d) {
+  d.weight = +d.weight;
+  d.distance = +d.distance;
+  return d;
+}
+
+
+function buildPalettes(){
+    palettelist=[];
+    var m = d3.map(Colordata, function(d) { return d.Hex; });
+    var e = d3.map(Edgedata, function(d) { return d.id; });  
+    k=0;
+    test=cmb;
+   while(a = cmb.next()){
+       
+        UserDetails = {};
+        UserDetails ["c1"] = a[0]
+        UserDetails ["c2"] = a[1];
+        UserDetails ["c3"] = a[2];
+        UserDetails ["c4"] = a[3];
+        UserDetails ["c5"] = a[4];
+        UserDetails ["paletteWeight"] = m.get(a[0]).weight+m.get(a[1]).weight+m.get(a[2]).weight+m.get(a[3]).weight+m.get(a[4]).weight;
+        edgwt=0;
+        edgdist=0; 
+        edg = Combinatorics.combination(a, 2);
+        dist=0;
+        while(b = edg.next()){
+            var key1=b[0]+b[1];
+            var key2=b[1]+b[0];
+            if(typeof(e.get(key1))!='undefined')
+            {
+             edgwt=edgwt+e.get(key1).weight;
+            
+            }
+            if(typeof(e.get(key2))!='undefined')
+            {
+             edgwt=edgwt+e.get(key2).weight;
+            
+            }
+             c1=d3.lab(b[0]);
+             c2=d3.lab(b[1]); 
+             dist=dist+Math.sqrt(Math.pow((c1.l-c2.l),2)+Math.pow((c1.a-c2.a),2)+Math.pow((c1.b-c2.b),2))
+        }
+        UserDetails ["edgeWeight"]=edgwt;
+        UserDetails ["paletteDistance"]=dist
+        palettelist.push(UserDetails);
+        }
+   // console.log(palettelist);
+    var json=JSON.parse(JSON.stringify(palettelist));
+    var csv= JSON2CSV(json);
+    blob = new Blob([csv], { type: 'text/csv' }); 
+    saveAs(blob, "positivepalettes.csv");
+}
+    </script>
+  </body>
+</html>

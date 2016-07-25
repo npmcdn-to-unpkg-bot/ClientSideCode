@@ -31,13 +31,16 @@
   }
   .hue{
     
-      float: left;
-    margin-left: 0.5%;
+    float: left;
+    margin-left: 0.09%;
+    margin-top: 4%; 
+   
   }
   
  .svg{
     background-color: WhiteSmoke;
     margin-left:  0.09%;
+ 
    
    
 }
@@ -69,38 +72,94 @@
 
 
 <script type="text/javascript">
-    history.pushState(null, null, 'Bar_Calm.html');
+history.pushState(null, null, 'Bar_serious1.html');
     window.addEventListener('popstate', function(event) {
-    history.pushState(null, null, 'Bar_Calm.html');
+    history.pushState(null, null, 'Bar_serious1.html');
     });   
  $(function() {
      
 $("#inst").click(showInstructions);
 $("#save").click(writeDownloadLink);
+$("#realign").click(drawChart);
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
-        
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}       
 function writeDownloadLink() {
-    
+    if($("input[type='radio'][name='chart0']:checked").size()!=1 || $("input[type='radio'][name='chart1']:checked").size()!=1){
+       
+            window.alert("Please Select Best and Worst Chart");
+        return;
+    }
     jsonObj = [];
     string1=[];
     string2=[];
-    calm.forEach(function(d,i){
+    index1=$("input[type='radio'][name='chart0']:checked").val()-1;
+    index2=$("input[type='radio'][name='chart1']:checked").val()-1
    
         UserDetails = {};
         UserDetails ["UserId"] = localStorage.getItem('uname');
         UserDetails ["TaskId"] = localStorage.getItem('id');
-        UserDetails ["Task"] = "Calm";
+        UserDetails ["Task"] = "serious";
         UserDetails ["ChartType"] = "Bar";
-        UserDetails ["PaletteRank"] =$("input[type='radio'][name='chart"+i+"']:checked").val();
-        UserDetails ["ColorsPalette"] =d;
+        UserDetails ["PaletteRankBest"] =$("input[type='radio'][name='chart0']:checked").val();
+        UserDetails ["PaletteRankWorst"] =$("input[type='radio'][name='chart1']:checked").val();
+        UserDetails ["ColorsPalettebest"] =chartPalette[index1];
+        UserDetails ["ColorsPaletteworst"] =chartPalette[index2];
         UserDetails ["Timestamp"] = Date.now();
+       
        
 
      jsonObj.push(UserDetails);
     
-    }); 
+     
  updateTask();
-}     
+} 
+function updateTask(){
+    
+     $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://localhost:3000/colors',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log(data); 
+  
+    updateObj=[];
+UpdateDetails = {};
+UpdateDetails ["id"] = localStorage.getItem('id');
+UpdateDetails ["Username"] =localStorage.getItem('uname');
+UpdateDetails ["TaskDone"] ="true";
+updateObj.push(UpdateDetails);
+    $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://localhost:3000/updateTask',
+    data: JSON.stringify(updateObj),
+    contentType: 'application/json',
+    success: function (data) {
+    result=JSON.parse(data)
+    window.localStorage.setItem('id', result[0].id);
+    window.localStorage.setItem('uname', result[0].Username);
+    window.localStorage.setItem('palette', result[0].palette);
+    window.location=result[0].link; 
+                            
+    }});}});}
 function showInstructions(){
        $('#table').dialog({
         height:300,
@@ -133,27 +192,29 @@ var yAxis = d3.svg.axis()
     .orient("left")
     .tickFormat(formatPercent);
 
-d3.csv("AffectPalette.csv", type, function(data) {
-calm=[];
-data.forEach(function(d){
-    
-    calm.push(d.calm);
-})
-loadChart();
-});
+
+
+function type(d) {
+  d.weight = +d.weight;
+  return d;
+}
 
 
 
-function loadChart(){
-    
-
-d3.csv("BarCategory.csv", type, function(data) {
+d3.csv("BarCategory1.csv", type, function(data) {
 
 
-  var category = d3.nest()
+   category = d3.nest()
       .key(function(d) { return d.chart; })
       .entries(data);
+   Chartdata=data;
+   drawChart();
+});
 
+function drawChart(){
+    data=Chartdata;
+  d3.selectAll("svg").remove();
+  chartPalette=[]; 
   x.domain(data.map(function(d) { return d.letter; }));
   y.domain([0, d3.max(category, function(s) { return s.values[0].frequency; })]);
 
@@ -165,15 +226,30 @@ for(i=0;i<category.length;i++){
     .attr("class", "svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-     col=(calm[i].replace(/\"/g, "")).split(',');
+    
+ svg.append("text")
+    .attr("x", width/2)
+    .attr("y", -35)
+    .attr("dy", ".71em")
+    .attr("text-anchor", "middle")
+    .attr("font-size", "1.1em")
+    .text("chart "+(i+1));
+    palette=[];
+    palette=(localStorage.getItem('palette')).split(',');
+    col=[];
+    col.push(palette[i*5+0]);col.push(palette[i*5+1]);col.push(palette[i*5+2]);col.push(palette[i*5+3]);col.push(palette[i*5+4]);
+    colors=shuffle(col);
+    chartPalette.push(colors)
 var color = d3.scale.ordinal()
-          .range(col)
+          .range(colors)
           .domain([1,2,3,4,5]);
 bars = d3.nest()
       .key(function(d) {return d.chart; })
       .entries(category[i].values);
     
       
+      
+     
       
           svg.selectAll(".bar"+i)
       .data(bars[0].values)
@@ -199,10 +275,9 @@ bars = d3.nest()
  
       
 
-$(".hue").css("width", d3.select("svg").style("width"));
-
-});
+$(".hue").css("width","400px");
 }
+
 
  });
  
@@ -215,50 +290,27 @@ function type(d) {
 
 </script>
 
-
+<button id="realign" style="margin-top: 2%" ><b>Realign Colors</b></button> 
 
 <div id="chart1">
 
-<div class="hue" id="test1">
-        <label>Select Rank:</label>  
+<div class="hue" id="test1" style="width:7%">
+        <label>Chart that is best representation for serious:</label>  
         <input type="radio" name="chart0" value="1">1
         <input type="radio" name="chart0" value="2">2
         <input type="radio" name="chart0" value="3">3 
         <input type="radio" name="chart0" value="4">4
         <input type="radio" name="chart0" value="5">5
 </div>
-    <div class="hue" id="test2">
-        <label>Select Rank:</label>  
+    <div class="hue" id="test2" style="width:7%">
+        <label>Chart that is worst representation for serious:</label>  
         <input type="radio" name="chart1" value="1">1
         <input type="radio" name="chart1" value="2">2
         <input type="radio" name="chart1" value="3">3 
         <input type="radio" name="chart1" value="4">4
         <input type="radio" name="chart1" value="5">5
     </div>
-    <div class="hue" id="test3">
-        <label>Select Rank:</label>  
-        <input type="radio" name="chart2" value="1">1
-        <input type="radio" name="chart2" value="2">2
-        <input type="radio" name="chart2" value="3">3 
-        <input type="radio" name="chart2" value="4">4
-        <input type="radio" name="chart2" value="5">5
-    </div>
-    <div class="hue" id="test4">
-        <label>Select Rank:</label>  
-        <input type="radio" name="chart3" value="1">1
-        <input type="radio" name="chart3" value="2">2
-        <input type="radio" name="chart3" value="3">3 
-        <input type="radio" name="chart3" value="4">4
-        <input type="radio" name="chart3" value="5">5
-    </div>
-  <div class="hue" id="test5"><label>Select Rank:</label>  
-        <input type="radio" name="chart4" value="1">1
-        <input type="radio" name="chart4" value="2">2
-        <input type="radio" name="chart4" value="3">3 
-        <input type="radio" name="chart4" value="4">4
-        <input type="radio" name="chart4" value="5">5
-  </div>
-
+    
 </div>
 <div id="container2">
      <button id="inst" style="margin-top: 2%"><b>Show Instruction</b></button> 
@@ -270,14 +322,10 @@ function type(d) {
 
 
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
-In each of the displayed charts, color is used to represent 5 Categories.For each chart use 5 colors that you think will be appropriate for making the right impression and communicating the overall message of the data, 
-according to the stated goal:<b>Chart 1: Exciting-Best</b> and <b>Chart 2: Exciting-Worst</b>.
-<p>Follow The following Steps:</p>
-<p><B>1. Click on the color name buttons Underneath "CALM" and "EXCITING". When the color palette opens select the colors you want from the palette.</B></p>
-<p><B>2. For each chart you need to select 5 colors as it represents 5 categories.  You can re choose colors as many times as you want.</B></p>
-<p><B>3. For each chart you can vary bar transparency to your choice by using the slider below the "Vary Transparency".</B></p>
-<p><B>4. When you are finished with a chart, rate your satisfaction with how well you think the palette allowed you to communicate the overall impression using the scale below 
-        <i>(1-being least satisfied to 10-being most satisfied)</i>. This will move you to the next set.</B></p>
+In each of the displayed charts, 5 colors  are used in communicating serious impression.
+<p><B>1. Chart 1 to 5  shows 5 color palette representing serious impression.</B></p>
+<p><B>2. In the option below select the chart that is the best and worst representation of serious impression.</B></p>
+<p><B>4. When you are finished selecting move  to the next set.</B></p>
 </div>
 </body>  
 </html>
