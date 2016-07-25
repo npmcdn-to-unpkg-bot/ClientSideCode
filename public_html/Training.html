@@ -168,7 +168,7 @@ function showInstructions(){
 
 var margin = {top: 45, right: 0, bottom: 20, left: 0},
     width = (($("#vis").width())/5) - 10;
-    height = 200 - margin.top - margin.bottom;
+    height = 400 - margin.top - margin.bottom;
 
 var formatPercent = d3.format(".0%");
 
@@ -292,7 +292,7 @@ function type(d) {
 <div id="chart1">
 
 <div class="hue" id="test1" style="width:7%">
-        <label>Chart that is best representation for Calm:</label>  
+        <label>Chart that is best representation for Sad:</label>  
         <input type="radio" name="chart0" value="1">1
         <input type="radio" name="chart0" value="2">2
         <input type="radio" name="chart0" value="3">3 
@@ -300,7 +300,7 @@ function type(d) {
         <input type="radio" name="chart0" value="5">5
 </div>
     <div class="hue" id="test2" style="width:7%">
-        <label>Chart that is worst representation for Calm:</label>  
+        <label>Chart that is worst representation for Sad:</label>  
         <input type="radio" name="chart1" value="1">1
         <input type="radio" name="chart1" value="2">2
         <input type="radio" name="chart1" value="3">3 
@@ -320,7 +320,7 @@ function type(d) {
 
 <DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
 For each of chart in this section  we ask you to choose the best and the worst chart that you think would be appropriate to convey the following impressions: <b>Happy</b>
-In each of the displayed charts, 5 colors  are used in communicating happy impression.
+In each of the displayed charts, 5 colors  are used in communicating Sad impression.
 <p>Follow The following Steps:</p>
 <p><B>1. In the option below the charts select the chart number for best and worst.</B></p>
 <p><B>2. For each of best and worst you can make only one selection.</B></p>
