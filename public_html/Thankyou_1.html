@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Color Study</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type = "text/javascript" >
+    history.pushState(null, null, 'Thankyou.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Thankyou.html');
+    });
+    </script>
+            <script>
+  $(function() {
+   $("#submit").click(createKey);
+  });
+  </script>
+         <script>
+ function createKey(){
+       if($("#fname").val()=="" && $("#lname").val()=="" ){
+           alert("Please insert your name")
+       }else{
+          var key=$("#fname").val()+$("#lname").val()+Date.now();
+          window.localStorage.setItem('Key', key);
+          jsonObj=[];
+          UserTable = {};
+          UserTable ["UserId"] = key;
+          UserTable ["UserName"] = $("#fname").val()+" "+$("#lname").val();
+          jsonObj.push(UserTable)
+          $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+    console.log(data); 
+    result=JSON.parse(data)
+    window.localStorage.setItem('id', result[0].UserId);
+    window.localStorage.setItem('uname', result[0].UserName);
+    window.location='Training.html'; 
+                            }
+    
+
+});
+       }
+       
+       
+         
+}
+
+  </script>
+    </head>
+    <body>
+       
+  <br>Thank you for taking part in the experiment.<br>
+  
+</html>

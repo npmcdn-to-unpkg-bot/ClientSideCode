@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html>
+<meta charset="utf-8">
+<head>
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
+  
+  <style type="text/css">
+  body {
+    font: 11px sans-serif;
+    margin: 10px;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+
+
+  .x.axis path {
+    display: none;
+  }
+  .hue{
+    
+    float: left;
+    margin-left: 0.09%;
+    margin-top: 4%; 
+   
+  }
+  
+ .svg{
+    background-color: WhiteSmoke;
+    margin-left:  0.09%;
+ 
+   
+   
+}
+#table {
+        
+  display:none; 
+  height: 500px;
+  width: 560px;
+        
+}
+#container2 {
+    width: 100%;
+    height: 80%;
+   float: left;
+        
+}
+  </style>
+</head>
+
+<body>
+     
+<div id="vis">
+<!--  <div class="hue" id="test1"></div>
+  <div class="hue" id="test2"></div>
+  <div class="hue" id="test3"></div>
+  <div class="hue" id="test4"></div>
+  <div class="hue" id="test5"></div>-->
+</div>
+
+
+<script type="text/javascript">
+history.pushState(null, null, 'Bar_positive1.html');
+    window.addEventListener('popstate', function(event) {
+    history.pushState(null, null, 'Bar_positive1.html');
+    });   
+ $(function() {
+     
+$("#inst").click(showInstructions);
+$("#save").click(writeDownloadLink);
+$("#realign").click(drawChart);
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}       
+function writeDownloadLink() {
+    if($("input[type='radio'][name='chart0']:checked").size()!=1 || $("input[type='radio'][name='chart1']:checked").size()!=1){
+       
+            window.alert("Please Select Best and Worst Chart");
+        return;
+    }
+    jsonObj = [];
+    string1=[];
+    string2=[];
+    index1=$("input[type='radio'][name='chart0']:checked").val()-1;
+    index2=$("input[type='radio'][name='chart1']:checked").val()-1
+   
+        UserDetails = {};
+        UserDetails ["UserId"] = localStorage.getItem('uname');
+        UserDetails ["TaskId"] = localStorage.getItem('id');
+        UserDetails ["Task"] = "positive";
+        UserDetails ["ChartType"] = "Bar";
+        UserDetails ["PaletteRankBest"] =$("input[type='radio'][name='chart0']:checked").val();
+        UserDetails ["PaletteRankWorst"] =$("input[type='radio'][name='chart1']:checked").val();
+        UserDetails ["ColorsPalettebest"] =chartPalette[index1];
+        UserDetails ["ColorsPaletteworst"] =chartPalette[index2];
+        UserDetails ["Timestamp"] = Date.now();
+       
+       
+
+     jsonObj.push(UserDetails);
+    
+     
+ updateTask();
+} 
+function updateTask(){
+    
+     $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://affectstudy.iat.sfu.ca:3000/colors',
+    data: JSON.stringify(jsonObj),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log(data); 
+  
+    updateObj=[];
+UpdateDetails = {};
+UpdateDetails ["id"] = localStorage.getItem('id');
+UpdateDetails ["Username"] =localStorage.getItem('uname');
+UpdateDetails ["TaskDone"] ="true";
+updateObj.push(UpdateDetails);
+    $.ajax({
+    //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+    type: 'POST',
+    url: 'http://affectstudy.iat.sfu.ca:3000/updateTask',
+    data: JSON.stringify(updateObj),
+    contentType: 'application/json',
+    success: function (data) {
+    result=JSON.parse(data)
+    window.localStorage.setItem('id', result[0].id);
+    window.localStorage.setItem('uname', result[0].Username);
+    window.localStorage.setItem('palette', result[0].palette);
+    window.location=result[0].link; 
+                            
+    }});}});}
+function showInstructions(){
+       $('#table').dialog({
+        height:300,
+        width:560,
+        title: "Task no "+localStorage.getItem('id')+" :Instructions",
+        modal: true
+    });} 
+
+var margin = {top: 45, right: 0, bottom: 20, left: 0},
+    width = (($("#vis").width())/5) - 10;
+    height = 200 - margin.top - margin.bottom;
+
+var formatPercent = d3.format(".0%");
+
+
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+// Scales. Note the inverted domain fo y-scale: bigger is up!
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(formatPercent);
+
+
+
+function type(d) {
+  d.weight = +d.weight;
+  return d;
+}
+
+
+
+d3.csv("BarCategory3.csv", type, function(data) {
+
+
+   category = d3.nest()
+      .key(function(d) { return d.chart; })
+      .entries(data);
+   Chartdata=data;
+   drawChart();
+});
+
+function drawChart(){
+    data=Chartdata;
+  d3.selectAll("svg").remove();
+  chartPalette=[]; 
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(category, function(s) { return s.values[0].frequency; })]);
+
+for(i=0;i<category.length;i++){
+    var svg = d3.select("#vis")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "svg")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+ svg.append("text")
+    .attr("x", width/2)
+    .attr("y", -35)
+    .attr("dy", ".71em")
+    .attr("text-anchor", "middle")
+    .attr("font-size", "1.1em")
+    .text("chart "+(i+1));
+    palette=[];
+    palette=(localStorage.getItem('palette')).split(',');
+    col=[];
+    col.push(palette[i*5+0]);col.push(palette[i*5+1]);col.push(palette[i*5+2]);col.push(palette[i*5+3]);col.push(palette[i*5+4]);
+    colors=shuffle(col);
+    chartPalette.push(colors)
+var color = d3.scale.ordinal()
+          .range(colors)
+          .domain([1,2,3,4,5]);
+bars = d3.nest()
+      .key(function(d) {return d.chart; })
+      .entries(category[i].values);
+    
+      
+      
+     
+      
+          svg.selectAll(".bar"+i)
+      .data(bars[0].values)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .attr("height", function(d) { return height - y(d.frequency); })
+      .attr("fill", function(d) {return color(d.color)});
+      
+  
+
+
+}
+  
+
+
+  // Accessing nested data: https://groups.google.com/forum/#!topic/d3-js/kummm9mS4EA
+  // data(function(d) {return d.values;}) 
+  // this will dereference the values for nested data for each group
+ 
+      
+
+$(".hue").css("width","400px");
+}
+
+
+ });
+ 
+
+function type(d) {
+  d.letter = +d.letter;
+  d.frequency = +d.frequency;
+  return d;
+}
+
+</script>
+
+<button id="realign" style="margin-top: 2%" ><b>Realign Colors</b></button> 
+
+<div id="chart1">
+
+<div class="hue" id="test1" style="width:7%">
+        <label>Chart that is best representation for positive:</label>  
+        <input type="radio" name="chart0" value="1">1
+        <input type="radio" name="chart0" value="2">2
+        <input type="radio" name="chart0" value="3">3 
+        <input type="radio" name="chart0" value="4">4
+        <input type="radio" name="chart0" value="5">5
+</div>
+    <div class="hue" id="test2" style="width:7%">
+        <label>Chart that is worst representation for positive:</label>  
+        <input type="radio" name="chart1" value="1">1
+        <input type="radio" name="chart1" value="2">2
+        <input type="radio" name="chart1" value="3">3 
+        <input type="radio" name="chart1" value="4">4
+        <input type="radio" name="chart1" value="5">5
+    </div>
+    
+</div>
+<div id="container2">
+     <button id="inst" style="margin-top: 2%"><b>Show Instruction</b></button> 
+     
+     <label style="" id="list" style="color: black; width: 7%;height: 10%;margin-left: 20%"><B>Ranking all charts enables you to move to next task</B></label>
+   
+     <button id="save" style="margin-top: 2%"><b>Move to next task</b></button> 
+</div>
+
+
+<DIV STYLE="font-family: Arial, Helvetica, MS Sans Serif" id="table">
+In each of the displayed charts, 5 colors  are used in communicating positive impression.
+<p><B>1. Chart 1 to 5  shows 5 color palette representing positive impression.</B></p>
+<p><B>2. In the option below select the chart that is the best and worst representation of positive impression.</B></p>
+<p><B>4. When you are finished selecting move  to the next set.</B></p>
+</div>
+</body>  
+</html>
+</body>
+</html>
