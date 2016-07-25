@@ -53,7 +53,7 @@ and open the template in the editor.
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/registerUser',
+    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -92,7 +92,7 @@ and open the template in the editor.
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/registerUser',
+    url: 'http://affectstudy.iat.sfu.ca:3000/registerUser',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
@@ -144,7 +144,7 @@ function openTask(){
           $.ajax({
     //This will retrieve the contents of the folder if the folder is configured as 'browsable'
     type: 'POST',
-    url: 'http://localhost:3000/taskDetails',
+    url: 'http://affectstudy.iat.sfu.ca:3000/taskDetails',
     data: JSON.stringify(jsonObj),
     contentType: 'application/json',
     success: function (data) {
