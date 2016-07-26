@@ -24,7 +24,7 @@
   stroke: steelblue;
   stroke-width: 32px;
   stroke-linejoin: round;
-  opacity: 0.05;
+  opacity: 0.02;
   stroke-style:solid;
 }
 .right {
@@ -74,8 +74,8 @@ var margin = {top: 45, right: 100, bottom: 20, left: 20},
 
  y = d3.scale.linear()
     .range([height, 0]);
-x.domain([-100,100]);
-y.domain([100,-100]);
+x.domain([-1,1]);
+y.domain([1,-1]);
 var xAxis = d3.svg.axis()
     .scale(x)
     .ticks(2);
@@ -157,15 +157,16 @@ dropDown.on("change", function() {
 draw(data); }); 
 
 
-d3.csv("Sheet1.csv", type, function(d) {
+d3.csv("Sheet3.csv", type, function(d) {
 baseData=d;   
 
        
 draw(baseData); });
 
 function type(d) {
-  d.a = +d.a;
-  d.b = +d.b;
+  d.x = +d.x;
+  d.y = +d.y;
+  d.weight=+d.weight;
   return d;
 }
 function draw(data){
@@ -188,7 +189,7 @@ function drawHull(data){
 var groupPath = function(d) {
 
 return "M" + 
-      d3.geom.hull(d.values.map(function(i) { return [x(i.a), y(i.b)]; }))
+      d3.geom.hull(d.values.map(function(i) { return [x(i.x), y(i.y)]; }))
         .join("L")
     + "Z";
 };
@@ -247,8 +248,8 @@ var groupFill = function(d, i) { return fill(i & 3); };
       .enter()
       .append("circle")
       .attr("class", "point")
-      .attr("cx", function(d) {return x(d.a); })
-      .attr("cy", function(d) { return y(d.b); })
+      .attr("cx", function(d) {return x(d.x); })
+      .attr("cy", function(d) { return y(d.y); })
       .attr("r", 6)
       .attr("fill", function(d) {return d.data});
  
@@ -260,11 +261,11 @@ var groupFill = function(d, i) { return fill(i & 3); };
       .attr("d", groupPath)
       .enter()
       .insert("path")
-     .style("fill", 'none')
+     .style("fill", groupFill)
       .style("stroke", "black")
       .style("stroke-width", 2)
       .style("stroke-linejoin", "round")
-      .style("opacity", 90)
+      .style("opacity", 50)
       .attr("d", groupPath);
       
       }
